@@ -60,8 +60,7 @@ function App() {
   const socialLinks = {
     discord: "https://discord.gg/NFTCHAMPION",     // Your Discord server
     twitter: "https://twitter.com/DavidJSIme1",    // Your Twitter handle
-    website: "https://havanaelephantbrand.com",    // Your Shopify store
-    github: "https://github.com/HavanaWeb3/HVNA"  // Your GitHub repo
+    website: "https://havanaelephantbrand.com"     // Your Shopify store
   }
 
   return (
@@ -695,20 +694,19 @@ function App() {
 
             <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md hover:border-purple-400/40 transition-colors cursor-pointer">
               <CardHeader className="text-center">
-                <Github className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <CardTitle className="text-white">GitHub</CardTitle>
+                <Shield className="h-12 w-12 text-green-400 mx-auto mb-4" />
+                <CardTitle className="text-white">Documentation</CardTitle>
                 <CardDescription className="text-gray-400">
-                  Explore our open-source code and contribute
+                  Read our whitepaper and project documentation
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <Button 
                   variant="outline" 
-                  className="border-gray-500 text-gray-300 hover:bg-gray-500/20"
-                  onClick={() => window.open(socialLinks.github, '_blank')}
+                  className="border-green-500 text-green-300 hover:bg-green-500/20"
                 >
                   <ExternalLink className="mr-2 h-4 w-4" />
-                  View Code
+                  View Whitepaper
                 </Button>
               </CardContent>
             </Card>
@@ -757,9 +755,9 @@ function App() {
                   className="h-5 w-5 text-gray-400 hover:text-purple-400 cursor-pointer" 
                   onClick={() => window.open(socialLinks.discord, '_blank')}
                 />
-                <Github 
-                  className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" 
-                  onClick={() => window.open(socialLinks.github, '_blank')}
+                <Globe 
+                  className="h-5 w-5 text-gray-400 hover:text-green-400 cursor-pointer" 
+                  onClick={() => window.open(socialLinks.website, '_blank')}
                 />
               </div>
             </div>
