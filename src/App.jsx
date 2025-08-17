@@ -56,6 +56,14 @@ function App() {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Social media links - update these with your actual URLs
+  const socialLinks = {
+    discord: "https://discord.gg/havanaelephant", // Replace with your Discord invite
+    twitter: "https://twitter.com/havanaelephant", // Replace with your Twitter handle
+    website: "https://havanaelephantbrand.com",    // Your Shopify store
+    github: "https://github.com/HavanaWeb3/HVNA"  // Your GitHub repo
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Navigation */}
@@ -157,11 +165,11 @@ function App() {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-700">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-yellow-400">2,500+</div>
+                  <div className="text-2xl font-bold text-yellow-400">1000+</div>
                   <div className="text-sm text-gray-400">Existing Customers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-400">$5M</div>
+                  <div className="text-2xl font-bold text-purple-400">$2.5M</div>
                   <div className="text-sm text-gray-400">Presale Target</div>
                 </div>
                 <div className="text-center">
@@ -364,7 +372,7 @@ function App() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">Raised</span>
-                      <span className="text-green-400 font-semibold">$1.75M / $5M</span>
+                      <span className="text-green-400 font-semibold">$875K / $2.5M</span>
                     </div>
                     <Progress value={presaleProgress} className="h-3" />
                     <div className="text-center text-sm text-gray-400">
@@ -497,7 +505,7 @@ function App() {
               </div>
               <Card className="flex-1 bg-slate-900/50 border-green-500/30 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-white">Q3 2025 - Foundation ✅</CardTitle>
+                  <CardTitle className="text-white">Q4 2025 - Foundation ✅</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-300">
                   <ul className="space-y-1">
@@ -518,7 +526,7 @@ function App() {
               </div>
               <Card className="flex-1 bg-slate-900/50 border-yellow-500/30 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-white">Q4 2025 - Launch 🚀</CardTitle>
+                  <CardTitle className="text-white">Q1 2026 - Launch 🚀</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-300">
                   <ul className="space-y-1">
@@ -539,7 +547,7 @@ function App() {
               </div>
               <Card className="flex-1 bg-slate-900/50 border-purple-500/30 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-white">Q1 2026 - Growth</CardTitle>
+                  <CardTitle className="text-white">Q2 2026 - Growth</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-300">
                   <ul className="space-y-1">
@@ -560,7 +568,7 @@ function App() {
               </div>
               <Card className="flex-1 bg-slate-900/50 border-pink-500/30 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-white">Q2 2026 - ContentFlow Launch</CardTitle>
+                  <CardTitle className="text-white">Q3 2026 - ContentFlow Launch</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-300">
                   <ul className="space-y-1">
@@ -596,7 +604,11 @@ function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20">
+                <Button 
+                  variant="outline" 
+                  className="border-purple-500 text-purple-300 hover:bg-purple-500/20"
+                  onClick={() => window.open(socialLinks.discord, '_blank')}
+                >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Join Discord
                 </Button>
@@ -612,7 +624,11 @@ function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <Button variant="outline" className="border-blue-500 text-blue-300 hover:bg-blue-500/20">
+                <Button 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-300 hover:bg-blue-500/20"
+                  onClick={() => window.open(socialLinks.twitter, '_blank')}
+                >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Follow Us
                 </Button>
@@ -628,7 +644,11 @@ function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <Button variant="outline" className="border-gray-500 text-gray-300 hover:bg-gray-500/20">
+                <Button 
+                  variant="outline" 
+                  className="border-gray-500 text-gray-300 hover:bg-gray-500/20"
+                  onClick={() => window.open(socialLinks.github, '_blank')}
+                >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   View Code
                 </Button>
@@ -644,7 +664,11 @@ function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <Button variant="outline" className="border-green-500 text-green-300 hover:bg-green-500/20">
+                <Button 
+                  variant="outline" 
+                  className="border-green-500 text-green-300 hover:bg-green-500/20"
+                  onClick={() => window.open(socialLinks.website, '_blank')}
+                >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Visit Site
                 </Button>
@@ -667,9 +691,18 @@ function App() {
                 Live Life Big in Style Celebrate - Now in Web3
               </p>
               <div className="flex space-x-4">
-                <Twitter className="h-5 w-5 text-gray-400 hover:text-blue-400 cursor-pointer" />
-                <MessageCircle className="h-5 w-5 text-gray-400 hover:text-purple-400 cursor-pointer" />
-                <Github className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
+                <Twitter 
+                  className="h-5 w-5 text-gray-400 hover:text-blue-400 cursor-pointer" 
+                  onClick={() => window.open(socialLinks.twitter, '_blank')}
+                />
+                <MessageCircle 
+                  className="h-5 w-5 text-gray-400 hover:text-purple-400 cursor-pointer" 
+                  onClick={() => window.open(socialLinks.discord, '_blank')}
+                />
+                <Github 
+                  className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" 
+                  onClick={() => window.open(socialLinks.github, '_blank')}
+                />
               </div>
             </div>
             
