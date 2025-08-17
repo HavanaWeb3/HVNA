@@ -173,8 +173,8 @@ function App() {
                   <div className="text-sm text-gray-400">Presale Target</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-pink-400">10K</div>
-                  <div className="text-sm text-gray-400">NFT Collection</div>
+                  <div className="text-2xl font-bold text-pink-400">100 + 9.9K</div>
+                  <div className="text-sm text-gray-400">Genesis + Main NFTs</div>
                 </div>
               </div>
             </div>
@@ -406,8 +406,58 @@ function App() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-6">Boldly Elephunky NFT Collection</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              10,000 unique NFTs with genuine utility and exclusive benefits in the Havana Elephant ecosystem
+              <span className="text-yellow-400 font-semibold">100 Ultra-Rare Genesis Elephants</span> available now + 
+              <span className="text-purple-400 font-semibold"> 9,900 NFT minting opportunities</span> with genuine utility and exclusive benefits
             </p>
+            <div className="flex justify-center items-center space-x-8 mt-6">
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold text-lg px-4 py-2">
+                🔥 Genesis Collection Live
+              </Badge>
+              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-lg px-4 py-2">
+                ⏳ Main Mint Coming Soon
+              </Badge>
+            </div>
+          </div>
+
+          {/* Genesis Collection Highlight */}
+          <div className="mb-12">
+            <Card className="bg-gradient-to-br from-yellow-500/30 to-orange-500/30 border-yellow-400 border-2 backdrop-blur-md relative overflow-hidden">
+              <div className="absolute top-4 right-4">
+                <Badge className="bg-red-500 text-white font-bold animate-pulse">LIVE NOW</Badge>
+              </div>
+              <CardHeader className="text-center">
+                <Crown className="h-16 w-16 text-yellow-400 mx-auto mb-4" />
+                <CardTitle className="text-white text-2xl">🏆 Genesis Elephants</CardTitle>
+                <CardDescription className="text-gray-200 text-lg font-semibold">Ultra-Rare Founder Tier - Only 100 Available</CardDescription>
+              </CardHeader>
+              <CardContent className="text-gray-200">
+                <ul className="space-y-3 mb-6">
+                  <li>• All Platinum tier benefits (50% discounts)</li>
+                  <li>• Exclusive founder governance rights</li>
+                  <li>• Priority access to all future drops</li>
+                  <li>• Direct brand collaboration opportunities</li>
+                  <li>• Lifetime VIP status</li>
+                  <li>• Genesis holder exclusive events</li>
+                </ul>
+                <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-4 rounded-lg text-center mb-4">
+                  <div className="text-2xl font-bold text-black">$1,000 - $2,500</div>
+                  <div className="text-sm text-black font-semibold">Genesis Price Range</div>
+                </div>
+                <Button 
+                  size="lg" 
+                  className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg"
+                >
+                  <Crown className="mr-2 h-5 w-5" />
+                  Purchase Genesis NFT
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Collection */}
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-white mb-4">Main Collection (9,900 NFTs)</h3>
+            <p className="text-lg text-gray-300">Coming Soon - Traditional Mint Experience</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -415,7 +465,7 @@ function App() {
               <CardHeader>
                 <Crown className="h-12 w-12 text-yellow-400 mb-4" />
                 <CardTitle className="text-white">Silver Elephant</CardTitle>
-                <CardDescription className="text-gray-300">30% of Collection</CardDescription>
+                <CardDescription className="text-gray-300">2,970 NFTs (30% of Main Collection)</CardDescription>
               </CardHeader>
               <CardContent className="text-gray-300">
                 <ul className="space-y-2">
@@ -435,7 +485,7 @@ function App() {
               <CardHeader>
                 <Star className="h-12 w-12 text-purple-400 mb-4" />
                 <CardTitle className="text-white">Gold Elephant</CardTitle>
-                <CardDescription className="text-gray-300">50% of Collection</CardDescription>
+                <CardDescription className="text-gray-300">4,950 NFTs (50% of Main Collection)</CardDescription>
               </CardHeader>
               <CardContent className="text-gray-300">
                 <ul className="space-y-2">
@@ -456,7 +506,7 @@ function App() {
               <CardHeader>
                 <Gift className="h-12 w-12 text-pink-400 mb-4" />
                 <CardTitle className="text-white">Platinum Elephant</CardTitle>
-                <CardDescription className="text-gray-300">20% of Collection</CardDescription>
+                <CardDescription className="text-gray-300">1,980 NFTs (20% of Main Collection)</CardDescription>
               </CardHeader>
               <CardContent className="text-gray-300">
                 <ul className="space-y-2">
@@ -474,13 +524,21 @@ function App() {
             </Card>
           </div>
 
-          <div className="text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold text-lg px-8 py-6"
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6"
+            >
+              <Crown className="mr-2 h-5 w-5" />
+              Get Genesis NFT Now
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-lg px-8 py-6"
             >
               <Sparkles className="mr-2 h-5 w-5" />
-              Mint NFT Collection
+              Join Main Mint Waitlist
             </Button>
           </div>
         </div>
