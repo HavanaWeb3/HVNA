@@ -56,10 +56,10 @@ function App() {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Social media links - update these with your actual URLs
+  // Social media links - updated with actual URLs
   const socialLinks = {
-    discord: "https://discord.gg/havanaelephant", // Replace with your Discord invite
-    twitter: "https://twitter.com/havanaelephant", // Replace with your Twitter handle
+    discord: "https://discord.gg/NFTCHAMPION",     // Your Discord server
+    twitter: "https://twitter.com/DavidJSIme1",    // Your Twitter handle
     website: "https://havanaelephantbrand.com",    // Your Shopify store
     github: "https://github.com/HavanaWeb3/HVNA"  // Your GitHub repo
   }
