@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge.jsx'
 import { Progress } from '@/components/ui/progress.jsx'
 import { Separator } from '@/components/ui/separator.jsx'
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion.jsx'
 import { 
   ChevronDown, 
   Download, 
@@ -22,7 +23,8 @@ import {
   Lock,
   Sparkles,
   Crown,
-  Gift
+  Gift,
+  HelpCircle
 } from 'lucide-react'
 import heroImage from './assets/hero_mockup.png'
 import GenesisPurchase from './components/GenesisPurchase.jsx'
@@ -77,6 +79,7 @@ function App() {
               <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors">Buy Genesis</button>
               <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors">Roadmap</button>
               <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors">Community</button>
+              <button onClick={() => scrollToSection('faq')} className="text-gray-300 hover:text-white transition-colors">FAQ</button>
               <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
             </div>
             <div className="flex items-center space-x-4">
@@ -828,6 +831,379 @@ function App() {
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Visit Site
                 </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 bg-slate-800/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-6">Frequently Asked Questions</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Everything you need to know about the Havana Elephant Web3 ecosystem
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-8">
+            {/* General Web3 Questions */}
+            <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <HelpCircle className="h-6 w-6 text-purple-400" />
+                  General Web3 Questions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="space-y-2">
+                  <AccordionItem value="what-is-ecosystem">
+                    <AccordionTrigger className="text-white hover:text-purple-300">
+                      What is the Havana Elephant Web3 ecosystem?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      We're expanding our beloved elephant-themed brand into the Web3 space by introducing NFTs and the $ELEPHUNK token. This creates a bridge between our physical products and digital ownership, giving you exclusive benefits, discounts, and voting rights on future designs.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="need-crypto-knowledge">
+                    <AccordionTrigger className="text-white hover:text-purple-300">
+                      Do I need to understand cryptocurrency to shop with you?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Not at all! You can continue shopping normally on our website. The Web3 features are completely optional and designed to enhance your experience if you choose to participate.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="blockchain">
+                    <AccordionTrigger className="text-white hover:text-purple-300">
+                      What blockchain will you be using?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      We're launching on Ethereum mainnet with Polygon Layer 2 integration for lower transaction costs. This ensures security while keeping fees affordable.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+
+            {/* $ELEPHUNK Token Questions */}
+            <Card className="bg-slate-900/50 border-yellow-500/20 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Coins className="h-6 w-6 text-yellow-400" />
+                  $ELEPHUNK Token Questions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="space-y-2">
+                  <AccordionItem value="what-is-token">
+                    <AccordionTrigger className="text-white hover:text-yellow-300">
+                      What is the $ELEPHUNK token?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      $ELEPHUNK is our utility token that gives you special benefits when shopping with us, including discounts, early access to new products, and the ability to vote on future designs.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="how-to-get-tokens">
+                    <AccordionTrigger className="text-white hover:text-yellow-300">
+                      How can I get $ELEPHUNK tokens?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      You can participate in our presale starting Q4 2025, or earn tokens through our loyalty program, referrals, and staking rewards once the ecosystem launches.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="token-benefits">
+                    <AccordionTrigger className="text-white hover:text-yellow-300">
+                      What can I do with $ELEPHUNK tokens?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Get 10-50% discounts on products based on your holdings</li>
+                        <li>Access exclusive limited edition drops before everyone else</li>
+                        <li>Vote on new product designs and brand decisions</li>
+                        <li>Stake tokens to earn additional rewards</li>
+                        <li>Receive referral bonuses for bringing friends to the community</li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="token-value">
+                    <AccordionTrigger className="text-white hover:text-yellow-300">
+                      Will the token value go up or down?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Like all cryptocurrencies, $ELEPHUNK's value will fluctuate based on market conditions. However, we've built in deflationary mechanisms including quarterly token burns using 2% of product sales revenue.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="minimum-purchase">
+                    <AccordionTrigger className="text-white hover:text-yellow-300">
+                      What's the minimum token purchase?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Our €25 minimum ensures you can meaningfully benefit from the ecosystem. Based on our average customer purchases, you'll typically save more than your initial investment within your first few orders through product discounts alone! This threshold helps us build a community of engaged brand enthusiasts rather than short-term speculators, while keeping the barrier low enough for genuine accessibility.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+
+            {/* NFT Collection Questions */}
+            <Card className="bg-slate-900/50 border-pink-500/20 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Sparkles className="h-6 w-6 text-pink-400" />
+                  NFT Collection Questions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="space-y-2">
+                  <AccordionItem value="boldly-elephunky">
+                    <AccordionTrigger className="text-white hover:text-pink-300">
+                      What is the "Boldly Elephunky" NFT collection?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      It's a collection of 10,000 unique digital artworks featuring our signature elephant characters. Each NFT provides real utility including product discounts and exclusive access.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="nft-cost">
+                    <AccordionTrigger className="text-white hover:text-pink-300">
+                      How much will the NFTs cost?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      NFT prices will range from $150-500 depending on the rarity tier (Silver, Gold, or Platinum Elephant).
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="nft-benefits">
+                    <AccordionTrigger className="text-white hover:text-pink-300">
+                      What benefits do NFT holders get?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      <div className="space-y-3">
+                        <div>
+                          <strong className="text-gray-200">Silver Elephant (30% of collection):</strong>
+                          <ul className="list-disc list-inside ml-4 mt-1">
+                            <li>10% product discounts</li>
+                            <li>Quarterly exclusive designs</li>
+                            <li>Community forum access</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <strong className="text-yellow-400">Gold Elephant (50% of collection):</strong>
+                          <ul className="list-disc list-inside ml-4 mt-1">
+                            <li>25% product discounts</li>
+                            <li>Monthly exclusive drops</li>
+                            <li>Design voting rights</li>
+                            <li>Custom NFT printing on products</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <strong className="text-purple-400">Platinum Elephant (20% of collection):</strong>
+                          <ul className="list-disc list-inside ml-4 mt-1">
+                            <li>50% product discounts</li>
+                            <li>Weekly exclusive access</li>
+                            <li>Brand collaboration opportunities</li>
+                            <li>Physical merchandise bundles</li>
+                            <li>VIP event invitations</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="print-nft">
+                    <AccordionTrigger className="text-white hover:text-pink-300">
+                      Can I print my NFT on your products?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Yes! Gold and Platinum NFT holders can have their unique NFT artwork printed on select products, creating truly personalized items.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+
+            {/* Technical Questions */}
+            <Card className="bg-slate-900/50 border-blue-500/20 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Shield className="h-6 w-6 text-blue-400" />
+                  Technical Questions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="space-y-2">
+                  <AccordionItem value="need-wallet">
+                    <AccordionTrigger className="text-white hover:text-blue-300">
+                      Do I need a crypto wallet?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Only if you want to participate in the Web3 features. We support popular wallets like MetaMask and WalletConnect. If you just want to shop normally, no wallet is needed.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="connect-wallet">
+                    <AccordionTrigger className="text-white hover:text-blue-300">
+                      How do I connect my wallet to get discounts?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Simply connect your wallet at checkout, and our system will automatically verify your NFT or token holdings and apply applicable discounts.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="data-safety">
+                    <AccordionTrigger className="text-white hover:text-blue-300">
+                      Is my personal information safe?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Absolutely. We're fully GDPR compliant and use minimal data collection. Blockchain participation is optional and can be done anonymously if preferred.
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="lost-wallet">
+                    <AccordionTrigger className="text-white hover:text-blue-300">
+                      What if I lose access to my wallet?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      We recommend backing up your wallet's seed phrase securely. While we can't recover lost wallets, we provide educational resources on wallet security best practices.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+
+            {/* Getting Started */}
+            <Card className="bg-slate-900/50 border-green-500/20 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Star className="h-6 w-6 text-green-400" />
+                  Getting Started
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="space-y-2">
+                  <AccordionItem value="where-to-start">
+                    <AccordionTrigger className="text-white hover:text-green-300">
+                      I'm interested but don't know where to start
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      <ol className="list-decimal list-inside space-y-1">
+                        <li>Join our Discord community to learn more</li>
+                        <li>Follow our social media for updates</li>
+                        <li>Consider starting with a small token purchase during presale</li>
+                        <li>Attend our educational webinars about Web3 basics</li>
+                      </ol>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="learn-more">
+                    <AccordionTrigger className="text-white hover:text-green-300">
+                      Where can I learn more?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Read our full white paper</li>
+                        <li>Join our Discord community</li>
+                        <li>Follow us on Twitter</li>
+                        <li>Subscribe to our newsletter for updates</li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="stay-updated">
+                    <AccordionTrigger className="text-white hover:text-green-300">
+                      How can I stay updated on the launch?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300">
+                      Join our Discord, follow our social media, and sign up for our newsletter. We'll announce all major milestones and launch dates across these channels.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+
+            {/* Quick Integration FAQ */}
+            <Card className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 border-purple-400/30 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Zap className="h-6 w-6 text-purple-400" />
+                  Quick Guide for Existing Customers
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="text-center mb-6">
+                    <Badge className="bg-purple-500 text-white">
+                      The Bottom Line
+                    </Badge>
+                  </div>
+                  <p className="text-gray-300 text-lg text-center">
+                    We're adding cool new features for those who want them, while keeping everything you love about Havana Elephant exactly the same. No pressure, just more ways to be part of our elephunky community! 🐘
+                  </p>
+                  <Accordion type="single" collapsible className="space-y-2">
+                    <AccordionItem value="whats-web3">
+                      <AccordionTrigger className="text-white hover:text-purple-300">
+                        What's this Web3 thing about?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300">
+                        We're adding some exciting digital features to enhance your Havana Elephant experience! Think of it as a loyalty program with special perks, exclusive access, and the ability to help design future products. It's completely optional - you can keep shopping exactly as you always have.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="shopping-changes">
+                      <AccordionTrigger className="text-white hover:text-purple-300">
+                        Will anything change about shopping with you?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300">
+                        Absolutely nothing changes! Your favorite products, customer service, and shopping experience remain exactly the same. The Web3 features are bonus benefits for those who want to participate.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="what-benefits">
+                      <AccordionTrigger className="text-white hover:text-purple-300">
+                        What benefits could I get?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300">
+                        <ul className="list-disc list-inside space-y-1">
+                          <li>Exclusive discounts on your favorite elephant-themed products</li>
+                          <li>Early access to new designs and limited drops</li>
+                          <li>Vote on future products - help us decide what to create next</li>
+                          <li>Special members-only items you can't get anywhere else</li>
+                          <li>VIP treatment for our most engaged community members</li>
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="safe-legitimate">
+                      <AccordionTrigger className="text-white hover:text-purple-300">
+                        Is this safe and legitimate?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300">
+                        Yes! We're the same trusted Havana Elephant brand you know and love. We're working with legal experts to ensure everything is compliant and secure. This is about enhancing our community, not changing our core values.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Risk Disclaimer */}
+            <Card className="bg-red-900/20 border-red-500/30 backdrop-blur-md">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Badge variant="destructive" className="mb-4">
+                    Important Disclaimer
+                  </Badge>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Remember:</strong> Cryptocurrency investments carry risk. Never invest more than you can afford to lose, and always do your own research before participating in any Web3 project.
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>
