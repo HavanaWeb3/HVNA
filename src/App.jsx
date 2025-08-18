@@ -34,7 +34,7 @@ function App() {
     month: 1,
     price: 0.01,
     tokensTarget: 2500000,
-    tokensSold: 850000,
+    tokensSold: 0,
     nextPrice: 0.02
   })
   
@@ -46,8 +46,8 @@ function App() {
     { phase: "Final", months: "9", price: 0.25, tokens: 4000000, color: "red" }
   ]
 
-  // Calculate presale progress: $875K raised of $2.5M target = 35%
-  const presaleProgress = 35
+  // Calculate presale progress: $0 raised of $2.51M target = 0% (presale not yet started)
+  const presaleProgress = 0
 
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
@@ -235,7 +235,7 @@ function App() {
                   <div className="text-sm text-gray-400">Existing Customers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-400">$2.5M</div>
+                  <div className="text-2xl font-bold text-purple-400">$2.51M</div>
                   <div className="text-sm text-gray-400">Presale Target</div>
                 </div>
                 <div className="text-center">
@@ -439,7 +439,7 @@ function App() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">Raised</span>
-                      <span className="text-green-400 font-semibold">$875K / $2.5M</span>
+                      <span className="text-green-400 font-semibold">$0 / $2.51M</span>
                     </div>
                     <Progress value={presaleProgress} className="h-3" />
                     <div className="text-center text-sm text-gray-400">
