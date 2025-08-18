@@ -299,7 +299,7 @@ function App() {
                   <li>• Governance voting rights</li>
                   <li>• Staking rewards</li>
                   <li>• ContentLynk platform access</li>
-                  <li>• €50-10,000 purchase limits</li>
+                  <li>• €25-10,000 purchase limits</li>
                 </ul>
               </CardContent>
             </Card>
@@ -471,7 +471,7 @@ function App() {
                       <span className="text-purple-400 font-semibold">30% Discount</span>
                     </div>
                     <div className="text-sm text-gray-400 pt-2 border-t border-gray-600">
-                      Purchase limits: €50 - €10,000 (prevents whales)
+                      Purchase limits: €25 - €10,000 (prevents whales)
                     </div>
                   </div>
                 </CardContent>
