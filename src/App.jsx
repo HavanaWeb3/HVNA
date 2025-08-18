@@ -25,32 +25,28 @@ import {
   Gift
 } from 'lucide-react'
 import heroImage from './assets/hero_mockup.png'
+import GenesisPurchase from './components/GenesisPurchase.jsx'
 import './App.css'
 
 function App() {
-  const [tokenPrice, setTokenPrice] = useState(0.01)
-  const [presaleProgress, setPresaleProgress] = useState(35)
-  const [timeLeft, setTimeLeft] = useState({ days: 45, hours: 12, minutes: 30, seconds: 15 })
+  const [currentPhase] = useState({
+    name: "Early Bird",
+    month: 1,
+    price: 0.01,
+    tokensTarget: 2500000,
+    tokensSold: 850000,
+    nextPrice: 0.02
+  })
+  
+  const presalePhases = [
+    { phase: "Early Bird", months: "1-2", price: 0.01, tokens: 5000000, color: "green" },
+    { phase: "Community", months: "3-4", price: 0.02, tokens: 8000000, color: "blue" },
+    { phase: "Growth", months: "5-6", price: 0.05, tokens: 10000000, color: "purple" },
+    { phase: "Momentum", months: "7-8", price: 0.10, tokens: 8000000, color: "orange" },
+    { phase: "Final", months: "9", price: 0.25, tokens: 4000000, color: "red" }
+  ]
 
-  // Countdown timer effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 }
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 }
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 }
-        } else if (prev.days > 0) {
-          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 }
-        }
-        return prev
-      })
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
+  // No live updates needed - showing phase progress instead
 
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
@@ -77,8 +73,10 @@ function App() {
               <button onClick={() => scrollToSection('about')} className="text-gray-300 hover:text-white transition-colors">About</button>
               <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors">Tokenomics</button>
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors">NFTs</button>
+              <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors">Buy Genesis</button>
               <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors">Roadmap</button>
               <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors">Community</button>
+              <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
             </div>
             <div className="flex items-center space-x-4">
               <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20">
@@ -116,28 +114,86 @@ function App() {
               
               <p className="text-xl text-gray-300 mb-8 max-w-2xl">
                 Where Style Meets Blockchain Innovation. Join the revolution with $HVNA tokens, 
-                exclusive NFTs, and the future ContentFlow social platform.
+                exclusive NFTs, and the future ContentLynk social platform.
               </p>
 
-              {/* Countdown Timer */}
+              {/* Token Presale Phases */}
               <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-6 mb-8 border border-purple-500/20">
-                <h3 className="text-lg font-semibold text-white mb-4">Presale Ends In:</h3>
-                <div className="grid grid-cols-4 gap-4 text-center">
-                  <div>
-                    <div className="text-3xl font-bold text-yellow-400">{timeLeft.days}</div>
-                    <div className="text-sm text-gray-400">Days</div>
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-lg font-semibold text-white">$HVNA Token Presale</h3>
+                  <Badge className="bg-green-500 text-white animate-pulse">🟢 {currentPhase.name} Phase</Badge>
+                </div>
+                
+                {/* Current Phase Highlight */}
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-green-400 font-semibold">Current Price</span>
+                    <span className="text-white text-2xl font-bold">${currentPhase.price}</span>
                   </div>
-                  <div>
-                    <div className="text-3xl font-bold text-yellow-400">{timeLeft.hours}</div>
-                    <div className="text-sm text-gray-400">Hours</div>
+                  
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Phase Progress</span>
+                      <span className="text-white">
+                        {(currentPhase.tokensSold / 1000000).toFixed(1)}M / {(currentPhase.tokensTarget / 1000000).toFixed(1)}M tokens
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div 
+                        className="bg-gradient-to-r from-green-400 to-emerald-500 h-2 rounded-full"
+                        style={{ width: `${(currentPhase.tokensSold / currentPhase.tokensTarget) * 100}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-3xl font-bold text-yellow-400">{timeLeft.minutes}</div>
-                    <div className="text-sm text-gray-400">Minutes</div>
+
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                      <div className="text-lg font-bold text-yellow-400">
+                        {((currentPhase.tokensTarget - currentPhase.tokensSold) / 1000000).toFixed(1)}M
+                      </div>
+                      <div className="text-xs text-gray-400">Tokens Remaining</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-red-400">
+                        ${currentPhase.nextPrice}
+                      </div>
+                      <div className="text-xs text-gray-400">Next Phase Price</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-3xl font-bold text-yellow-400">{timeLeft.seconds}</div>
-                    <div className="text-sm text-gray-400">Seconds</div>
+                </div>
+
+                {/* Phase Timeline */}
+                <div className="mb-6">
+                  <h4 className="text-white font-semibold mb-3">Presale Timeline</h4>
+                  <div className="space-y-2">
+                    {presalePhases.map((phase, index) => (
+                      <div key={index} className={`flex justify-between items-center p-2 rounded ${
+                        phase.phase === currentPhase.name 
+                          ? 'bg-green-500/20 border border-green-500/30' 
+                          : 'bg-gray-800/30'
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <Badge className={`bg-${phase.color}-500 text-white text-xs`}>
+                            {phase.phase}
+                          </Badge>
+                          <span className="text-gray-300 text-sm">Months {phase.months}</span>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-white font-bold">${phase.price}</div>
+                          <div className="text-xs text-gray-400">{(phase.tokens / 1000000)}M tokens</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* FOMO Message */}
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 text-center">
+                  <div className="text-yellow-400 font-semibold text-sm">
+                    ⚡ Price increases to $0.02 when Early Bird phase completes!
+                  </div>
+                  <div className="text-gray-300 text-xs mt-1">
+                    Only {((currentPhase.tokensTarget - currentPhase.tokensSold) / 1000000).toFixed(1)}M tokens left at current price
                   </div>
                 </div>
               </div>
@@ -147,9 +203,10 @@ function App() {
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
+                  onClick={() => scrollToSection('contact')}
                 >
                   <Coins className="mr-2 h-5 w-5" />
-                  Join $HVNA Presale
+                  Register Interest
                 </Button>
                 <Button 
                   size="lg" 
@@ -158,6 +215,15 @@ function App() {
                 >
                   <Download className="mr-2 h-5 w-5" />
                   Download White Paper
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-300 hover:bg-blue-500/20 text-lg px-8 py-6"
+                  onClick={() => window.open(socialLinks.discord, '_blank')}
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  Join Community
                 </Button>
               </div>
 
@@ -228,7 +294,7 @@ function App() {
                   <li>• Product discounts up to 30% (tiered)</li>
                   <li>• Governance voting rights</li>
                   <li>• Staking rewards</li>
-                  <li>• ContentFlow platform access</li>
+                  <li>• ContentLynk platform access</li>
                   <li>• €50-10,000 purchase limits</li>
                 </ul>
               </CardContent>
@@ -255,7 +321,7 @@ function App() {
             <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
               <CardHeader>
                 <Globe className="h-12 w-12 text-pink-400 mb-4" />
-                <CardTitle className="text-white">ContentFlow Platform</CardTitle>
+                <CardTitle className="text-white">ContentLynk Platform</CardTitle>
                 <CardDescription className="text-gray-400">
                   Revolutionary social media platform with fair creator compensation
                 </CardDescription>
@@ -304,7 +370,7 @@ function App() {
                     <Progress value={20} className="h-2" />
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">ContentFlow Development</span>
+                      <span className="text-gray-300">ContentLynk Development</span>
                       <span className="text-pink-400 font-semibold">15%</span>
                     </div>
                     <Progress value={15} className="h-2" />
@@ -415,7 +481,7 @@ function App() {
                   <ul className="space-y-2">
                     <li>• 2% of product sales → token burn</li>
                     <li>• 50% of NFT royalties → token burn</li>
-                    <li>• 30% of ContentFlow revenue → token burn</li>
+                    <li>• 30% of ContentLynk revenue → token burn</li>
                     <li>• Quarterly burn events</li>
                   </ul>
                 </CardContent>
@@ -497,7 +563,7 @@ function App() {
                   <li>• 10% product discounts</li>
                   <li>• Quarterly exclusive designs</li>
                   <li>• Community forum access</li>
-                  <li>• Basic ContentFlow tools</li>
+                  <li>• Basic ContentLynk tools</li>
                 </ul>
                 <div className="mt-4 pt-4 border-t border-yellow-500/20">
                   <div className="text-2xl font-bold text-yellow-400">$150</div>
@@ -518,7 +584,7 @@ function App() {
                   <li>• Monthly exclusive drops</li>
                   <li>• Design voting rights</li>
                   <li>• Custom NFT printing</li>
-                  <li>• Advanced ContentFlow analytics</li>
+                  <li>• Advanced ContentLynk analytics</li>
                 </ul>
                 <div className="mt-4 pt-4 border-t border-purple-500/20">
                   <div className="text-2xl font-bold text-purple-400">$300</div>
@@ -539,7 +605,7 @@ function App() {
                   <li>• Weekly exclusive access</li>
                   <li>• Brand collaboration opportunities</li>
                   <li>• VIP event invitations</li>
-                  <li>• Premium ContentFlow features</li>
+                  <li>• Premium ContentLynk features</li>
                 </ul>
                 <div className="mt-4 pt-4 border-t border-pink-500/20">
                   <div className="text-2xl font-bold text-pink-400">$500</div>
@@ -569,6 +635,13 @@ function App() {
         </div>
       </section>
 
+      {/* Genesis NFT Purchase Section */}
+      <section id="genesis" className="py-20 bg-slate-800/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <GenesisPurchase />
+        </div>
+      </section>
+
       {/* Roadmap Section */}
       <section id="roadmap" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -595,7 +668,7 @@ function App() {
                     <li>• Smart contract development and auditing</li>
                     <li>• NFT collection artwork completion</li>
                     <li>• Community building and presale launch</li>
-                    <li>• ContentFlow technical specifications</li>
+                    <li>• ContentLynk technical specifications</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -616,7 +689,7 @@ function App() {
                     <li>• NFT collection mint</li>
                     <li>• Web3 integration go-live</li>
                     <li>• Marketing campaign execution</li>
-                    <li>• ContentFlow alpha development</li>
+                    <li>• ContentLynk alpha development</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -651,11 +724,11 @@ function App() {
               </div>
               <Card className="flex-1 bg-slate-900/50 border-pink-500/30 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-white">Q3 2026 - ContentFlow Launch</CardTitle>
+                  <CardTitle className="text-white">Q3 2026 - ContentLynk Launch</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-300">
                   <ul className="space-y-1">
-                    <li>• ContentFlow public beta launch</li>
+                    <li>• ContentLynk public beta launch</li>
                     <li>• Creator onboarding program</li>
                     <li>• Initial advertising marketplace</li>
                     <li>• Mobile app development</li>
@@ -760,6 +833,134 @@ function App() {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-6">Contact Us</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Have questions about the Havana Elephant ecosystem? We're here to help.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div>
+              <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl">Get in Touch</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Reach out to us through any of these channels
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <MessageCircle className="h-8 w-8 text-purple-400" />
+                    <div>
+                      <div className="text-white font-semibold">Discord Community</div>
+                      <div className="text-gray-400">Join our active community for real-time support</div>
+                      <Button 
+                        variant="link" 
+                        className="text-purple-400 hover:text-purple-300 p-0 h-auto"
+                        onClick={() => window.open(socialLinks.discord, '_blank')}
+                      >
+                        discord.gg/NFTCHAMPION
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    <Twitter className="h-8 w-8 text-blue-400" />
+                    <div>
+                      <div className="text-white font-semibold">Twitter/X</div>
+                      <div className="text-gray-400">Follow us for updates and announcements</div>
+                      <Button 
+                        variant="link" 
+                        className="text-blue-400 hover:text-blue-300 p-0 h-auto"
+                        onClick={() => window.open(socialLinks.twitter, '_blank')}
+                      >
+                        @DavidJSIme1
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    <Globe className="h-8 w-8 text-green-400" />
+                    <div>
+                      <div className="text-white font-semibold">Official Website</div>
+                      <div className="text-gray-400">Visit our main brand website</div>
+                      <Button 
+                        variant="link" 
+                        className="text-green-400 hover:text-green-300 p-0 h-auto"
+                        onClick={() => window.open(socialLinks.website, '_blank')}
+                      >
+                        havanaelephantbrand.com
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div>
+              <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl">Send Message</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Fill out the form below and we'll get back to you soon
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Your name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                      <input 
+                        type="email" 
+                        className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Subject</label>
+                      <select className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="">Select a topic</option>
+                        <option value="token">$HVNA Token Questions</option>
+                        <option value="nft">NFT Collection Inquiry</option>
+                        <option value="contentlynk">ContentLynk Platform</option>
+                        <option value="partnership">Partnership Opportunities</option>
+                        <option value="support">Technical Support</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                      <textarea 
+                        rows={4}
+                        className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Your message..."
+                      ></textarea>
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold"
+                    >
+                      Send Message
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -793,7 +994,7 @@ function App() {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white">$HVNA Token</a></li>
                 <li><a href="#" className="hover:text-white">NFT Collection</a></li>
-                <li><a href="#" className="hover:text-white">ContentFlow</a></li>
+                <li><a href="#" className="hover:text-white">ContentLynk</a></li>
                 <li><a href="#" className="hover:text-white">Governance</a></li>
               </ul>
             </div>
@@ -809,12 +1010,12 @@ function App() {
             </div>
             
             <div>
-              <h3 className="text-white font-semibold mb-4">Legal</h3>
+              <h3 className="text-white font-semibold mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white">Cookie Policy</a></li>
-                <li><a href="#" className="hover:text-white">Disclaimer</a></li>
+                <li><a href="#contact" className="hover:text-white" onClick={() => scrollToSection('contact')}>Contact Us</a></li>
+                <li><a href="#" className="hover:text-white">Support</a></li>
+                <li><a href="#" className="hover:text-white">Partnership</a></li>
+                <li><a href="#" className="hover:text-white">Press Kit</a></li>
               </ul>
             </div>
           </div>
