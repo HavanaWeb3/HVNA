@@ -225,10 +225,11 @@ function App() {
               </CardHeader>
               <CardContent className="text-gray-300">
                 <ul className="space-y-2">
-                  <li>• Product discounts up to 50%</li>
+                  <li>• Product discounts up to 30% (tiered)</li>
                   <li>• Governance voting rights</li>
                   <li>• Staking rewards</li>
                   <li>• ContentFlow platform access</li>
+                  <li>• €50-10,000 purchase limits</li>
                 </ul>
               </CardContent>
             </Card>
@@ -383,6 +384,31 @@ function App() {
 
               <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
                 <CardHeader>
+                  <CardTitle className="text-white">Token Holder Benefits</CardTitle>
+                </CardHeader>
+                <CardContent className="text-gray-300">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span>€150+ Holdings</span>
+                      <span className="text-green-400 font-semibold">10% Discount</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>€250+ Holdings</span>
+                      <span className="text-blue-400 font-semibold">20% Discount</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>€500+ Holdings</span>
+                      <span className="text-purple-400 font-semibold">30% Discount</span>
+                    </div>
+                    <div className="text-sm text-gray-400 pt-2 border-t border-gray-600">
+                      Purchase limits: €50 - €10,000 (prevents whales)
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+                <CardHeader>
                   <CardTitle className="text-white">Deflationary Mechanisms</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-300">
@@ -406,7 +432,7 @@ function App() {
             <h2 className="text-4xl font-bold text-white mb-6">Boldly Elephunky NFT Collection</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               <span className="text-yellow-400 font-semibold">100 Ultra-Rare Genesis Elephants</span> available now + 
-              <span className="text-purple-400 font-semibold"> 9,900 NFT minting opportunities</span> with genuine utility and exclusive benefits
+              <span className="text-purple-400 font-semibold"> 9,900 NFT minting opportunities</span> with tiered discounts and exclusive benefits
             </p>
             <div className="flex justify-center items-center space-x-8 mt-6">
               <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold text-lg px-4 py-2">
@@ -431,7 +457,7 @@ function App() {
               </CardHeader>
               <CardContent className="text-gray-200">
                 <ul className="space-y-3 mb-6">
-                  <li>• All Platinum tier benefits (50% discounts)</li>
+                  <li>• All Platinum tier benefits (30% discounts)</li>
                   <li>• Exclusive founder governance rights</li>
                   <li>• Priority access to all future drops</li>
                   <li>• Direct brand collaboration opportunities</li>
@@ -488,7 +514,7 @@ function App() {
               </CardHeader>
               <CardContent className="text-gray-300">
                 <ul className="space-y-2">
-                  <li>• 25% product discounts</li>
+                  <li>• 20% product discounts</li>
                   <li>• Monthly exclusive drops</li>
                   <li>• Design voting rights</li>
                   <li>• Custom NFT printing</li>
@@ -509,7 +535,7 @@ function App() {
               </CardHeader>
               <CardContent className="text-gray-300">
                 <ul className="space-y-2">
-                  <li>• 50% product discounts</li>
+                  <li>• 30% product discounts</li>
                   <li>• Weekly exclusive access</li>
                   <li>• Brand collaboration opportunities</li>
                   <li>• VIP event invitations</li>
