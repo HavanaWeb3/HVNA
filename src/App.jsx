@@ -46,7 +46,8 @@ function App() {
     { phase: "Final", months: "9", price: 0.25, tokens: 4000000, color: "red" }
   ]
 
-  // No live updates needed - showing phase progress instead
+  // Calculate presale progress: $875K raised of $2.5M target = 35%
+  const presaleProgress = 35
 
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
