@@ -136,7 +136,7 @@ function App() {
             {/* Left Column - Content */}
             <div className="text-center lg:text-left">
               <Badge className="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold">
-                🎉 Presale Now Live
+                🚀 Presale Coming Soon
               </Badge>
               
               <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -156,43 +156,37 @@ function App() {
               <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-6 mb-8 border border-purple-500/20">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-semibold text-white">$HVNA Token Presale</h3>
-                  <Badge className="bg-green-500 text-white animate-pulse">🟢 {currentPhase.name} Phase</Badge>
+                  <Badge className="bg-blue-500 text-white animate-pulse">🚀 Coming Q4 2025</Badge>
                 </div>
                 
                 {/* Current Phase Highlight */}
-                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6">
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-green-400 font-semibold">Current Price</span>
+                    <span className="text-blue-400 font-semibold">Starting Price</span>
                     <span className="text-white text-2xl font-bold">${currentPhase.price}</span>
                   </div>
                   
                   <div className="mb-4">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-300">Phase Progress</span>
-                      <span className="text-white">
-                        {(currentPhase.tokensSold / 1000000).toFixed(1)}M / {(currentPhase.tokensTarget / 1000000).toFixed(1)}M tokens
-                      </span>
+                    <div className="text-center text-blue-400 font-semibold mb-2">
+                      Ready to Launch: {(currentPhase.tokensTarget / 1000000).toFixed(1)}M tokens
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div 
-                        className="bg-gradient-to-r from-green-400 to-emerald-500 h-2 rounded-full"
-                        style={{ width: `${(currentPhase.tokensSold / currentPhase.tokensTarget) * 100}%` }}
+                        className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full"
+                        style={{ width: '0%' }}
                       ></div>
+                    </div>
+                    <div className="text-center text-sm text-gray-400 mt-2">
+                      Presale launches Q4 2025
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 text-center">
-                    <div>
-                      <div className="text-lg font-bold text-yellow-400">
-                        {((currentPhase.tokensTarget - currentPhase.tokensSold) / 1000000).toFixed(1)}M
-                      </div>
-                      <div className="text-xs text-gray-400">Tokens Remaining</div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-blue-400 mb-2">
+                      Register Interest to be First in Line!
                     </div>
-                    <div>
-                      <div className="text-lg font-bold text-red-400">
-                        ${currentPhase.nextPrice}
-                      </div>
-                      <div className="text-xs text-gray-400">Next Phase Price</div>
+                    <div className="text-sm text-gray-400">
+                      Get notified when presale launches • Secure early bird pricing
                     </div>
                   </div>
                 </div>
@@ -223,12 +217,12 @@ function App() {
                 </div>
 
                 {/* FOMO Message */}
-                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 text-center">
-                  <div className="text-yellow-400 font-semibold text-sm">
-                    ⚡ Price increases to $0.02 when Early Bird phase completes!
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-center">
+                  <div className="text-blue-400 font-semibold text-sm">
+                    🚀 Be among the first to access Early Bird pricing at $0.01!
                   </div>
                   <div className="text-gray-300 text-xs mt-1">
-                    Only {((currentPhase.tokensTarget - currentPhase.tokensSold) / 1000000).toFixed(1)}M tokens left at current price
+                    Register your interest now to secure your spot when presale launches
                   </div>
                 </div>
               </div>
@@ -467,17 +461,23 @@ function App() {
 
               <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-white">Presale Progress</CardTitle>
+                  <CardTitle className="text-white">Presale Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Raised</span>
-                      <span className="text-green-400 font-semibold">$0 / $2.51M</span>
+                    <div className="text-center p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                      <div className="text-blue-400 font-semibold text-lg mb-2">
+                        🚀 Presale Not Yet Started
+                      </div>
+                      <div className="text-gray-300 text-sm">
+                        Target: $2.51M | Launch: Q4 2025
+                      </div>
                     </div>
-                    <Progress value={presaleProgress} className="h-3" />
+                    <div className="bg-gray-700/30 rounded-full h-3">
+                      <div className="bg-gradient-to-r from-blue-400 to-purple-500 h-3 rounded-full" style={{width: '0%'}}></div>
+                    </div>
                     <div className="text-center text-sm text-gray-400">
-                      {presaleProgress}% Complete
+                      Presale launches Q4 2025 - Register interest to be notified!
                     </div>
                   </div>
                 </CardContent>
