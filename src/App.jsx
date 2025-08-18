@@ -51,8 +51,39 @@ function App() {
   // Calculate presale progress: $0 raised of $2.51M target = 0% (presale not yet started)
   const presaleProgress = 0
 
+  // Contact form state
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
+
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  // Handle contact form submission
+  const handleFormSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitMessage('')
+
+    try {
+      const formData = new FormData(e.target)
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString()
+      })
+
+      if (response.ok) {
+        setSubmitMessage('✅ Message sent successfully! We\'ll get back to you soon.')
+        e.target.reset()
+      } else {
+        setSubmitMessage('❌ Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      setSubmitMessage('❌ Network error. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   // Social media links - updated with actual URLs
@@ -1223,26 +1254,41 @@ function App() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form className="space-y-6">
+                  <form 
+                    className="space-y-6"
+                    name="contact"
+                    method="POST"
+                    data-netlify="true"
+                    onSubmit={handleFormSubmit}
+                  >
+                    <input type="hidden" name="form-name" value="contact" />
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
                       <input 
                         type="text" 
+                        name="name"
                         className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         placeholder="Your name"
+                        required
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
                       <input 
                         type="email" 
+                        name="email"
                         className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         placeholder="your.email@example.com"
+                        required
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Subject</label>
-                      <select className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                      <select 
+                        name="subject"
+                        className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        required
+                      >
                         <option value="">Select a topic</option>
                         <option value="token">$HVNA Token Questions</option>
                         <option value="nft">NFT Collection Inquiry</option>
@@ -1255,16 +1301,26 @@ function App() {
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
                       <textarea 
+                        name="message"
                         rows={4}
                         className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         placeholder="Your message..."
+                        required
                       ></textarea>
                     </div>
+                    
+                    {submitMessage && (
+                      <div className="p-3 rounded-md text-center">
+                        <p className="text-white">{submitMessage}</p>
+                      </div>
+                    )}
+                    
                     <Button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold disabled:opacity-50"
                     >
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
                   </form>
                 </CardContent>
