@@ -50,25 +50,33 @@ const GenesisPurchase = () => {
 
   // Connect wallet
   const connectWallet = async () => {
+    console.log('Connect wallet clicked')
+    console.log('window.ethereum:', typeof window.ethereum)
+    
     if (typeof window.ethereum === 'undefined') {
+      console.log('MetaMask not found')
       setPurchaseStatus('❌ MetaMask not found. Please install MetaMask.')
       return
     }
 
     try {
+      console.log('Starting wallet connection...')
       setIsLoading(true)
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      console.log('Accounts received:', accounts)
       
       if (accounts.length > 0) {
         setUserAddress(accounts[0])
         setIsConnected(true)
         setPurchaseStatus('✅ Wallet connected successfully!')
+        console.log('Wallet connected successfully')
         
         // Switch to Base network
         await ensureBaseNetwork()
         await updateUserInfo(accounts[0])
       }
     } catch (error) {
+      console.log('Wallet connection error:', error)
       setPurchaseStatus('❌ Failed to connect wallet: ' + error.message)
     } finally {
       setIsLoading(false)
