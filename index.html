@@ -15,6 +15,27 @@
   </head>
   <body>
     <div id="root"></div>
+    
+    <!-- Netlify Forms Detection -->
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <select name="subject">
+        <option value="token">$HVNA Token Questions</option>
+        <option value="nft">NFT Collection Inquiry</option>
+        <option value="contentlynk">ContentLynk Platform</option>
+        <option value="partnership">Partnership Opportunities</option>
+        <option value="support">Technical Support</option>
+        <option value="other">Other</option>
+      </select>
+      <textarea name="message"></textarea>
+    </form>
+    
+    <form name="newsletter" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+    </form>
+    
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

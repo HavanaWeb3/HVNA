@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge.jsx'
 import { Progress } from '@/components/ui/progress.jsx'
 import { Separator } from '@/components/ui/separator.jsx'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion.jsx'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog.jsx'
 import { 
   ChevronDown, 
   Download, 
@@ -32,20 +33,23 @@ import './App.css'
 
 function App() {
   const [currentPhase] = useState({
-    name: "Early Bird",
+    name: "Genesis Founders",
     month: 1,
     price: 0.01,
     tokensTarget: 2500000,
     tokensSold: 0,
-    nextPrice: 0.02
+    nextPrice: 0.015,
+    benefits: "30% discount, founder status"
   })
   
   const presalePhases = [
-    { phase: "Early Bird", months: "1-2", price: 0.01, tokens: 5000000, color: "green" },
-    { phase: "Community", months: "3-4", price: 0.02, tokens: 8000000, color: "blue" },
-    { phase: "Growth", months: "5-6", price: 0.05, tokens: 10000000, color: "purple" },
-    { phase: "Momentum", months: "7-8", price: 0.10, tokens: 8000000, color: "orange" },
-    { phase: "Final", months: "9", price: 0.25, tokens: 4000000, color: "red" }
+    { phase: "Genesis Founders", months: "Month 1", price: 0.01, benefits: "30% discount, founder status", color: "yellow" },
+    { phase: "Early Believers", months: "Month 2", price: 0.015, benefits: "25% discount, priority access", color: "green" },
+    { phase: "Community Builders", months: "Month 3-4", price: 0.025, benefits: "20% discount, ambassador status", color: "blue" },
+    { phase: "Growth Partners", months: "Month 5-6", price: 0.06, benefits: "15% discount, event access", color: "purple" },
+    { phase: "Momentum Members", months: "Month 7", price: 0.12, benefits: "12% discount, VIP status", color: "orange" },
+    { phase: "Final Access", months: "Month 8", price: 0.25, benefits: "10% discount, priority shipping", color: "red" },
+    { phase: "Last Opportunity", months: "Final weeks", price: 0.30, benefits: "8% discount, standard benefits", color: "gray" }
   ]
 
   // Calculate presale progress: $0 raised of $2.51M target = 0% (presale not yet started)
@@ -54,6 +58,11 @@ function App() {
   // Contact form state
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
+
+  // Newsletter signup state
+  const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
+  const [newsletterMessage, setNewsletterMessage] = useState('')
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
@@ -83,6 +92,34 @@ function App() {
       setSubmitMessage('❌ Network error. Please try again.')
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  // Handle newsletter signup
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault()
+    setIsNewsletterSubmitting(true)
+    setNewsletterMessage('')
+
+    try {
+      const formData = new FormData(e.target)
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString()
+      })
+
+      if (response.ok) {
+        setNewsletterMessage('✅ Successfully registered! We\'ll notify you when presale launches.')
+        e.target.reset()
+        setTimeout(() => setIsDialogOpen(false), 2000)
+      } else {
+        setNewsletterMessage('❌ Failed to register. Please try again.')
+      }
+    } catch (error) {
+      setNewsletterMessage('❌ Network error. Please try again.')
+    } finally {
+      setIsNewsletterSubmitting(false)
     }
   }
 
@@ -183,10 +220,13 @@ function App() {
 
                   <div className="text-center">
                     <div className="text-lg font-bold text-blue-400 mb-2">
-                      Register Interest to be First in Line!
+                      Genesis Founders Benefits:
+                    </div>
+                    <div className="text-sm text-blue-300 font-semibold mb-2">
+                      {currentPhase.benefits}
                     </div>
                     <div className="text-sm text-gray-400">
-                      Get notified when presale launches • Secure early bird pricing
+                      Register interest to secure your founder spot when presale launches!
                     </div>
                   </div>
                 </div>
@@ -196,20 +236,22 @@ function App() {
                   <h4 className="text-white font-semibold mb-3">Presale Timeline</h4>
                   <div className="space-y-2">
                     {presalePhases.map((phase, index) => (
-                      <div key={index} className={`flex justify-between items-center p-2 rounded ${
+                      <div key={index} className={`p-3 rounded-lg ${
                         phase.phase === currentPhase.name 
-                          ? 'bg-green-500/20 border border-green-500/30' 
+                          ? 'bg-blue-500/20 border border-blue-500/30' 
                           : 'bg-gray-800/30'
                       }`}>
-                        <div className="flex items-center gap-3">
-                          <Badge className={`bg-${phase.color}-500 text-white text-xs`}>
-                            {phase.phase}
-                          </Badge>
-                          <span className="text-gray-300 text-sm">Months {phase.months}</span>
-                        </div>
-                        <div className="text-right">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="flex items-center gap-3">
+                            <Badge className={`bg-${phase.color}-500 text-white text-xs`}>
+                              {phase.phase}
+                            </Badge>
+                            <span className="text-gray-300 text-sm">{phase.months}</span>
+                          </div>
                           <div className="text-white font-bold">${phase.price}</div>
-                          <div className="text-xs text-gray-400">{(phase.tokens / 1000000)}M tokens</div>
+                        </div>
+                        <div className="text-xs text-blue-300 mt-1">
+                          {phase.benefits}
                         </div>
                       </div>
                     ))}
@@ -219,24 +261,84 @@ function App() {
                 {/* FOMO Message */}
                 <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-center">
                   <div className="text-blue-400 font-semibold text-sm">
-                    🚀 Be among the first to access Early Bird pricing at $0.01!
+                    👑 Genesis Founders get 30% lifetime discount + founder status!
                   </div>
                   <div className="text-gray-300 text-xs mt-1">
-                    Register your interest now to secure your spot when presale launches
+                    Price increases to $0.015 in Month 2 - Register now for $0.01 founder pricing
                   </div>
                 </div>
               </div>
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
-                  onClick={() => scrollToSection('contact')}
-                >
-                  <Coins className="mr-2 h-5 w-5" />
-                  Register Interest
-                </Button>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="lg" 
+                      className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
+                    >
+                      <Coins className="mr-2 h-5 w-5" />
+                      Register Interest
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-slate-900 border-purple-500/20">
+                    <DialogHeader>
+                      <DialogTitle className="text-white text-2xl">Register for Presale Launch</DialogTitle>
+                    </DialogHeader>
+                    
+                    <div className="space-y-4">
+                      <p className="text-gray-300">
+                        Get notified when the $HVNA presale launches and secure Early Bird pricing at $0.01!
+                      </p>
+                      
+                      <form 
+                        name="newsletter"
+                        method="POST"
+                        data-netlify="true"
+                        onSubmit={handleNewsletterSubmit}
+                        className="space-y-4"
+                      >
+                        <input type="hidden" name="form-name" value="newsletter" />
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                          <input 
+                            type="text" 
+                            name="name"
+                            className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                            placeholder="Your name"
+                            required
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                          <input 
+                            type="email" 
+                            name="email"
+                            className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                            placeholder="your.email@example.com"
+                            required
+                          />
+                        </div>
+                        
+                        {newsletterMessage && (
+                          <div className="p-3 rounded-md text-center">
+                            <p className="text-white">{newsletterMessage}</p>
+                          </div>
+                        )}
+                        
+                        <Button 
+                          type="submit" 
+                          disabled={isNewsletterSubmitting}
+                          className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold disabled:opacity-50"
+                        >
+                          {isNewsletterSubmitting ? 'Registering...' : 'Register Interest'}
+                        </Button>
+                      </form>
+                    </div>
+                  </DialogContent>
+                </Dialog>
                 <Button 
                   size="lg" 
                   variant="outline" 
@@ -572,6 +674,7 @@ function App() {
                 <Button 
                   size="lg" 
                   className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg"
+                  onClick={() => scrollToSection('genesis')}
                 >
                   <Crown className="mr-2 h-5 w-5" />
                   Purchase Genesis NFT
@@ -654,6 +757,7 @@ function App() {
             <Button 
               size="lg" 
               className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6"
+              onClick={() => scrollToSection('genesis')}
             >
               <Crown className="mr-2 h-5 w-5" />
               Get Genesis NFT Now
