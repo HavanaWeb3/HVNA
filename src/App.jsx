@@ -76,19 +76,33 @@ function App() {
 
     try {
       const formData = new FormData(e.target)
+      
+      // Encode form data properly for Netlify
+      const params = new URLSearchParams()
+      for (let [key, value] of formData.entries()) {
+        params.append(key, value)
+      }
+      
+      console.log('Submitting form data:', params.toString()) // Debug log
+      
       const response = await fetch('/', {
         method: 'POST',
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData).toString()
+        body: params.toString()
       })
+
+      console.log('Response status:', response.status) // Debug log
 
       if (response.ok) {
         setSubmitMessage('✅ Message sent successfully! We\'ll get back to you soon.')
         e.target.reset()
       } else {
+        const responseText = await response.text()
+        console.log('Error response:', responseText) // Debug log
         setSubmitMessage('❌ Failed to send message. Please try again.')
       }
     } catch (error) {
+      console.log('Network error:', error) // Debug log
       setSubmitMessage('❌ Network error. Please try again.')
     } finally {
       setIsSubmitting(false)
@@ -103,10 +117,17 @@ function App() {
 
     try {
       const formData = new FormData(e.target)
+      
+      // Encode form data properly for Netlify
+      const params = new URLSearchParams()
+      for (let [key, value] of formData.entries()) {
+        params.append(key, value)
+      }
+      
       const response = await fetch('/', {
         method: 'POST',
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData).toString()
+        body: params.toString()
       })
 
       if (response.ok) {
@@ -299,6 +320,9 @@ function App() {
                         className="space-y-4"
                       >
                         <input type="hidden" name="form-name" value="newsletter" />
+                        <p style={{display: 'none'}}>
+                          <label>Don't fill this out: <input name="bot-field" /></label>
+                        </p>
                         
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
@@ -1366,6 +1390,9 @@ function App() {
                     onSubmit={handleFormSubmit}
                   >
                     <input type="hidden" name="form-name" value="contact" />
+                    <p style={{display: 'none'}}>
+                      <label>Don't fill this out: <input name="bot-field" /></label>
+                    </p>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
                       <input 
