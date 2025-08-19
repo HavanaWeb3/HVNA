@@ -367,9 +367,10 @@ function App() {
                   size="lg" 
                   variant="outline" 
                   className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-lg px-8 py-6"
+                  onClick={() => scrollToSection('contact')}
                 >
-                  <Download className="mr-2 h-5 w-5" />
-                  Download White Paper
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  Register Interest
                 </Button>
                 <Button 
                   size="lg" 
