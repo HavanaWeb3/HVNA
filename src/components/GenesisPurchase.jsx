@@ -542,20 +542,16 @@ const GenesisPurchase = () => {
                     </div>
                   </div>
                   
-                  {/* Badges */}
-                  {(isOwned || isSold) && (
+                  {/* Badge - Only show one */}
+                  {(isOwned || isSold) ? (
                     <Badge className="absolute -top-1 -right-1 bg-green-500 text-white text-xs">
                       Sold
                     </Badge>
-                  )}
-                  
-                  {isAvailable && (
+                  ) : isAvailable ? (
                     <Badge className="absolute -top-1 -right-1 bg-yellow-400 text-black text-xs font-bold">
                       Buy Now
                     </Badge>
-                  )}
-                  
-                  {isComingSoon && (
+                  ) : (
                     <Badge className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs">
                       Soon
                     </Badge>
