@@ -36,7 +36,7 @@ function App() {
     name: "Genesis Founders",
     month: 1,
     price: 0.01,
-    tokensTarget: 2500000,
+    tokensTarget: 35000000,
     tokensSold: 0,
     nextPrice: 0.015,
     benefits: "30% discount, founder status"
@@ -297,6 +297,10 @@ function App() {
                     <Button 
                       size="lg" 
                       className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
+                      onClick={() => {
+                        console.log('Orange Register Interest button clicked')
+                        setIsDialogOpen(true)
+                      }}
                     >
                       <Coins className="mr-2 h-5 w-5" />
                       Register Interest
@@ -367,7 +371,10 @@ function App() {
                   size="lg" 
                   variant="outline" 
                   className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-lg px-8 py-6"
-                  onClick={() => scrollToSection('contact')}
+                  onClick={() => {
+                    console.log('White Register Interest button clicked')
+                    scrollToSection('contact')
+                  }}
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
                   Register Interest
