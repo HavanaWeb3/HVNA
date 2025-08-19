@@ -20,6 +20,7 @@ const GenesisPurchase = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [userBalance, setUserBalance] = useState('0')
   const [ownedGenesis, setOwnedGenesis] = useState([])
+  const [nftMetadata, setNftMetadata] = useState({})
 
   // Contract details
   const NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
@@ -161,6 +162,88 @@ const GenesisPurchase = () => {
     }
   }
 
+  // Fetch NFT metadata and image
+  const fetchNFTMetadata = async (tokenId) => {
+    try {
+      // Try to get tokenURI from contract
+      const tokenURISignature = "0xc87b56dd" // tokenURI(uint256)
+      const tokenIdParam = tokenId.toString(16).padStart(64, '0')
+      const data = tokenURISignature + tokenIdParam
+
+      const result = await window.ethereum.request({
+        method: 'eth_call',
+        params: [{ to: NFT_CONTRACT, data: data }, 'latest']
+      })
+
+      if (result && result !== '0x') {
+        // Decode the result (it's hex encoded string)
+        const hex = result.slice(2)
+        const tokenURI = decodeURIData(hex)
+        
+        if (tokenURI) {
+          // Fetch metadata from URI
+          const response = await fetch(tokenURI)
+          const metadata = await response.json()
+          return {
+            name: metadata.name || `Genesis Elephant #${tokenId}`,
+            image: metadata.image || generatePlaceholderImage(tokenId),
+            description: metadata.description || `Genesis Elephant #${tokenId}`
+          }
+        }
+      }
+    } catch (error) {
+      console.log('Error fetching metadata for token', tokenId, error)
+    }
+    
+    // Fallback to placeholder
+    return {
+      name: `Genesis Elephant #${tokenId}`,
+      image: generatePlaceholderImage(tokenId),
+      description: `Genesis Elephant #${tokenId} - Ultra rare NFT with 30% lifetime discounts`
+    }
+  }
+
+  // Decode URI data from hex
+  const decodeURIData = (hex) => {
+    try {
+      // Skip length prefix and decode
+      const data = hex.slice(64)
+      let result = ''
+      for (let i = 0; i < data.length; i += 2) {
+        const char = String.fromCharCode(parseInt(data.substr(i, 2), 16))
+        if (char !== '\0') result += char
+      }
+      return result
+    } catch (error) {
+      return null
+    }
+  }
+
+  // Generate placeholder image
+  const generatePlaceholderImage = (tokenId) => {
+    const tier = getTierForNFT(tokenId)
+    const colors = {
+      'Ultra Rare': '#FFD700', // Gold
+      'Legendary': '#FF6B6B', // Red
+      'Epic': '#9B59B6', // Purple
+      'Genesis': '#3498DB' // Blue
+    }
+    const color = colors[tier?.tier] || '#3498DB'
+    
+    // Return a simple SVG placeholder
+    return `data:image/svg+xml,${encodeURIComponent(`
+      <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="200" fill="${color}"/>
+        <text x="100" y="100" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">
+          Genesis #${tokenId}
+        </text>
+        <text x="100" y="130" font-family="Arial" font-size="12" fill="white" text-anchor="middle" dy=".3em">
+          ${tier?.tier || 'Genesis'}
+        </text>
+      </svg>
+    `)}`
+  }
+
   // Purchase Genesis NFT
   const purchaseNFT = async (tokenId) => {
     if (!isConnected) {
@@ -238,6 +321,34 @@ const GenesisPurchase = () => {
     
     throw new Error('Transaction timeout')
   }
+
+  // Load metadata for available NFTs
+  useEffect(() => {
+    const loadMetadata = async () => {
+      const metadataCache = {}
+      
+      // Load metadata for available and sold NFTs (the ones users are interested in)
+      const tokensToLoad = [...availableNFTs, ...soldNFTs]
+      
+      for (const tokenId of tokensToLoad.slice(0, 20)) { // Load first 20 to avoid overwhelming
+        try {
+          const metadata = await fetchNFTMetadata(tokenId)
+          metadataCache[tokenId] = metadata
+        } catch (error) {
+          console.log('Failed to load metadata for token', tokenId)
+          metadataCache[tokenId] = {
+            name: `Genesis Elephant #${tokenId}`,
+            image: generatePlaceholderImage(tokenId),
+            description: `Genesis Elephant #${tokenId}`
+          }
+        }
+      }
+      
+      setNftMetadata(metadataCache)
+    }
+
+    loadMetadata()
+  }, [])
 
   return (
     <div className="space-y-8">
@@ -389,7 +500,7 @@ const GenesisPurchase = () => {
                 <div 
                   key={tokenId}
                   className={`
-                    relative p-3 rounded-lg border-2 transition-all
+                    relative rounded-lg border-2 transition-all overflow-hidden
                     ${isOwned || isSold
                       ? 'border-green-500 bg-green-500/20' 
                       : isAvailable 
@@ -400,32 +511,59 @@ const GenesisPurchase = () => {
                   `}
                   onClick={() => isAvailable && !isLoading && purchaseNFT(tokenId)}
                 >
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-white">#{tokenId}</div>
-                    <div className="text-xs text-gray-300">{price} ETH</div>
-                    
-                    {(isOwned || isSold) && (
-                      <Badge className="absolute -top-1 -right-1 bg-green-500 text-white text-xs">
-                        Sold
-                      </Badge>
-                    )}
-                    
-                    {isAvailable && (
-                      <Badge className="absolute -top-1 -right-1 bg-yellow-400 text-black text-xs font-bold">
-                        Buy Now
-                      </Badge>
-                    )}
-                    
-                    {isComingSoon && (
-                      <Badge className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs">
-                        Soon
-                      </Badge>
-                    )}
-                    
-                    {selectedNFT === tokenId && (
-                      <Loader2 className="h-4 w-4 animate-spin text-yellow-400 mx-auto mt-1" />
+                  {/* NFT Image */}
+                  <div className="aspect-square bg-gradient-to-br from-slate-700 to-slate-800">
+                    {nftMetadata[tokenId] ? (
+                      <img 
+                        src={nftMetadata[tokenId].image} 
+                        alt={nftMetadata[tokenId].name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.src = generatePlaceholderImage(tokenId)
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="text-center text-gray-400">
+                          <div className="text-2xl font-bold">#{tokenId}</div>
+                          <div className="text-xs">Loading...</div>
+                        </div>
+                      </div>
                     )}
                   </div>
+                  
+                  {/* NFT Info */}
+                  <div className="p-3">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-white mb-1">
+                        {nftMetadata[tokenId]?.name || `Genesis #${tokenId}`}
+                      </div>
+                      <div className="text-xs text-gray-300">{price} ETH</div>
+                    </div>
+                  </div>
+                  
+                  {/* Badges */}
+                  {(isOwned || isSold) && (
+                    <Badge className="absolute -top-1 -right-1 bg-green-500 text-white text-xs">
+                      Sold
+                    </Badge>
+                  )}
+                  
+                  {isAvailable && (
+                    <Badge className="absolute -top-1 -right-1 bg-yellow-400 text-black text-xs font-bold">
+                      Buy Now
+                    </Badge>
+                  )}
+                  
+                  {isComingSoon && (
+                    <Badge className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs">
+                      Soon
+                    </Badge>
+                  )}
+                  
+                  {selectedNFT === tokenId && (
+                    <Loader2 className="h-4 w-4 animate-spin text-yellow-400 mx-auto mt-1" />
+                  )}
                 </div>
               )
             })}
