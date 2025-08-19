@@ -291,38 +291,14 @@ function App() {
               </div>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
-                  onClick={() => {
-                    console.log('Orange Register Interest button clicked')
-                    scrollToSection('contact')
-                  }}
-                >
-                  <Coins className="mr-2 h-5 w-5" />
-                  Register Interest
-                </Button>
+              <div className="flex justify-center lg:justify-start">
                 <Button 
                   size="lg" 
                   variant="outline" 
                   className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-lg px-8 py-6"
-                  onClick={() => {
-                    console.log('White Register Interest button clicked')
-                    scrollToSection('contact')
-                  }}
                 >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Register Interest
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-blue-500 text-blue-300 hover:bg-blue-500/20 text-lg px-8 py-6"
-                  onClick={() => window.open(socialLinks.discord, '_blank')}
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Join Community
+                  <Download className="mr-2 h-5 w-5" />
+                  Download White Paper
                 </Button>
               </div>
 
