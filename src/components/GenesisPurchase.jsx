@@ -24,11 +24,13 @@ const GenesisPurchase = () => {
 
   // Contract details
   const NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
+  const MARKETPLACE_CONTRACT = "0x9a0dcE791C7B61647a12266de77a6a1149889f56"
   const OWNER_ADDRESS = "0x4844382d686CE775e095315C084d40cEd16d8Cf5" // Updated to secure wallet
 
   // Available NFTs (the ones that actually exist and can be purchased)
   const availableNFTs = [3, 14, 15, 16, 17, 18, 71, 72, 73, 74, 75] // NFTs in old wallet ready for sale
   const soldNFTs = [1, 2, 4] // NFTs already in secure wallet
+  const [marketplaceListings, setMarketplaceListings] = useState({})
 
   // Genesis NFT pricing tiers
   const pricingTiers = [
@@ -68,6 +70,7 @@ const GenesisPurchase = () => {
         // Switch to Base network
         await ensureBaseNetwork()
         await updateUserInfo(accounts[0])
+        await checkMarketplaceListings()
       }
     } catch (error) {
       setPurchaseStatus('❌ Failed to connect wallet: ' + error.message)
@@ -138,6 +141,33 @@ const GenesisPurchase = () => {
       setOwnedGenesis(owned)
     } catch (error) {
       console.error('Failed to check owned Genesis:', error)
+    }
+  }
+
+  // Check marketplace listings
+  const checkMarketplaceListings = async () => {
+    try {
+      const listings = {}
+      // Check if available NFTs are actually listed in marketplace
+      for (const tokenId of availableNFTs) {
+        try {
+          const isForSaleSignature = "0x94383f14" // isForSale(uint256)
+          const tokenIdParam = tokenId.toString(16).padStart(64, '0')
+          const data = isForSaleSignature + tokenIdParam
+
+          const result = await window.ethereum.request({
+            method: 'eth_call',
+            params: [{ to: MARKETPLACE_CONTRACT, data: data }, 'latest']
+          })
+
+          listings[tokenId] = result && result !== '0x' && parseInt(result, 16) === 1
+        } catch (error) {
+          listings[tokenId] = false
+        }
+      }
+      setMarketplaceListings(listings)
+    } catch (error) {
+      console.error('Failed to check marketplace listings:', error)
     }
   }
 
@@ -294,7 +324,7 @@ const GenesisPurchase = () => {
     `)}`
   }
 
-  // Purchase Genesis NFT
+  // Purchase Genesis NFT through marketplace
   const purchaseNFT = async (tokenId) => {
     if (!isConnected) {
       setPurchaseStatus('❌ Please connect your wallet first')
@@ -307,20 +337,18 @@ const GenesisPurchase = () => {
     try {
       setIsLoading(true)
       setSelectedNFT(tokenId)
-      setPurchaseStatus('🔄 Initiating transfer...')
+      setPurchaseStatus('🔄 Purchasing NFT...')
 
-      // Transfer from owner to buyer
-      const transferSignature = "0x23b872dd" // transferFrom(from,to,tokenId)
-      const fromParam = OWNER_ADDRESS.slice(2).padStart(64, '0')
-      const toParam = userAddress.slice(2).padStart(64, '0')
+      // Call marketplace buyNFT function
+      const buyNFTSignature = "0x961f0944" // buyNFT(uint256)
       const tokenIdParam = tokenId.toString(16).padStart(64, '0')
-      const data = transferSignature + fromParam + toParam + tokenIdParam
+      const data = buyNFTSignature + tokenIdParam
 
       const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [{
-          from: OWNER_ADDRESS, // This won't work - owner needs to approve first
-          to: NFT_CONTRACT,
+          from: userAddress,
+          to: MARKETPLACE_CONTRACT,
           data: data,
           value: priceWei
         }]
@@ -372,7 +400,7 @@ const GenesisPurchase = () => {
     throw new Error('Transaction timeout')
   }
 
-  // Load metadata for all NFTs
+  // Load metadata for all NFTs and marketplace listings
   useEffect(() => {
     const loadMetadata = async () => {
       const metadataCache = {}
@@ -395,7 +423,12 @@ const GenesisPurchase = () => {
       setNftMetadata(metadataCache)
     }
 
-    loadMetadata()
+    const loadInitialData = async () => {
+      await loadMetadata()
+      await checkMarketplaceListings()
+    }
+
+    loadInitialData()
   }, [])
 
   return (
@@ -540,7 +573,7 @@ const GenesisPurchase = () => {
               const tier = getTierForNFT(tokenId)
               const price = getPriceForNFT(tokenId)
               const isOwned = ownedGenesis.includes(tokenId)
-              const isAvailable = availableNFTs.includes(tokenId)
+              const isAvailable = marketplaceListings[tokenId] === true // Only available if listed in marketplace
               const isSold = soldNFTs.includes(tokenId)
               const isComingSoon = !isAvailable && !isSold
               
