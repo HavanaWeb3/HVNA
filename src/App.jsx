@@ -292,81 +292,17 @@ function App() {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button 
-                      size="lg" 
-                      className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
-                      onClick={() => {
-                        console.log('Orange Register Interest button clicked')
-                        setIsDialogOpen(true)
-                      }}
-                    >
-                      <Coins className="mr-2 h-5 w-5" />
-                      Register Interest
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-slate-900 border-purple-500/20">
-                    <DialogHeader>
-                      <DialogTitle className="text-white text-2xl">Register for Presale Launch</DialogTitle>
-                    </DialogHeader>
-                    
-                    <div className="space-y-4">
-                      <p className="text-gray-300">
-                        Get notified when the $HVNA presale launches and secure Early Bird pricing at $0.01!
-                      </p>
-                      
-                      <form 
-                        name="newsletter"
-                        method="POST"
-                        data-netlify="true"
-                        onSubmit={handleNewsletterSubmit}
-                        className="space-y-4"
-                      >
-                        <input type="hidden" name="form-name" value="newsletter" />
-                        <p style={{display: 'none'}}>
-                          <label>Don't fill this out: <input name="bot-field" /></label>
-                        </p>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                          <input 
-                            type="text" 
-                            name="name"
-                            className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                            placeholder="Your name"
-                            required
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                          <input 
-                            type="email" 
-                            name="email"
-                            className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                            placeholder="your.email@example.com"
-                            required
-                          />
-                        </div>
-                        
-                        {newsletterMessage && (
-                          <div className="p-3 rounded-md text-center">
-                            <p className="text-white">{newsletterMessage}</p>
-                          </div>
-                        )}
-                        
-                        <Button 
-                          type="submit" 
-                          disabled={isNewsletterSubmitting}
-                          className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold disabled:opacity-50"
-                        >
-                          {isNewsletterSubmitting ? 'Registering...' : 'Register Interest'}
-                        </Button>
-                      </form>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold text-lg px-8 py-6"
+                  onClick={() => {
+                    console.log('Orange Register Interest button clicked')
+                    scrollToSection('contact')
+                  }}
+                >
+                  <Coins className="mr-2 h-5 w-5" />
+                  Register Interest
+                </Button>
                 <Button 
                   size="lg" 
                   variant="outline" 
