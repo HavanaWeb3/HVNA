@@ -322,20 +322,18 @@ const GenesisPurchase = () => {
     throw new Error('Transaction timeout')
   }
 
-  // Load metadata for available NFTs
+  // Load metadata for all NFTs
   useEffect(() => {
     const loadMetadata = async () => {
       const metadataCache = {}
       
-      // Load metadata for available and sold NFTs (the ones users are interested in)
-      const tokensToLoad = [...availableNFTs, ...soldNFTs]
-      
-      for (const tokenId of tokensToLoad.slice(0, 20)) { // Load first 20 to avoid overwhelming
+      // Load metadata for all 100 Genesis NFTs
+      for (let tokenId = 1; tokenId <= 100; tokenId++) {
         try {
           const metadata = await fetchNFTMetadata(tokenId)
           metadataCache[tokenId] = metadata
         } catch (error) {
-          console.log('Failed to load metadata for token', tokenId)
+          // Always provide placeholder for failed metadata
           metadataCache[tokenId] = {
             name: `Genesis Elephant #${tokenId}`,
             image: generatePlaceholderImage(tokenId),
