@@ -501,7 +501,7 @@ const GenesisPurchase = () => {
                   key={tokenId}
                   className={`
                     relative rounded-lg border-2 transition-all overflow-hidden
-                    ${isOwned || isSold
+                    ${isSold
                       ? 'border-green-500 bg-green-500/20' 
                       : isAvailable 
                         ? 'border-yellow-400 bg-yellow-400/20 cursor-pointer hover:border-yellow-300 hover:bg-yellow-400/30'
@@ -543,7 +543,7 @@ const GenesisPurchase = () => {
                   </div>
                   
                   {/* Badge - Only show one */}
-                  {(isOwned || isSold) ? (
+                  {isSold ? (
                     <Badge className="absolute -top-1 -right-1 bg-green-500 text-white text-xs">
                       Sold
                     </Badge>
