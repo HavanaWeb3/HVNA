@@ -162,44 +162,94 @@ const GenesisPurchase = () => {
     }
   }
 
+  // NFT image mapping - maps token ID to actual image filename
+  const nftImageMapping = {
+    1: 'TheDistinguishedPachyderm.jpg',
+    2: 'TheGentlemen.jpg', 
+    3: 'TheRomanEmperor.jpg',
+    4: 'TheMoscowAristocrat.jpg',
+    5: 'TheParisianNoble.jpg',
+    6: 'TheAthenianScholar.jpg',
+    7: 'TheBerlinAristocrat.jpg',
+    8: 'TheItalianConnoisseur.jpg',
+    9: 'TheHighlandLaird.jpg',
+    10: 'TheBavarianBaron.jpg',
+    11: 'TheVaticanVisitor.jpg',
+    12: 'TheTajMaharaja.jpg',
+    13: 'TheCapeTownConnosoir.jpg',
+    14: 'TheJazzVirtuoso.jpg',
+    15: 'ThePianoMaestro.jpg',
+    16: 'TheVirtuosoViolinist.jpg',
+    17: 'TheParisianGentlemen.jpg',
+    18: 'TheManhattanSocialite.jpg',
+    19: 'TheSydneySocialite.jpg',
+    20: 'TheWallStreetTitan.jpg',
+    21: 'TheAcePilot.jpg',
+    22: 'TheRocketExplorer.jpg',
+    23: 'TheCosmicVoyager.jpg',
+    24: 'TheGreatWallAdventurer.jpg',
+    25: 'TheLondonMonument.jpg',
+    26: 'TheVenetianVoyager.jpg',
+    27: 'TheBalloonVoyager.jpg',
+    28: 'TheOceanVoyager.jpg',
+    29: 'TheOceanExplorer.jpg',
+    30: 'TheParadiseExplorer.jpg',
+    31: 'TheRiverNavigator.jpg',
+    32: 'TheRiverNavi.jpg',
+    33: 'TheDesertRider.jpg',
+    34: 'TheMountainSpirit.jpg',
+    35: 'TheWIldernessExplorer.jpg',
+    36: 'TheBeachCruiser.jpg',
+    37: 'TheSkyAdventurer.jpg',
+    38: 'TheGothicRider.jpg',
+    39: 'TheCountrysideConnoisseur.jpg',
+    40: 'TheCanyonCyclist.jpg',
+    41: 'TheRegattaChampion.jpg',
+    42: 'TheRacingChampion.jpg',
+    43: 'TheSprintChampion.jpg',
+    44: 'ThePowerLifter.jpg',
+    45: 'TheJetSkiMerrymaker.jpg',
+    46: 'TheVespaVoyager.jpg',
+    47: 'TheParkRoller.jpg',
+    48: 'TheGardenSkater.jpg',
+    49: 'TheFestivalHeadliner.jpg',
+    50: 'TheHighRoller.jpg',
+    51: 'TheSteamEngineer.jpg',
+    52: 'TheEveningConnoisseur.jpg',
+    53: 'TheSunsetSophisticate.jpg',
+    54: 'TheMoonlightDreamer.jpg',
+    55: 'TheMoonWorshipper.jpg',
+    56: 'TheOceanDeity.jpg',
+    57: 'TheBallet.Patron.jpg',
+    58: 'TheWinterDancer.jpg',
+    59: 'TheDutchGardener.jpg',
+    60: 'TheTropicalGuitarist.jpg',
+    61: 'TheSafari.Lounger.jpg',
+    62: 'FIrstClassVoyager.jpg',
+    63: 'ParliamentarySession.jpg',
+    64: 'THeClubMember.jpg',
+    65: 'THeRussianAristocrat.jpg'
+  }
+
   // Fetch NFT metadata and image
   const fetchNFTMetadata = async (tokenId) => {
-    try {
-      // Try to get tokenURI from contract
-      const tokenURISignature = "0xc87b56dd" // tokenURI(uint256)
-      const tokenIdParam = tokenId.toString(16).padStart(64, '0')
-      const data = tokenURISignature + tokenIdParam
-
-      const result = await window.ethereum.request({
-        method: 'eth_call',
-        params: [{ to: NFT_CONTRACT, data: data }, 'latest']
-      })
-
-      if (result && result !== '0x') {
-        // Decode the result (it's hex encoded string)
-        const hex = result.slice(2)
-        const tokenURI = decodeURIData(hex)
-        
-        if (tokenURI) {
-          // Fetch metadata from URI
-          const response = await fetch(tokenURI)
-          const metadata = await response.json()
-          return {
-            name: metadata.name || `Genesis Elephant #${tokenId}`,
-            image: metadata.image || generatePlaceholderImage(tokenId),
-            description: metadata.description || `Genesis Elephant #${tokenId}`
-          }
-        }
+    // Check if we have a real image for this token
+    const imageFilename = nftImageMapping[tokenId]
+    
+    if (imageFilename) {
+      // Use real image
+      return {
+        name: `Genesis Elephant #${tokenId}`,
+        image: `/nft-images/${imageFilename}`,
+        description: `Genesis Elephant #${tokenId} - Ultra rare NFT with exclusive founder benefits`
       }
-    } catch (error) {
-      console.log('Error fetching metadata for token', tokenId, error)
     }
     
-    // Fallback to placeholder
+    // Fallback to placeholder for unminted NFTs
     return {
       name: `Genesis Elephant #${tokenId}`,
       image: generatePlaceholderImage(tokenId),
-      description: `Genesis Elephant #${tokenId} - Ultra rare NFT with 30% lifetime discounts`
+      description: `Genesis Elephant #${tokenId} - Coming soon with exclusive founder benefits`
     }
   }
 
