@@ -36,23 +36,23 @@ function App() {
     name: "Genesis Founders",
     month: 1,
     price: 0.01,
-    tokensTarget: 35000000,
+    tokensTarget: 25000000,
     tokensSold: 0,
-    nextPrice: 0.015,
+    nextPrice: 0.05,
     benefits: "30% discount, founder status"
   })
   
   const presalePhases = [
-    { phase: "Genesis Founders", months: "Month 1", price: 0.01, benefits: "30% discount, founder status", color: "yellow" },
-    { phase: "Early Believers", months: "Month 2", price: 0.015, benefits: "25% discount, priority access", color: "green" },
-    { phase: "Community Builders", months: "Month 3-4", price: 0.025, benefits: "20% discount, ambassador status", color: "blue" },
-    { phase: "Growth Partners", months: "Month 5-6", price: 0.06, benefits: "15% discount, event access", color: "purple" },
-    { phase: "Momentum Members", months: "Month 7", price: 0.12, benefits: "12% discount, VIP status", color: "orange" },
-    { phase: "Final Access", months: "Month 8", price: 0.25, benefits: "10% discount, priority shipping", color: "red" },
-    { phase: "Last Opportunity", months: "Final weeks", price: 0.30, benefits: "8% discount, standard benefits", color: "gray" }
+    { phase: "Genesis Founders", months: "Month 1-2", price: 0.01, benefits: "30% discount, founder status", color: "yellow" },
+    { phase: "Early Believers", months: "Month 3-4", price: 0.05, benefits: "25% discount, priority access", color: "green" },
+    { phase: "Visionary Round", months: "Month 5-6", price: 0.08, benefits: "20% discount, exclusive content", color: "blue" },
+    { phase: "Community Round", months: "Month 7-8", price: 0.12, benefits: "15% discount, governance rights", color: "purple" },
+    { phase: "Growth Phase", months: "Month 9-10", price: 0.18, benefits: "10% discount, early features", color: "orange" },
+    { phase: "Momentum Round", months: "Month 11-12", price: 0.25, benefits: "5% discount, beta access", color: "red" },
+    { phase: "Last Opportunity", months: "Final 2 weeks", price: 0.30, benefits: "Final chance, launch preparation", color: "gray" }
   ]
 
-  // Calculate presale progress: $0 raised of $2.51M target = 0% (presale not yet started)
+  // Calculate presale progress: $0 raised of $2.75M target = 0% (presale not yet started)
   const presaleProgress = 0
 
   // Contact form state
@@ -310,7 +310,7 @@ function App() {
                   <div className="text-sm text-gray-400">Existing Customers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-400">$2.51M</div>
+                  <div className="text-2xl font-bold text-purple-400">$2.75M</div>
                   <div className="text-sm text-gray-400">Presale Target</div>
                 </div>
                 <div className="text-center">
@@ -435,45 +435,40 @@ function App() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">Public Presale</span>
-                      <span className="text-yellow-400 font-semibold">35%</span>
+                      <span className="text-yellow-400 font-semibold">25%</span>
                     </div>
-                    <Progress value={35} className="h-2" />
+                    <Progress value={25} className="h-2" />
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Liquidity Pool</span>
-                      <span className="text-purple-400 font-semibold">20%</span>
+                      <span className="text-gray-300">Community Treasury</span>
+                      <span className="text-purple-400 font-semibold">25%</span>
+                    </div>
+                    <Progress value={25} className="h-2" />
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">ContentLynk Development</span>
+                      <span className="text-pink-400 font-semibold">20%</span>
                     </div>
                     <Progress value={20} className="h-2" />
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">ContentLynk Development</span>
-                      <span className="text-pink-400 font-semibold">15%</span>
-                    </div>
-                    <Progress value={15} className="h-2" />
-                    
-                    <div className="flex justify-between items-center">
                       <span className="text-gray-300">Team & Advisors</span>
-                      <span className="text-blue-400 font-semibold">12%</span>
+                      <span className="text-blue-400 font-semibold">10%</span>
                     </div>
-                    <Progress value={12} className="h-2" />
+                    <Progress value={10} className="h-2" />
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Marketing</span>
-                      <span className="text-green-400 font-semibold">8%</span>
+                      <span className="text-gray-300">Platform Liquidity</span>
+                      <span className="text-green-400 font-semibold">10%</span>
                     </div>
-                    <Progress value={8} className="h-2" />
+                    <Progress value={10} className="h-2" />
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Treasury</span>
-                      <span className="text-orange-400 font-semibold">7%</span>
+                      <span className="text-gray-300">Other Allocations</span>
+                      <span className="text-orange-400 font-semibold">10%</span>
                     </div>
-                    <Progress value={7} className="h-2" />
+                    <Progress value={10} className="h-2" />
                     
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Development</span>
-                      <span className="text-red-400 font-semibold">3%</span>
-                    </div>
-                    <Progress value={3} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -517,7 +512,7 @@ function App() {
                         🚀 Presale Not Yet Started
                       </div>
                       <div className="text-gray-300 text-sm">
-                        Target: $2.51M | Launch: Q4 2025
+                        Target: $2.75M | Launch: Q4 2025
                       </div>
                     </div>
                     <div className="bg-gray-700/30 rounded-full h-3">
