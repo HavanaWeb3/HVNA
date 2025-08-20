@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Approve Marketplace</title>
+</head>
+<body>
+    <h1>Genesis NFT Marketplace Approval</h1>
+    <button id="approveBtn">Approve Marketplace Contract</button>
+    <div id="status"></div>
+
+    <script>
+        const NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642";
+        const MARKETPLACE_CONTRACT = "0x9a0dcE791C7B61647a12266de77a6a1149889f56";
+        
+        document.getElementById('approveBtn').onclick = async () => {
+            const status = document.getElementById('status');
+            
+            if (!window.ethereum) {
+                status.innerHTML = '❌ MetaMask not found';
+                return;
+            }
+            
+            try {
+                // Request account access
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                
+                status.innerHTML = '🔄 Sending approval transaction...';
+                
+                // setApprovalForAll function signature and parameters
+                const functionSignature = '0xa22cb465'; // setApprovalForAll(address,bool)
+                const addressParam = MARKETPLACE_CONTRACT.slice(2).padStart(64, '0'); // remove 0x and pad
+                const boolParam = '0000000000000000000000000000000000000000000000000000000000000001'; // true
+                const data = functionSignature + addressParam + boolParam;
+                
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                
+                const txHash = await window.ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [{
+                        from: accounts[0],
+                        to: NFT_CONTRACT,
+                        data: data,
+                        value: '0x0'
+                    }]
+                });
+                
+                status.innerHTML = `🔄 Transaction sent: ${txHash}<br>Waiting for confirmation...`;
+                
+                // Wait for confirmation
+                let confirmed = false;
+                let attempts = 0;
+                
+                while (!confirmed && attempts < 60) {
+                    try {
+                        const receipt = await window.ethereum.request({
+                            method: 'eth_getTransactionReceipt',
+                            params: [txHash]
+                        });
+                        
+                        if (receipt) {
+                            if (receipt.status === '0x1') {
+                                status.innerHTML = `✅ Marketplace approved successfully!<br>Transaction: ${txHash}`;
+                            } else {
+                                status.innerHTML = `❌ Transaction failed<br>Transaction: ${txHash}`;
+                            }
+                            confirmed = true;
+                        }
+                    } catch (error) {
+                        // Still pending
+                    }
+                    
+                    if (!confirmed) {
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        attempts++;
+                    }
+                }
+                
+                if (!confirmed) {
+                    status.innerHTML = `⏳ Transaction pending (may take a few minutes)<br>Transaction: ${txHash}`;
+                }
+                
+            } catch (error) {
+                status.innerHTML = `❌ Error: ${error.message}`;
+                console.error(error);
+            }
+        };
+    </script>
+</body>
+</html>

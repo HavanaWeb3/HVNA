@@ -166,6 +166,7 @@ function App() {
               <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors">Tokenomics</button>
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors">NFTs</button>
               <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors">Buy Genesis</button>
+              <button onClick={() => window.open('/whitepaper.html', '_blank')} className="text-gray-300 hover:text-yellow-400 transition-colors">Whitepaper</button>
               <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors">Roadmap</button>
               <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors">Community</button>
               <button onClick={() => scrollToSection('faq')} className="text-gray-300 hover:text-white transition-colors">FAQ</button>
@@ -886,6 +887,7 @@ function App() {
                 <Button 
                   variant="outline" 
                   className="border-green-500 text-green-300 hover:bg-green-500/20"
+                  onClick={() => window.open('/whitepaper.html', '_blank')}
                 >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   View Whitepaper
