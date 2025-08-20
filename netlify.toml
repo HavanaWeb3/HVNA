@@ -1,0 +1,5 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Force rebuild for presale structure update - Jan 20 2025
