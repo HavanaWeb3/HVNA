@@ -59,25 +59,50 @@ const GenesisPurchase = () => {
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
       setPurchaseStatus('❌ MetaMask not found. Please install MetaMask.')
+      window.open('https://metamask.io/', '_blank')
       return
     }
 
     try {
       setIsLoading(true)
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      setPurchaseStatus('🔄 Connecting to MetaMask...')
       
-      if (accounts.length > 0) {
-        setUserAddress(accounts[0])
-        setIsConnected(true)
-        setPurchaseStatus('✅ Wallet connected successfully!')
+      // First check if already connected
+      const existingAccounts = await window.ethereum.request({ method: 'eth_accounts' })
+      
+      if (existingAccounts.length === 0) {
+        // Request connection
+        setPurchaseStatus('🔄 Please approve connection in MetaMask popup...')
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
         
-        // Switch to Base network
+        if (accounts.length > 0) {
+          setUserAddress(accounts[0])
+          setIsConnected(true)
+          setPurchaseStatus('✅ Wallet connected successfully!')
+          
+          // Switch to Base network and load data
+          await ensureBaseNetwork()
+          await updateUserInfo(accounts[0])
+        }
+      } else {
+        // Already connected
+        setUserAddress(existingAccounts[0])
+        setIsConnected(true)
+        setPurchaseStatus('✅ Wallet reconnected successfully!')
+        
         await ensureBaseNetwork()
-        await updateUserInfo(accounts[0])
-        await checkMarketplaceListings()
+        await updateUserInfo(existingAccounts[0])
       }
+      
     } catch (error) {
-      setPurchaseStatus('❌ Failed to connect wallet: ' + error.message)
+      console.error('Wallet connection error:', error)
+      if (error.code === 4001) {
+        setPurchaseStatus('❌ Connection cancelled by user')
+      } else if (error.code === -32002) {
+        setPurchaseStatus('❌ Connection request pending. Please check MetaMask popup.')
+      } else {
+        setPurchaseStatus('❌ Connection failed: ' + error.message)
+      }
     } finally {
       setIsLoading(false)
     }
