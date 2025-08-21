@@ -421,34 +421,22 @@ const GenesisPurchase = () => {
     throw new Error('Transaction timeout')
   }
 
-  // Load metadata for all NFTs and marketplace listings
+  // DISABLED: All automatic loading to prevent rate limiting
   useEffect(() => {
-    // Only load metadata when wallet is connected to avoid rate limiting
-    if (isConnected) {
-      const loadMetadata = async () => {
-        const metadataCache = {}
-        
-        // Only load metadata for available NFTs to reduce requests
-        for (const tokenId of availableNFTs.slice(0, 10)) { // Load only first 10 to avoid rate limiting
-          try {
-            const metadata = await fetchNFTMetadata(tokenId)
-            metadataCache[tokenId] = metadata
-          } catch (error) {
-            // Provide placeholder for failed metadata
-            metadataCache[tokenId] = {
-              name: `Genesis Elephant #${tokenId}`,
-              image: generatePlaceholderImage(tokenId),
-              description: `Genesis Elephant #${tokenId}`
-            }
-          }
-        }
-        
-        setNftMetadata(metadataCache)
+    // All MetaMask requests disabled to prevent rate limiting
+    console.log('All automatic MetaMask requests disabled to prevent rate limiting')
+    
+    // Only generate placeholder images for display
+    const placeholderCache = {}
+    for (let tokenId = 1; tokenId <= 100; tokenId++) {
+      placeholderCache[tokenId] = {
+        name: `Genesis Elephant #${tokenId}`,
+        image: generatePlaceholderImage(tokenId),
+        description: `Genesis Elephant #${tokenId} - ${getTierForNFT(tokenId)?.tier || 'Genesis'} tier`
       }
-
-      loadMetadata()
     }
-  }, [isConnected])
+    setNftMetadata(placeholderCache)
+  }, [])
 
   return (
     <div className="space-y-8">

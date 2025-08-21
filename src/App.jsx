@@ -28,7 +28,7 @@ import {
   HelpCircle
 } from 'lucide-react'
 import heroImage from './assets/hero_mockup.png'
-import GenesisPurchase from './components/GenesisPurchase.jsx'
+import SimpleGenesisPurchase from './components/SimpleGenesisPurchase.jsx'
 import './App.css'
 
 function App() {
@@ -850,7 +850,7 @@ function App() {
       {/* Genesis NFT Purchase Section */}
       <section id="genesis" className="py-20 bg-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <GenesisPurchase />
+          <SimpleGenesisPurchase />
         </div>
       </section>
 
