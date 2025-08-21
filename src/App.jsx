@@ -341,11 +341,15 @@ function App() {
               </div>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start relative z-10">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6"
-                  onClick={() => setIsInterestDialogOpen(true)}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6 relative z-20 cursor-pointer"
+                  onClick={() => {
+                    console.log('HERO: Register Interest clicked!')
+                    setIsInterestDialogOpen(true)
+                  }}
+                  style={{ pointerEvents: 'auto' }}
                 >
                   <Star className="mr-2 h-5 w-5" />
                   Register Interest
