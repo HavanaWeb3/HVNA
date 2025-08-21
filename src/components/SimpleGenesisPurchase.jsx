@@ -41,23 +41,26 @@ const SimpleGenesisPurchase = () => {
     const tier = getTierForNFT(tokenId)
     const colors = {
       'Ultra Rare': '#FFD700',
-      'Legendary': '#FF6B6B',
+      'Legendary': '#FF6B6B', 
       'Epic': '#9B59B6',
       'Genesis': '#3498DB'
     }
     const color = colors[tier?.tier] || '#3498DB'
     
-    return `data:image/svg+xml,${encodeURIComponent(`
-      <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-        <rect width="200" height="200" fill="${color}"/>
-        <text x="100" y="100" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">
-          Genesis #${tokenId}
-        </text>
-        <text x="100" y="130" font-family="Arial" font-size="12" fill="white" text-anchor="middle" dy=".3em">
-          ${tier?.tier || 'Genesis'}
-        </text>
-      </svg>
-    `)}`
+    const svg = `<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" fill="${color}"/>
+      <text x="100" y="90" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle" font-weight="bold">
+        Genesis #${tokenId}
+      </text>
+      <text x="100" y="120" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle">
+        ${tier?.tier || 'Genesis'}
+      </text>
+      <text x="100" y="140" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">
+        ${getPriceForNFT(tokenId)} ETH
+      </text>
+    </svg>`
+    
+    return `data:image/svg+xml;base64,${btoa(svg)}`
   }
 
   // Simple wallet connection
@@ -233,12 +236,23 @@ const SimpleGenesisPurchase = () => {
                   onClick={() => isAvailable && purchaseNFT(tokenId)}
                 >
                   {/* NFT Image */}
-                  <div className="aspect-square bg-gradient-to-br from-slate-700 to-slate-800">
+                  <div className="aspect-square bg-gradient-to-br from-slate-700 to-slate-800 relative">
                     <img 
                       src={generatePlaceholderImage(tokenId)} 
                       alt={`Genesis #${tokenId}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        // Fallback to colored background if SVG fails
+                        e.target.style.display = 'none'
+                      }}
                     />
+                    {/* Fallback content if image fails */}
+                    <div className="absolute inset-0 flex items-center justify-center text-white text-center p-2">
+                      <div>
+                        <div className="text-lg font-bold">Genesis #{tokenId}</div>
+                        <div className="text-sm">{getTierForNFT(tokenId)?.tier || 'Genesis'}</div>
+                      </div>
+                    </div>
                   </div>
                   
                   {/* NFT Info */}
