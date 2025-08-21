@@ -438,7 +438,7 @@ const GenesisPurchase = () => {
           // Use real image
           metadataCache[tokenId] = {
             name: `Genesis Elephant #${tokenId}`,
-            image: `/nft-images/${imageFilename}`,
+            image: `nft-images/${imageFilename}`,
             description: `Genesis Elephant #${tokenId} - Ultra rare NFT with exclusive founder benefits`
           }
         } else {
