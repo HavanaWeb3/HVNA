@@ -425,21 +425,20 @@ const GenesisPurchase = () => {
     throw new Error('Transaction timeout')
   }
 
-  // DISABLED: All automatic loading to prevent rate limiting
+  // Load NFT metadata with real images
   useEffect(() => {
-    // All MetaMask requests disabled to prevent rate limiting
-    console.log('All automatic MetaMask requests disabled to prevent rate limiting')
-    
-    // Only generate placeholder images for display
-    const placeholderCache = {}
-    for (let tokenId = 1; tokenId <= 100; tokenId++) {
-      placeholderCache[tokenId] = {
-        name: `Genesis Elephant #${tokenId}`,
-        image: generatePlaceholderImage(tokenId),
-        description: `Genesis Elephant #${tokenId} - ${getTierForNFT(tokenId)?.tier || 'Genesis'} tier`
+    const loadNFTMetadata = async () => {
+      const metadataCache = {}
+      
+      for (let tokenId = 1; tokenId <= 100; tokenId++) {
+        const metadata = await fetchNFTMetadata(tokenId)
+        metadataCache[tokenId] = metadata
       }
+      
+      setNftMetadata(metadataCache)
     }
-    setNftMetadata(placeholderCache)
+    
+    loadNFTMetadata()
   }, [])
 
   return (
