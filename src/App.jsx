@@ -336,83 +336,92 @@ function App() {
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6"
-                  onClick={() => {
-                    console.log('Register Interest button clicked!')
-                    setIsInterestDialogOpen(true)
-                  }}
+                  onClick={() => setIsInterestDialogOpen(true)}
                 >
                   <Star className="mr-2 h-5 w-5" />
                   Register Interest
                 </Button>
                 
-                <Dialog open={isInterestDialogOpen} onOpenChange={setIsInterestDialogOpen}>
-                  <DialogContent className="bg-slate-900 border-purple-500/20 text-white max-w-md">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl text-yellow-400">🚀 Register Your Interest</DialogTitle>
-                    </DialogHeader>
-                    <form 
-                      className="space-y-4"
-                      name="register-interest"
-                      method="POST"
-                      data-netlify="true"
-                      onSubmit={handleInterestSubmit}
-                    >
-                      <input type="hidden" name="form-name" value="register-interest" />
-                      <p style={{display: 'none'}}>
-                        <label>Don't fill this out: <input name="bot-field" /></label>
-                      </p>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                        <input 
-                          type="text" 
-                          name="name"
-                          className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                          placeholder="Your name"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input 
-                          type="email" 
-                          name="email"
-                          className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                          placeholder="your.email@example.com"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Interest Type</label>
-                        <select 
-                          name="interest-type"
-                          className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                          required
-                        >
-                          <option value="">Select your primary interest</option>
-                          <option value="presale">Presale Notification</option>
-                          <option value="genesis-nft">Genesis NFT Launch</option>
-                          <option value="main-nft">Main NFT Collection</option>
-                          <option value="contentlynk">ContentLynk Platform</option>
-                          <option value="general">General Updates</option>
-                        </select>
-                      </div>
-                      
-                      {interestMessage && (
-                        <div className="p-3 rounded-md text-center">
-                          <p className="text-white">{interestMessage}</p>
+                {/* Simple Modal Overlay */}
+                {isInterestDialogOpen && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-slate-900 border border-purple-500/20 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                      <div className="p-6">
+                        <div className="flex items-center justify-between mb-6">
+                          <h2 className="text-2xl font-bold text-yellow-400">🚀 Register Your Interest</h2>
+                          <button 
+                            onClick={() => setIsInterestDialogOpen(false)}
+                            className="text-gray-400 hover:text-white text-2xl font-bold"
+                          >
+                            ×
+                          </button>
                         </div>
-                      )}
-                      
-                      <Button 
-                        type="submit" 
-                        disabled={isInterestSubmitting}
-                        className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold disabled:opacity-50"
-                      >
-                        {isInterestSubmitting ? 'Registering...' : 'Register Interest 🚀'}
-                      </Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
+                        
+                        <form 
+                          className="space-y-4"
+                          name="register-interest"
+                          method="POST"
+                          data-netlify="true"
+                          onSubmit={handleInterestSubmit}
+                        >
+                          <input type="hidden" name="form-name" value="register-interest" />
+                          <p style={{display: 'none'}}>
+                            <label>Don't fill this out: <input name="bot-field" /></label>
+                          </p>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                            <input 
+                              type="text" 
+                              name="name"
+                              className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                              placeholder="Your name"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input 
+                              type="email" 
+                              name="email"
+                              className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                              placeholder="your.email@example.com"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">Interest Type</label>
+                            <select 
+                              name="interest-type"
+                              className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                              required
+                            >
+                              <option value="">Select your primary interest</option>
+                              <option value="presale">Presale Notification</option>
+                              <option value="genesis-nft">Genesis NFT Launch</option>
+                              <option value="main-nft">Main NFT Collection</option>
+                              <option value="contentlynk">ContentLynk Platform</option>
+                              <option value="general">General Updates</option>
+                            </select>
+                          </div>
+                          
+                          {interestMessage && (
+                            <div className="p-3 rounded-md text-center bg-green-900/20 border border-green-500/30">
+                              <p className="text-green-300">{interestMessage}</p>
+                            </div>
+                          )}
+                          
+                          <Button 
+                            type="submit" 
+                            disabled={isInterestSubmitting}
+                            className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold disabled:opacity-50"
+                          >
+                            {isInterestSubmitting ? 'Registering...' : 'Register Interest 🚀'}
+                          </Button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 <Button 
                   size="lg" 
