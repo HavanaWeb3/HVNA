@@ -427,14 +427,31 @@ const GenesisPurchase = () => {
 
   // Load NFT metadata with real images
   useEffect(() => {
-    const loadNFTMetadata = async () => {
+    const loadNFTMetadata = () => {
       const metadataCache = {}
       
       for (let tokenId = 1; tokenId <= 100; tokenId++) {
-        const metadata = await fetchNFTMetadata(tokenId)
-        metadataCache[tokenId] = metadata
+        // Check if we have a real image for this token
+        const imageFilename = nftImageMapping[tokenId]
+        
+        if (imageFilename) {
+          // Use real image
+          metadataCache[tokenId] = {
+            name: `Genesis Elephant #${tokenId}`,
+            image: `/nft-images/${imageFilename}`,
+            description: `Genesis Elephant #${tokenId} - Ultra rare NFT with exclusive founder benefits`
+          }
+        } else {
+          // Fallback to placeholder
+          metadataCache[tokenId] = {
+            name: `Genesis Elephant #${tokenId}`,
+            image: generatePlaceholderImage(tokenId),
+            description: `Genesis Elephant #${tokenId} - Coming soon with exclusive founder benefits`
+          }
+        }
       }
       
+      console.log('NFT metadata loaded:', metadataCache[1], metadataCache[2]) // Debug
       setNftMetadata(metadataCache)
     }
     
@@ -609,7 +626,9 @@ const GenesisPurchase = () => {
                         src={nftMetadata[tokenId].image} 
                         alt={nftMetadata[tokenId].name}
                         className="w-full h-full object-cover"
+                        onLoad={() => console.log(`Image loaded for NFT #${tokenId}:`, nftMetadata[tokenId].image)}
                         onError={(e) => {
+                          console.log(`Image failed for NFT #${tokenId}:`, nftMetadata[tokenId].image)
                           e.target.src = generatePlaceholderImage(tokenId)
                         }}
                       />
