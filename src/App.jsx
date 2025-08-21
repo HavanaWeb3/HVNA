@@ -213,6 +213,15 @@ function App() {
               <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
             </div>
             <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => {
+                  console.log('TEST: Nav button clicked!')
+                  setIsInterestDialogOpen(true)
+                }}
+                className="bg-yellow-500 text-black px-4 py-2 rounded font-bold hover:bg-yellow-600"
+              >
+                TEST Register
+              </button>
               <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20">
                 Connect Wallet
               </Button>
@@ -474,6 +483,30 @@ function App() {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronDown className="h-8 w-8 text-gray-400" />
         </div>
+      </section>
+
+      {/* DEBUG TEST SECTION */}
+      <section className="py-10 bg-red-900 text-center">
+        <h2 className="text-white text-2xl mb-4">DEBUG: Test Register Interest Button</h2>
+        <button 
+          onClick={() => {
+            console.log('DEBUG: Simple button clicked!')
+            alert('Button works! State will be set...')
+            setIsInterestDialogOpen(true)
+          }}
+          style={{
+            backgroundColor: '#ff0000',
+            color: 'white',
+            padding: '20px 40px',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            cursor: 'pointer'
+          }}
+        >
+          SIMPLE TEST BUTTON - CLICK ME
+        </button>
       </section>
 
       {/* About Section */}
