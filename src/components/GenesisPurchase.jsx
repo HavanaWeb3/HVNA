@@ -55,54 +55,46 @@ const GenesisPurchase = () => {
     return pricingTiers.find(tier => tier.ids.includes(tokenId))
   }
 
-  // Connect wallet
+  // Connect wallet - simplified approach
   const connectWallet = async () => {
-    if (typeof window.ethereum === 'undefined') {
-      setPurchaseStatus('❌ MetaMask not found. Please install MetaMask.')
-      window.open('https://metamask.io/', '_blank')
+    // Check if MetaMask is installed
+    if (!window.ethereum) {
+      setPurchaseStatus('❌ MetaMask not installed. Please install MetaMask extension.')
       return
     }
 
     try {
       setIsLoading(true)
-      setPurchaseStatus('🔄 Connecting to MetaMask...')
+      setPurchaseStatus('🔄 Requesting wallet connection...')
       
-      // First check if already connected
-      const existingAccounts = await window.ethereum.request({ method: 'eth_accounts' })
+      // Simple direct connection request
+      const accounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      })
       
-      if (existingAccounts.length === 0) {
-        // Request connection
-        setPurchaseStatus('🔄 Please approve connection in MetaMask popup...')
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-        
-        if (accounts.length > 0) {
-          setUserAddress(accounts[0])
-          setIsConnected(true)
-          setPurchaseStatus('✅ Wallet connected successfully!')
-          
-          // Switch to Base network and load data
-          await ensureBaseNetwork()
-          await updateUserInfo(accounts[0])
-        }
-      } else {
-        // Already connected
-        setUserAddress(existingAccounts[0])
+      if (accounts && accounts.length > 0) {
+        setUserAddress(accounts[0])
         setIsConnected(true)
-        setPurchaseStatus('✅ Wallet reconnected successfully!')
+        setPurchaseStatus('✅ Wallet connected successfully!')
         
-        await ensureBaseNetwork()
-        await updateUserInfo(existingAccounts[0])
+        // Update user info
+        try {
+          const balance = await window.ethereum.request({
+            method: 'eth_getBalance',
+            params: [accounts[0], 'latest']
+          })
+          setUserBalance((parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4))
+        } catch (balanceError) {
+          console.log('Could not get balance:', balanceError)
+        }
+        
+      } else {
+        setPurchaseStatus('❌ No accounts found')
       }
       
     } catch (error) {
-      console.error('Wallet connection error:', error)
-      if (error.code === 4001) {
-        setPurchaseStatus('❌ Connection cancelled by user')
-      } else if (error.code === -32002) {
-        setPurchaseStatus('❌ Connection request pending. Please check MetaMask popup.')
-      } else {
-        setPurchaseStatus('❌ Connection failed: ' + error.message)
-      }
+      console.error('Connection error:', error)
+      setPurchaseStatus('❌ Connection failed: ' + (error.message || 'Unknown error'))
     } finally {
       setIsLoading(false)
     }
@@ -486,23 +478,23 @@ const GenesisPurchase = () => {
           {!isConnected ? (
             <div className="space-y-4">
               <p className="text-gray-300">Connect your wallet to purchase Genesis NFTs</p>
-              <Button 
+              <button 
                 onClick={connectWallet}
                 disabled={isLoading}
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold"
+                style={{
+                  background: 'linear-gradient(to right, #fbbf24, #f59e0b)',
+                  color: 'black',
+                  fontWeight: '600',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  opacity: isLoading ? 0.7 : 1,
+                  fontSize: '16px'
+                }}
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Connecting...
-                  </>
-                ) : (
-                  <>
-                    <Wallet className="mr-2 h-4 w-4" />
-                    Connect MetaMask
-                  </>
-                )}
-              </Button>
+                {isLoading ? 'Connecting...' : '🔗 Connect MetaMask'}
+              </button>
             </div>
           ) : (
             <div className="space-y-2">
