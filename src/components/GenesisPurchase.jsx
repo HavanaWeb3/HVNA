@@ -360,6 +360,10 @@ const GenesisPurchase = () => {
       setSelectedNFT(tokenId)
       setPurchaseStatus('🔄 Purchasing NFT...')
 
+      // Ensure we're on Base network
+      await ensureBaseNetwork()
+      setPurchaseStatus('🔄 Network verified, purchasing NFT...')
+
       // Call marketplace buyNFT function
       const buyNFTSignature = "0x961f0944" // buyNFT(uint256)
       const tokenIdParam = tokenId.toString(16).padStart(64, '0')
@@ -580,8 +584,8 @@ const GenesisPurchase = () => {
               const tier = getTierForNFT(tokenId)
               const price = getPriceForNFT(tokenId)
               const isOwned = ownedGenesis.includes(tokenId)
-              const isAvailable = availableNFTs.includes(tokenId) && !isSold // Available if in availableNFTs array and not sold
               const isSold = soldNFTs.includes(tokenId)
+              const isAvailable = availableNFTs.includes(tokenId) && !isSold // Available if in availableNFTs array and not sold
               const isComingSoon = !isAvailable && !isSold
               
               return (
