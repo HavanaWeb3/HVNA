@@ -36,7 +36,7 @@ const SimpleGenesisPurchase = () => {
     return pricingTiers.find(tier => tier.ids.includes(tokenId))
   }
 
-  // Generate placeholder image
+  // Generate placeholder image - simplified version
   const generatePlaceholderImage = (tokenId) => {
     const tier = getTierForNFT(tokenId)
     const colors = {
@@ -47,20 +47,16 @@ const SimpleGenesisPurchase = () => {
     }
     const color = colors[tier?.tier] || '#3498DB'
     
+    // Simple URL encoding instead of base64
     const svg = `<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
       <rect width="200" height="200" fill="${color}"/>
-      <text x="100" y="90" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle" font-weight="bold">
-        Genesis #${tokenId}
-      </text>
-      <text x="100" y="120" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle">
-        ${tier?.tier || 'Genesis'}
-      </text>
-      <text x="100" y="140" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">
-        ${getPriceForNFT(tokenId)} ETH
-      </text>
+      <text x="100" y="80" font-family="Arial" font-size="18" fill="white" text-anchor="middle">Genesis</text>
+      <text x="100" y="110" font-family="Arial" font-size="32" fill="white" text-anchor="middle" font-weight="bold">#${tokenId}</text>
+      <text x="100" y="140" font-family="Arial" font-size="14" fill="white" text-anchor="middle">${tier?.tier || 'Genesis'}</text>
+      <text x="100" y="165" font-family="Arial" font-size="16" fill="white" text-anchor="middle">${getPriceForNFT(tokenId)} ETH</text>
     </svg>`
     
-    return `data:image/svg+xml;base64,${btoa(svg)}`
+    return 'data:image/svg+xml,' + encodeURIComponent(svg)
   }
 
   // Simple wallet connection
@@ -94,7 +90,7 @@ const SimpleGenesisPurchase = () => {
     }
   }
 
-  // Simple purchase function
+  // Simple purchase function with actual feedback
   const purchaseNFT = async (tokenId) => {
     if (!isConnected) {
       setStatus('❌ Please connect your wallet first')
@@ -102,7 +98,14 @@ const SimpleGenesisPurchase = () => {
     }
     
     const price = getPriceForNFT(tokenId)
-    setStatus(`🔄 Ready to purchase Genesis #${tokenId} for ${price} ETH. This would open MetaMask for transaction...`)
+    const tier = getTierForNFT(tokenId)
+    
+    setStatus(`🛒 Selected: Genesis #${tokenId} (${tier?.tier}) - ${price} ETH. Purchase functionality will be enabled soon. Currently in demo mode.`)
+    
+    // Simulate purchase process
+    setTimeout(() => {
+      setStatus(`✨ Genesis #${tokenId} selected! Full purchase integration coming soon. This NFT will cost ${price} ETH when live.`)
+    }, 1500)
   }
 
   return (
@@ -236,22 +239,26 @@ const SimpleGenesisPurchase = () => {
                   onClick={() => isAvailable && purchaseNFT(tokenId)}
                 >
                   {/* NFT Image */}
-                  <div className="aspect-square bg-gradient-to-br from-slate-700 to-slate-800 relative">
-                    <img 
-                      src={generatePlaceholderImage(tokenId)} 
-                      alt={`Genesis #${tokenId}`}
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        // Fallback to colored background if SVG fails
-                        e.target.style.display = 'none'
-                      }}
-                    />
-                    {/* Fallback content if image fails */}
-                    <div className="absolute inset-0 flex items-center justify-center text-white text-center p-2">
-                      <div>
-                        <div className="text-lg font-bold">Genesis #{tokenId}</div>
-                        <div className="text-sm">{getTierForNFT(tokenId)?.tier || 'Genesis'}</div>
-                      </div>
+                  <div className="aspect-square relative flex items-center justify-center text-white text-center p-4"
+                       style={{
+                         background: (() => {
+                           const tier = getTierForNFT(tokenId)
+                           const colors = {
+                             'Ultra Rare': 'linear-gradient(135deg, #FFD700, #FFA500)',
+                             'Legendary': 'linear-gradient(135deg, #FF6B6B, #FF4757)', 
+                             'Epic': 'linear-gradient(135deg, #9B59B6, #8E44AD)',
+                             'Genesis': 'linear-gradient(135deg, #3498DB, #2980B9)'
+                           }
+                           return colors[tier?.tier] || colors['Genesis']
+                         })()
+                       }}
+                  >
+                    {/* Main content */}
+                    <div>
+                      <div className="text-sm font-medium opacity-90">Genesis</div>
+                      <div className="text-3xl font-bold">#{tokenId}</div>
+                      <div className="text-xs opacity-80 mt-1">{getTierForNFT(tokenId)?.tier || 'Genesis'}</div>
+                      <div className="text-sm font-semibold mt-2">{getPriceForNFT(tokenId)} ETH</div>
                     </div>
                   </div>
                   
