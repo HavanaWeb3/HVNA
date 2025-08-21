@@ -64,6 +64,11 @@ function App() {
   const [newsletterMessage, setNewsletterMessage] = useState('')
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
+  // Register Interest state
+  const [isInterestSubmitting, setIsInterestSubmitting] = useState(false)
+  const [interestMessage, setInterestMessage] = useState('')
+  const [isInterestDialogOpen, setIsInterestDialogOpen] = useState(false)
+
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -141,6 +146,41 @@ function App() {
       setNewsletterMessage('❌ Network error. Please try again.')
     } finally {
       setIsNewsletterSubmitting(false)
+    }
+  }
+
+  // Handle register interest submission
+  const handleInterestSubmit = async (e) => {
+    e.preventDefault()
+    setIsInterestSubmitting(true)
+    setInterestMessage('')
+
+    try {
+      const formData = new FormData(e.target)
+      
+      // Encode form data properly for Netlify
+      const params = new URLSearchParams()
+      for (let [key, value] of formData.entries()) {
+        params.append(key, value)
+      }
+      
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+      })
+
+      if (response.ok) {
+        setInterestMessage('🚀 Interest registered! We\'ll notify you when presale launches.')
+        e.target.reset()
+        setTimeout(() => setIsInterestDialogOpen(false), 2000)
+      } else {
+        setInterestMessage('❌ Failed to register. Please try again.')
+      }
+    } catch (error) {
+      setInterestMessage('❌ Network error. Please try again.')
+    } finally {
+      setIsInterestSubmitting(false)
     }
   }
 
@@ -292,11 +332,90 @@ function App() {
               </div>
 
               {/* CTAs */}
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Dialog open={isInterestDialogOpen} onOpenChange={setIsInterestDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="lg" 
+                      className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6"
+                    >
+                      <Star className="mr-2 h-5 w-5" />
+                      Register Interest
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-slate-900 border-purple-500/20 text-white">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl text-yellow-400">🚀 Register Your Interest</DialogTitle>
+                    </DialogHeader>
+                    <form 
+                      className="space-y-4"
+                      name="register-interest"
+                      method="POST"
+                      data-netlify="true"
+                      onSubmit={handleInterestSubmit}
+                    >
+                      <input type="hidden" name="form-name" value="register-interest" />
+                      <p style={{display: 'none'}}>
+                        <label>Don't fill this out: <input name="bot-field" /></label>
+                      </p>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                        <input 
+                          type="text" 
+                          name="name"
+                          className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                          placeholder="Your name"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input 
+                          type="email" 
+                          name="email"
+                          className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                          placeholder="your.email@example.com"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Interest Type</label>
+                        <select 
+                          name="interest-type"
+                          className="w-full px-3 py-2 bg-slate-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                          required
+                        >
+                          <option value="">Select your primary interest</option>
+                          <option value="presale">Presale Notification</option>
+                          <option value="genesis-nft">Genesis NFT Launch</option>
+                          <option value="main-nft">Main NFT Collection</option>
+                          <option value="contentlynk">ContentLynk Platform</option>
+                          <option value="general">General Updates</option>
+                        </select>
+                      </div>
+                      
+                      {interestMessage && (
+                        <div className="p-3 rounded-md text-center">
+                          <p className="text-white">{interestMessage}</p>
+                        </div>
+                      )}
+                      
+                      <Button 
+                        type="submit" 
+                        disabled={isInterestSubmitting}
+                        className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold disabled:opacity-50"
+                      >
+                        {isInterestSubmitting ? 'Registering...' : 'Register Interest 🚀'}
+                      </Button>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+                
                 <Button 
                   size="lg" 
                   variant="outline" 
                   className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-lg px-8 py-6"
+                  onClick={() => window.open('/whitepaper.html', '_blank')}
                 >
                   <Download className="mr-2 h-5 w-5" />
                   Download White Paper

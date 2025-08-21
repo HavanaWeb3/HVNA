@@ -36,6 +36,18 @@
       <input type="email" name="email" />
     </form>
     
+    <form name="register-interest" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <select name="interest-type">
+        <option value="presale">Presale Notification</option>
+        <option value="genesis-nft">Genesis NFT Launch</option>
+        <option value="main-nft">Main NFT Collection</option>
+        <option value="contentlynk">ContentLynk Platform</option>
+        <option value="general">General Updates</option>
+      </select>
+    </form>
+    
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
