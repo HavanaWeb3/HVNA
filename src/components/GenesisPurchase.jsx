@@ -423,34 +423,32 @@ const GenesisPurchase = () => {
 
   // Load metadata for all NFTs and marketplace listings
   useEffect(() => {
-    const loadMetadata = async () => {
-      const metadataCache = {}
-      
-      // Load metadata for all 100 Genesis NFTs
-      for (let tokenId = 1; tokenId <= 100; tokenId++) {
-        try {
-          const metadata = await fetchNFTMetadata(tokenId)
-          metadataCache[tokenId] = metadata
-        } catch (error) {
-          // Always provide placeholder for failed metadata
-          metadataCache[tokenId] = {
-            name: `Genesis Elephant #${tokenId}`,
-            image: generatePlaceholderImage(tokenId),
-            description: `Genesis Elephant #${tokenId}`
+    // Only load metadata when wallet is connected to avoid rate limiting
+    if (isConnected) {
+      const loadMetadata = async () => {
+        const metadataCache = {}
+        
+        // Only load metadata for available NFTs to reduce requests
+        for (const tokenId of availableNFTs.slice(0, 10)) { // Load only first 10 to avoid rate limiting
+          try {
+            const metadata = await fetchNFTMetadata(tokenId)
+            metadataCache[tokenId] = metadata
+          } catch (error) {
+            // Provide placeholder for failed metadata
+            metadataCache[tokenId] = {
+              name: `Genesis Elephant #${tokenId}`,
+              image: generatePlaceholderImage(tokenId),
+              description: `Genesis Elephant #${tokenId}`
+            }
           }
         }
+        
+        setNftMetadata(metadataCache)
       }
-      
-      setNftMetadata(metadataCache)
-    }
 
-    const loadInitialData = async () => {
-      await loadMetadata()
-      await checkMarketplaceListings()
+      loadMetadata()
     }
-
-    loadInitialData()
-  }, [])
+  }, [isConnected])
 
   return (
     <div className="space-y-8">
