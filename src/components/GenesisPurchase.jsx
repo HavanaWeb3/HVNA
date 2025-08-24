@@ -38,10 +38,10 @@ const GenesisPurchase = () => {
 
   // Genesis NFT pricing tiers
   const pricingTiers = [
-    { ids: [1, 2, 3, 4, 5], price: '2.5', tier: 'Ultra Rare', description: 'First 5 Genesis - Maximum exclusivity' },
-    { ids: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15], price: '2.0', tier: 'Legendary', description: 'Elite Genesis collection' },
-    { ids: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], price: '1.5', tier: 'Epic', description: 'Premium Genesis NFTs' },
-    { ids: Array.from({length: 70}, (_, i) => i + 31), price: '1.0', tier: 'Genesis', description: 'Genesis collection' }
+    { ids: [1, 2, 3, 4, 5], price: '1.0', tier: 'Ultra Rare', description: 'First 5 Genesis - Maximum exclusivity' },
+    { ids: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15], price: '0.75', tier: 'Legendary', description: 'Elite Genesis collection' },
+    { ids: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], price: '0.50', tier: 'Epic', description: 'Premium Genesis NFTs' },
+    { ids: Array.from({length: 70}, (_, i) => i + 31), price: '0.25', tier: 'Genesis', description: 'Genesis collection' }
   ]
 
   // Get price for NFT ID
