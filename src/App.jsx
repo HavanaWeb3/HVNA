@@ -326,7 +326,7 @@ function App() {
                     👑 Genesis Founders get 30% lifetime discount + founder status!
                   </div>
                   <div className="text-gray-300 text-xs mt-1">
-                    Price increases to $0.015 in Month 2 - Register now for $0.01 founder pricing
+                    Price increases to $0.05 in Month 3 - Register now for $0.01 founder pricing
                   </div>
                 </div>
               </div>
