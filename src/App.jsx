@@ -741,7 +741,7 @@ function App() {
                   <li>• Genesis holder exclusive events</li>
                 </ul>
                 <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-4 rounded-lg text-center mb-4">
-                  <div className="text-2xl font-bold text-black">$1,000 - $2,500</div>
+                  <div className="text-2xl font-bold text-black">$250 - $1,000</div>
                   <div className="text-sm text-black font-semibold">Genesis Price Range</div>
                 </div>
                 <Button 
