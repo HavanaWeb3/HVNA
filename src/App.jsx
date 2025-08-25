@@ -201,7 +201,7 @@ function App() {
               <Crown className="h-8 w-8 text-yellow-400" />
               <span className="text-xl font-bold text-white">Havana Elephant</span>
             </div>
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
               <button onClick={() => scrollToSection('about')} className="text-gray-300 hover:text-white transition-colors">About</button>
               <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors">Tokenomics</button>
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors">NFTs</button>
@@ -213,7 +213,7 @@ function App() {
               <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
               <button onClick={() => scrollToSection('legal')} className="text-gray-300 hover:text-white transition-colors">Legal</button>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20">
                 Connect Wallet
               </Button>
