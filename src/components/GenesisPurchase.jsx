@@ -9,6 +9,7 @@ import {
   AlertCircle, 
   Loader2,
   ExternalLink,
+  Shield,
   Star
 } from 'lucide-react'
 
@@ -471,6 +472,31 @@ const GenesisPurchase = () => {
           and exclusive founder benefits.
         </p>
       </div>
+
+      {/* Trust & Credibility */}
+      <Card className="bg-gradient-to-r from-green-900/20 to-blue-900/20 border-green-500/30 backdrop-blur-md">
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <CheckCircle className="h-5 w-5 text-green-400" />
+              <span className="text-green-400 font-semibold">Verified Collection</span>
+            </div>
+            <p className="text-gray-300 text-sm mb-3">
+              Official Genesis Elephants collection. Each NFT is a genuine ERC-721 token on Base network.
+            </p>
+            <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-1">
+                <ExternalLink className="h-4 w-4" />
+                <span>Also available on OpenSea</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Shield className="h-4 w-4" />
+                <span>Contract: {NFT_CONTRACT.slice(0, 6)}...{NFT_CONTRACT.slice(-4)}</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Connection Status */}
       <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">

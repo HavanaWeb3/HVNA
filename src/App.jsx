@@ -752,6 +752,10 @@ function App() {
                   <Crown className="mr-2 h-5 w-5" />
                   Purchase Genesis NFT
                 </Button>
+                <div className="text-center mt-3 text-sm text-gray-400">
+                  <Shield className="inline h-4 w-4 mr-1" />
+                  Verified collection • Also available on OpenSea
+                </div>
               </CardContent>
             </Card>
           </div>
