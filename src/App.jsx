@@ -211,6 +211,7 @@ function App() {
               <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors">Community</button>
               <button onClick={() => scrollToSection('faq')} className="text-gray-300 hover:text-white transition-colors">FAQ</button>
               <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
+              <button onClick={() => scrollToSection('legal')} className="text-gray-300 hover:text-white transition-colors">Legal</button>
             </div>
             <div className="flex items-center space-x-4">
               <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20">
@@ -1515,6 +1516,48 @@ function App() {
         </div>
       </section>
 
+      {/* Legal Section */}
+      <section id="legal" className="py-20 bg-slate-800/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-6">Legal Information</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Important compliance and regulatory information about our Web3 services
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white text-2xl flex items-center gap-2">
+                  <Shield className="h-6 w-6 text-green-400" />
+                  About Our Crypto Wallet, NFT, and Token Pre-Sale Services
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-gray-300 space-y-4">
+                <p>
+                  Havana Elephant Web3 is a provider of non-custodial cryptocurrency wallet services, facilitating crypto-to-crypto (C2C) transactions, the sale of our exclusive 100-piece NFT collection, and a limited pre-sale of $HVNA tokens. As a non-custodial platform, we do not hold, control, or manage users' private keys or funds. Users retain full control over their private keys and digital assets, including NFTs and tokens purchased via their own wallets.
+                </p>
+                
+                <p>
+                  Our NFT collection represents digital collectibles linked to our business, and our $HVNA pre-sale offers utility tokens for future platform access, with all transactions conducted in cryptocurrency. We are committed to compliance with international Anti-Money Laundering (AML) and Know Your Customer (KYC) standards, implementing risk-based measures to ensure transparency and security across our wallet, NFT, and token pre-sale services. We operate in accordance with applicable regulations and align with global best practices.
+                </p>
+
+                <div className="bg-slate-800/50 border border-purple-500/20 rounded-lg p-4 mt-6">
+                  <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5 text-purple-400" />
+                    Contact Information
+                  </h3>
+                  <p>
+                    For any inquiries, please contact us at: <a href="mailto:nftchampion2024@gmail.com" className="text-purple-400 hover:text-purple-300 underline">nftchampion2024@gmail.com</a>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1570,6 +1613,7 @@ function App() {
                 <li><a href="#" className="hover:text-white">Support</a></li>
                 <li><a href="#" className="hover:text-white">Partnership</a></li>
                 <li><a href="#" className="hover:text-white">Press Kit</a></li>
+                <li><a href="#legal" className="hover:text-white" onClick={() => scrollToSection('legal')}>Legal</a></li>
               </ul>
             </div>
           </div>
