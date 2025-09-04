@@ -1,0 +1,65 @@
+{
+  "name": "Genesis Elephant #2",
+  "description": "Genesis Elephant #2 - Ultra Rare tier. One of only 100 Genesis NFTs in the Boldly Elephunky collection. Grants 30% lifetime discount on all Havana Elephant Brand products and exclusive founder benefits. This NFT represents true ownership in the HVNA ecosystem.",
+  "image": "http://localhost:3001/genesis/images/2.png",
+  "external_url": "https://havanaelephant.com/genesis",
+  "background_color": "1a1a2e",
+  "attributes": [
+    {
+      "trait_type": "Collection",
+      "value": "Genesis"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "Ultra Rare"
+    },
+    {
+      "trait_type": "Mint Price",
+      "value": "2.5 ETH"
+    },
+    {
+      "trait_type": "Discount Benefit",
+      "value": "30%"
+    },
+    {
+      "trait_type": "Background",
+      "value": "Royal Purple"
+    },
+    {
+      "trait_type": "Body",
+      "value": "Silver Elephant"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Diamond Eyes"
+    },
+    {
+      "trait_type": "Crown",
+      "value": "Genesis Crown"
+    },
+    {
+      "trait_type": "Accessory",
+      "value": "Golden Tusk"
+    },
+    {
+      "trait_type": "Generation",
+      "value": "Genesis",
+      "max_value": 1
+    },
+    {
+      "display_type": "number",
+      "trait_type": "Token ID",
+      "value": 2,
+      "max_value": 100
+    },
+    {
+      "trait_type": "Special",
+      "value": "Founder Genesis"
+    }
+  ],
+  "properties": {
+    "category": "NFT",
+    "collection": "Boldly Elephunky Genesis",
+    "creator": "Havana Elephant Brand"
+  }
+}

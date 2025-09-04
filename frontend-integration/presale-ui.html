@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Havana Elephant Token Pre-Sale</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="web3-auth.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .presale-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .genesis-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+        
+        .phase-indicator {
+            background: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+        
+        .input-group {
+            margin: 1rem 0;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin: 0.5rem 0;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presale-container">
+        <div class="header">
+            <div class="logo">🐘</div>
+            <h1>Havana Elephant Token Pre-Sale</h1>
+            <p>Join the revolution with HVNA tokens</p>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Initializing Web3...</p>
+        </div>
+        
+        <!-- Connect Wallet -->
+        <div id="connect-section" class="hidden">
+            <h2>Connect Your Wallet</h2>
+            <p>Connect your MetaMask wallet to participate in the HVNA token pre-sale</p>
+            <button id="connect-btn" class="btn">Connect MetaMask</button>
+        </div>
+        
+        <!-- Pre-Sale Interface -->
+        <div id="presale-section" class="hidden">
+            <!-- User Status -->
+            <div class="status-card">
+                <h3>Your Status</h3>
+                <div id="wallet-address"></div>
+                <div id="genesis-status"></div>
+                <div id="phase-status"></div>
+            </div>
+            
+            <!-- Pre-Sale Information -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-value" id="current-price">-</div>
+                    <div class="info-label">Price per Token (ETH)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value" id="tokens-remaining">-</div>
+                    <div class="info-label">Tokens Remaining</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value" id="user-purchased">-</div>
+                    <div class="info-label">Your Purchases</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value" id="max-remaining">-</div>
+                    <div class="info-label">Your Limit Remaining</div>
+                </div>
+            </div>
+            
+            <!-- Purchase Form -->
+            <div id="purchase-form">
+                <h3>Purchase HVNA Tokens</h3>
+                
+                <div class="input-group">
+                    <label for="token-amount">Token Amount (minimum 1,000)</label>
+                    <input type="number" id="token-amount" placeholder="Enter token amount" min="1000" step="100">
+                </div>
+                
+                <div class="input-group">
+                    <label for="eth-cost">ETH Cost (calculated automatically)</label>
+                    <input type="text" id="eth-cost" readonly placeholder="0.0000 ETH">
+                </div>
+                
+                <div id="error-messages"></div>
+                
+                <button id="purchase-btn" class="btn" disabled>Purchase Tokens</button>
+                <button id="refresh-btn" class="btn btn-secondary">Refresh Info</button>
+            </div>
+            
+            <!-- Transaction Status -->
+            <div id="transaction-status" class="hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        class PreSaleUI {
+            constructor() {
+                this.auth = null;
+                this.isInitialized = false;
+            }
+            
+            async init() {
+                try {
+                    // Update contract addresses with your deployed addresses
+                    const contracts = {
+                        preSaleAddress: 'YOUR_PRE_SALE_CONTRACT_ADDRESS',
+                        nftAddress: 'YOUR_GENESIS_NFT_CONTRACT_ADDRESS', 
+                        tokenAddress: 'YOUR_HVNA_TOKEN_CONTRACT_ADDRESS',
+                        chainId: '0x1' // Ethereum mainnet
+                    };
+                    
+                    this.auth = new HavanaPreSaleAuth(contracts);
+                    await this.auth.init();
+                    this.auth.setupEventListeners();
+                    
+                    this.setupEventHandlers();
+                    this.showConnectSection();
+                    this.isInitialized = true;
+                    
+                } catch (error) {
+                    this.showError('Failed to initialize: ' + error.message);
+                }
+            }
+            
+            setupEventHandlers() {
+                document.getElementById('connect-btn').addEventListener('click', () => this.connectWallet());
+                document.getElementById('token-amount').addEventListener('input', () => this.calculateCost());
+                document.getElementById('purchase-btn').addEventListener('click', () => this.purchaseTokens());
+                document.getElementById('refresh-btn').addEventListener('click', () => this.refreshInfo());
+            }
+            
+            async connectWallet() {
+                try {
+                    this.showLoading('Connecting wallet...');
+                    
+                    const result = await this.auth.connectWallet();
+                    
+                    if (result.success) {
+                        this.showPreSaleSection();
+                        this.updateUI(result);
+                    }
+                    
+                } catch (error) {
+                    this.showError('Connection failed: ' + error.message);
+                    this.showConnectSection();
+                }
+            }
+            
+            updateUI(data) {
+                const status = this.auth.getUserStatus();
+                
+                // Update wallet address
+                document.getElementById('wallet-address').innerHTML = 
+                    `<strong>Wallet:</strong> ${status.account.substring(0,8)}...${status.account.substring(36)}`;
+                
+                // Update Genesis status
+                const genesisHTML = status.isGenesisHolder 
+                    ? '<div class="genesis-badge">✨ Genesis Holder - 30% Discount!</div>'
+                    : '<div style="color: #666;">Not a Genesis holder</div>';
+                document.getElementById('genesis-status').innerHTML = genesisHTML;
+                
+                // Update phase status
+                document.getElementById('phase-status').innerHTML = 
+                    `<div class="phase-indicator">Current Phase: ${status.currentPhase}</div>`;
+                
+                // Update info grid
+                document.getElementById('current-price').textContent = parseFloat(status.pricePerToken).toFixed(6);
+                document.getElementById('tokens-remaining').textContent = parseInt(status.tokensRemaining).toLocaleString();
+                document.getElementById('user-purchased').textContent = parseInt(status.userPurchased).toLocaleString();
+                document.getElementById('max-remaining').textContent = parseInt(status.maxPurchaseRemaining).toLocaleString();
+            }
+            
+            calculateCost() {
+                const tokenAmount = document.getElementById('token-amount').value;
+                const costField = document.getElementById('eth-cost');
+                const purchaseBtn = document.getElementById('purchase-btn');
+                const errorDiv = document.getElementById('error-messages');
+                
+                if (tokenAmount && this.auth) {
+                    const cost = this.auth.calculatePurchaseCost(tokenAmount);
+                    costField.value = cost + ' ETH';
+                    
+                    // Validate purchase
+                    const validation = this.auth.validatePurchase(tokenAmount);
+                    
+                    if (validation.isValid) {
+                        purchaseBtn.disabled = false;
+                        errorDiv.innerHTML = '';
+                    } else {
+                        purchaseBtn.disabled = true;
+                        errorDiv.innerHTML = validation.errors.map(error => 
+                            `<div class="error">${error}</div>`
+                        ).join('');
+                    }
+                } else {
+                    costField.value = '';
+                    purchaseBtn.disabled = true;
+                    errorDiv.innerHTML = '';
+                }
+            }
+            
+            async purchaseTokens() {
+                const tokenAmount = document.getElementById('token-amount').value;
+                const ethCost = this.auth.calculatePurchaseCost(tokenAmount);
+                
+                try {
+                    this.showLoading('Processing purchase...');
+                    
+                    const result = await this.auth.purchaseTokens(tokenAmount, ethCost);
+                    
+                    if (result.success) {
+                        this.showSuccess(`
+                            <strong>Purchase Successful!</strong><br>
+                            Tokens: ${parseInt(tokenAmount).toLocaleString()}<br>
+                            Cost: ${ethCost} ETH<br>
+                            Transaction: <a href="https://etherscan.io/tx/${result.transactionHash}" target="_blank">View on Etherscan</a>
+                        `);
+                        
+                        // Reset form and refresh data
+                        document.getElementById('token-amount').value = '';
+                        document.getElementById('eth-cost').value = '';
+                        await this.refreshInfo();
+                    }
+                    
+                } catch (error) {
+                    this.showError('Purchase failed: ' + error.message);
+                } finally {
+                    this.hideLoading();
+                }
+            }
+            
+            async refreshInfo() {
+                try {
+                    if (this.auth && this.auth.account) {
+                        await this.auth.loadUserInfo();
+                        this.updateUI({ success: true });
+                        this.calculateCost();
+                    }
+                } catch (error) {
+                    this.showError('Failed to refresh: ' + error.message);
+                }
+            }
+            
+            // UI State Management
+            showLoading(message = 'Loading...') {
+                document.getElementById('loading').classList.remove('hidden');
+                document.getElementById('loading').querySelector('p').textContent = message;
+                document.getElementById('connect-section').classList.add('hidden');
+                document.getElementById('presale-section').classList.add('hidden');
+            }
+            
+            hideLoading() {
+                document.getElementById('loading').classList.add('hidden');
+            }
+            
+            showConnectSection() {
+                this.hideLoading();
+                document.getElementById('connect-section').classList.remove('hidden');
+                document.getElementById('presale-section').classList.add('hidden');
+            }
+            
+            showPreSaleSection() {
+                this.hideLoading();
+                document.getElementById('connect-section').classList.add('hidden');
+                document.getElementById('presale-section').classList.remove('hidden');
+            }
+            
+            showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error';
+                errorDiv.innerHTML = message;
+                document.querySelector('.presale-container').appendChild(errorDiv);
+                
+                setTimeout(() => {
+                    if (errorDiv.parentNode) {
+                        errorDiv.parentNode.removeChild(errorDiv);
+                    }
+                }, 5000);
+            }
+            
+            showSuccess(message) {
+                const statusDiv = document.getElementById('transaction-status');
+                statusDiv.className = 'success';
+                statusDiv.innerHTML = message;
+                statusDiv.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    statusDiv.classList.add('hidden');
+                }, 10000);
+            }
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            const ui = new PreSaleUI();
+            await ui.init();
+        });
+    </script>
+</body>
+</html>

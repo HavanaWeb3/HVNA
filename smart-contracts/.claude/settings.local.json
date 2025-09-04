@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx hardhat run:*)",
+      "Bash(npx hardhat:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(node:*)",
+      "Bash(npm install:*)",
+      "Bash(npm start)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "/Users/davidsime/HVNA/src",
+      "/Users/davidsime/HVNA",
+      "/Users/davidsime/hvna-ecosystem/metadata"
+    ]
+  }
+}

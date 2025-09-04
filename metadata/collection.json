@@ -1,0 +1,8 @@
+{
+  "name": "Boldly Elephunky Genesis Collection",
+  "description": "The original 100 Genesis NFTs of the Boldly Elephunky collection. Each Genesis NFT grants 30% lifetime discounts and exclusive founder benefits.",
+  "image": "https://api.boldlyelephunky.com/genesis/collection.png",
+  "external_link": "https://havanaelephant.com/genesis",
+  "seller_fee_basis_points": 500,
+  "fee_recipient": "0x4844382d686CE775e095315C084d40cEd16d8Cf5"
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HVNA Widget Test</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>HVNA Production Widget Test</h1>
+    <div id="hvna-discount-widget-container"></div>
+    
+    <script src="shopify-integration/HavanaWeb3-production.js"></script>
+    
+    <script>
+        // Test logging
+        console.log('Widget test page loaded');
+        
+        // Check if widget loaded
+        setTimeout(() => {
+            const widget = document.getElementById('hvna-widget');
+            if (widget) {
+                console.log('✅ Widget loaded successfully');
+                console.log('✅ Network configured for Base');
+                console.log('✅ Contract address:', hvnaWidget?.contracts?.base?.nft);
+            } else {
+                console.log('❌ Widget not found');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

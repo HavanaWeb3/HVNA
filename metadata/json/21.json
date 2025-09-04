@@ -1,0 +1,61 @@
+{
+  "name": "Genesis Elephant #21",
+  "description": "Genesis Elephant #21 - Epic tier. One of only 100 Genesis NFTs in the Boldly Elephunky collection. Grants 30% lifetime discount on all Havana Elephant Brand products and exclusive founder benefits. This NFT represents true ownership in the HVNA ecosystem.",
+  "image": "http://localhost:3001/genesis/images/21.png",
+  "external_url": "https://havanaelephant.com/genesis",
+  "background_color": "1a1a2e",
+  "attributes": [
+    {
+      "trait_type": "Collection",
+      "value": "Genesis"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "Epic"
+    },
+    {
+      "trait_type": "Mint Price",
+      "value": "1.5 ETH"
+    },
+    {
+      "trait_type": "Discount Benefit",
+      "value": "30%"
+    },
+    {
+      "trait_type": "Background",
+      "value": "Silver Mist"
+    },
+    {
+      "trait_type": "Body",
+      "value": "Diamond Elephant"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Sapphire Eyes"
+    },
+    {
+      "trait_type": "Crown",
+      "value": "Silver Crown"
+    },
+    {
+      "trait_type": "Accessory",
+      "value": "Silver Badge"
+    },
+    {
+      "trait_type": "Generation",
+      "value": "Genesis",
+      "max_value": 1
+    },
+    {
+      "display_type": "number",
+      "trait_type": "Token ID",
+      "value": 21,
+      "max_value": 100
+    }
+  ],
+  "properties": {
+    "category": "NFT",
+    "collection": "Boldly Elephunky Genesis",
+    "creator": "Havana Elephant Brand"
+  }
+}
