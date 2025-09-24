@@ -381,9 +381,9 @@ class HavanaPreSaleAuthBase {
 
 // Base Network Contract Configuration
 const HAVANA_CONTRACTS_BASE = {
-    preSaleAddress: 'YOUR_BASE_PRESALE_CONTRACT_ADDRESS',
-    nftAddress: 'YOUR_BASE_GENESIS_NFT_ADDRESS',
-    tokenAddress: 'YOUR_BASE_HVNA_TOKEN_ADDRESS',
+    preSaleAddress: '0x447dddB5115874698FCc3840e24Dc7EfE22deb3b',
+    nftAddress: '0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642',
+    tokenAddress: '0x9B2c154C8B6B1826Df60c81033861891680EBFab',
     chainId: '0x2105', // Base mainnet
     networkName: 'Base'
 };

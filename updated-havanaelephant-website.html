@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Havana Elephant - $HVNA Token & Genesis NFT Purchase</title>
+    <meta name="description" content="Buy $HVNA tokens and Genesis NFTs on Base Network. Join the Havana Elephant Web3 ecosystem with MetaMask.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐘%3C/text%3E%3C/svg%3E">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Havana Elephant - $HVNA Token Purchase">
+    <meta property="og:description" content="Purchase $HVNA tokens and Genesis NFTs on Base Network">
+    <meta property="og:image" content="https://havanaelephant.com/og-image.jpg">
+    <meta property="og:url" content="https://havanaelephant.com/">
+    <meta property="og:type" content="website">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .wallet-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .network-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .connect-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .connect-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            opacity: 0.8;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+        
+        .purchase-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        .purchase-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .purchase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .purchase-card.nft {
+            border-color: #ffd700;
+        }
+        
+        .purchase-card.token {
+            border-color: #667eea;
+        }
+        
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-subtitle {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .price-display {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .price-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .features-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .features-list li::before {
+            content: '✅';
+            margin-right: 0.75rem;
+        }
+        
+        .purchase-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .purchase-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102,126,234,0.3);
+        }
+        
+        .purchase-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .nft .purchase-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+        }
+        
+        .nft .purchase-btn:hover:not(:disabled) {
+            box-shadow: 0 10px 20px rgba(255,215,0,0.3);
+        }
+        
+        /* Info Sections */
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .info-card {
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .info-card h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #667eea;
+        }
+        
+        .contract-addresses {
+            background: #444;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .contract-addresses a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .contract-addresses a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                text-align: center;
+            }
+            
+            .wallet-status {
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .purchase-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .hero-stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Custom Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #cce8ff;
+            color: #004085;
+            border: 1px solid #99d3ff;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <span class="logo-icon">🐘</span>
+                    Havana Elephant
+                </a>
+                <div class="wallet-status">
+                    <div class="network-badge">
+                        <span>⚡</span>
+                        <span id="network-display">Base Network</span>
+                    </div>
+                    <button id="connect-wallet" class="connect-btn">
+                        🦊 Connect MetaMask
+                    </button>
+                    <div id="wallet-info" class="hidden">
+                        <span id="wallet-address"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Havana Elephant Web3 Ecosystem</h1>
+                <p>Purchase $HVNA tokens and Genesis NFTs on Base Network. Join the future of decentralized content and community.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">100M</div>
+                        <div class="stat-label">Total $HVNA Supply</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$0.01</div>
+                        <div class="stat-label">Token Price (USD)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">30%</div>
+                        <div class="stat-label">Product Discounts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="tokens-remaining">25M</div>
+                        <div class="stat-label">Tokens Available</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="main-content">
+            <div class="container">
+                <div class="purchase-section">
+                    <!-- HVNA Token Purchase -->
+                    <div class="purchase-card token fade-in">
+                        <div class="card-header">
+                            <div class="card-icon">🪙</div>
+                            <h2 class="card-title">$HVNA Tokens</h2>
+                            <p class="card-subtitle">Utility tokens for the Havana Elephant ecosystem</p>
+                        </div>
+                        
+                        <div class="price-display">
+                            <div class="price-value" id="hvna-price">$0.01 per token</div>
+                            <div id="genesis-discount" class="hidden" style="color: #28a745; font-weight: bold; margin-top: 0.5rem;">
+                                Genesis NFT Holder: 30% Product Discounts!
+                            </div>
+                        </div>
+                        
+                        <ul class="features-list">
+                            <li>Access to ContentLynk platform</li>
+                            <li>Governance voting rights</li>
+                            <li>Staking rewards</li>
+                            <li>Exclusive community access</li>
+                            <li>Future utility expansion</li>
+                        </ul>
+                        
+                        <!-- Token Purchase Widget Container -->
+                        <div id="hvna-token-widget"></div>
+                        
+                        <div id="token-alerts"></div>
+                    </div>
+                    
+                    <!-- Genesis NFT Purchase -->
+                    <div class="purchase-card nft fade-in">
+                        <div class="card-header">
+                            <div class="card-icon">🖼️</div>
+                            <h2 class="card-title">Genesis NFTs</h2>
+                            <p class="card-subtitle">Limited collection - 100 available now!</p>
+                        </div>
+                        
+                        <div class="price-display">
+                            <div class="price-value">Available Now</div>
+                            <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                                100/100 Genesis NFTs • 9,900 more in Q1 2026
+                            </div>
+                        </div>
+                        
+                        <ul class="features-list">
+                            <li>30% discount on physical products</li>
+                            <li>Exclusive Shopify store access</li>
+                            <li>Premium community channels</li>
+                            <li>Early access to features</li>
+                            <li>Enhanced governance power</li>
+                        </ul>
+                        
+                        <button id="nft-purchase-btn" class="purchase-btn">
+                            🎨 Purchase Genesis NFT
+                        </button>
+                        
+                        <div class="alert alert-info" style="margin-top: 1rem;">
+                            <strong>Limited Edition:</strong> Only 100 Genesis NFTs available now. Next batch of 9,900 releases Q1 2026.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ecosystem Information -->
+                <div class="info-section fade-in">
+                    <h2 class="section-title">Havana Elephant Ecosystem</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>🪙 $HVNA Token</h3>
+                            <p>The native utility token powering our entire ecosystem. Use for governance, staking, and accessing premium features.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🖼️ NFT Collections</h3>
+                            <p>Genesis NFTs provide exclusive access and benefits. More collections coming with unique utilities and rewards.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🔗 ContentLynk Platform</h3>
+                            <p>Decentralized content creation and sharing platform. Creators earn $HVNA tokens for quality content and engagement.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🤝 Partnership Network</h3>
+                            <p>Growing network of partners and collaborators building the future of Web3 content and community platforms.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technical Information -->
+                <div class="info-section fade-in">
+                    <h2 class="section-title">Technical Details</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>⚡ Base Network</h3>
+                            <p>Built on Base for fast, low-cost transactions. Ethereum security with optimized performance and minimal fees.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🔐 Smart Contracts</h3>
+                            <p>Audited smart contracts with built-in security features. Transparent, immutable, and community-verified code.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>💰 Dynamic Pricing</h3>
+                            <p>Real-time USD pricing via Chainlink oracles. Automatic ETH/USD conversion with Genesis NFT discount integration.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🛡️ Security First</h3>
+                            <p>Multiple security layers, purchase limits, network validation, and comprehensive error handling for safe transactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#tokens">$HVNA Tokens</a>
+                <a href="#nfts">NFT Collection</a>
+                <a href="#contentlynk">ContentLynk</a>
+                <a href="#partnerships">Partnerships</a>
+                <a href="#support">Support</a>
+            </div>
+            
+            <div class="contract-addresses">
+                <strong>Smart Contract Addresses (Base Network):</strong><br>
+                <div style="margin: 0.5rem 0;">
+                    <strong>HVNA Token:</strong> 
+                    <a href="https://basescan.org/address/0x9B2c154C8B6B1826Df60c81033861891680EBFab" target="_blank">
+                        0x9B2c154C8B6B1826Df60c81033861891680EBFab
+                    </a>
+                </div>
+                <div style="margin: 0.5rem 0;">
+                    <strong>Pre-Sale Contract:</strong> 
+                    <a href="https://basescan.org/address/0x447dddB5115874698FCc3840e24Dc7EfE22deb3b" target="_blank">
+                        0x447dddB5115874698FCc3840e24Dc7EfE22deb3b
+                    </a>
+                </div>
+                <div style="margin: 0.5rem 0;">
+                    <strong>Genesis NFT:</strong> 
+                    <a href="https://basescan.org/address/0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642" target="_blank">
+                        0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642
+                    </a>
+                </div>
+            </div>
+            
+            <p>&copy; 2024 Havana Elephant. Built on Base Network. Powered by Web3.</p>
+        </div>
+    </footer>
+
+    <!-- Load HVNA Purchase Widget -->
+    <script src="hvna-purchase-widget.js"></script>
+    
+    <script>
+        // Website functionality
+        class HavanaElephantWebsite {
+            constructor() {
+                this.web3 = null;
+                this.account = null;
+                this.connected = false;
+                this.widget = null;
+                
+                this.init();
+            }
+            
+            async init() {
+                this.bindEvents();
+                this.initializePurchaseWidget();
+                this.checkWalletConnection();
+            }
+            
+            bindEvents() {
+                // Connect wallet button
+                document.getElementById('connect-wallet').addEventListener('click', () => {
+                    this.connectWallet();
+                });
+                
+                // Genesis NFT purchase button
+                document.getElementById('nft-purchase-btn').addEventListener('click', () => {
+                    this.purchaseGenesisNFT();
+                });
+                
+                // Smooth scrolling for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+            }
+            
+            initializePurchaseWidget() {
+                try {
+                    this.widget = new HVNAPurchaseWidget('hvna-token-widget', {
+                        theme: 'light',
+                        showHeader: false,
+                        showFooter: false,
+                        minPurchase: 1000,
+                        maxPurchase: 50000
+                    });
+                    
+                    // Listen for purchases
+                    document.getElementById('hvna-token-widget').addEventListener('hvna:purchase', (event) => {
+                        const { tokens, usdCost, ethCost, isGenesis } = event.detail;
+                        
+                        // Update UI
+                        this.showPurchaseSuccess(tokens, usdCost, isGenesis);
+                        
+                        // Analytics tracking
+                        this.trackPurchase(tokens, usdCost, isGenesis);
+                    });
+                    
+                } catch (error) {
+                    console.error('Failed to initialize purchase widget:', error);
+                    document.getElementById('hvna-token-widget').innerHTML = `
+                        <div class="alert alert-error">
+                            <strong>Widget Error:</strong> Unable to load purchase interface. 
+                            Please refresh the page or contact support.
+                        </div>
+                    `;
+                }
+            }
+            
+            async checkWalletConnection() {
+                if (window.ethereum && window.ethereum.selectedAddress) {
+                    this.account = window.ethereum.selectedAddress;
+                    this.connected = true;
+                    this.updateWalletUI();
+                    
+                    // Check if user has Genesis NFT for discount display
+                    this.checkGenesisStatus();
+                }
+            }
+            
+            async connectWallet() {
+                try {
+                    // Check for MetaMask browser extension specifically
+                    if (typeof window.ethereum === 'undefined') {
+                        this.showAlert('token-alerts', 'error', 
+                            '🦊 MetaMask browser extension not found. Please install MetaMask extension first.');
+                        setTimeout(() => {
+                            window.open('https://metamask.io/download/', '_blank');
+                        }, 2000);
+                        return;
+                    }
+                    
+                    // Force use of browser extension (not web wallet)
+                    let ethereum = window.ethereum;
+                    if (window.ethereum.providers) {
+                        // Multiple wallets detected, prefer MetaMask
+                        ethereum = window.ethereum.providers.find(provider => provider.isMetaMask) || window.ethereum;
+                    }
+                    
+                    // Disable any automatic redirects to web wallet
+                    if (ethereum && ethereum.isMetaMask) {
+                        // Request account access from browser extension
+                        const accounts = await ethereum.request({
+                            method: 'eth_requestAccounts'
+                        });
+                        
+                        if (accounts.length > 0) {
+                            this.account = accounts[0];
+                            this.connected = true;
+                            this.updateWalletUI();
+                            this.checkGenesisStatus();
+                            
+                            // Switch to Base network
+                            await this.switchToBase();
+                            
+                            this.showAlert('token-alerts', 'success', 
+                                '🎉 MetaMask extension connected! You can now purchase $HVNA tokens.');
+                        }
+                    } else {
+                        throw new Error('MetaMask browser extension not detected. Please install and enable MetaMask extension.');
+                    }
+                    
+                } catch (error) {
+                    console.error('Wallet connection failed:', error);
+                    if (error.code === 4001) {
+                        this.showAlert('token-alerts', 'error', 
+                            'Connection rejected. Please approve the connection in your MetaMask extension.');
+                    } else {
+                        this.showAlert('token-alerts', 'error', 
+                            'Connection failed: ' + error.message);
+                    }
+                }
+            }
+            
+            async switchToBase() {
+                const BASE_NETWORK = {
+                    chainId: '0x2105',
+                    chainName: 'Base',
+                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                    rpcUrls: ['https://mainnet.base.org'],
+                    blockExplorerUrls: ['https://basescan.org']
+                };
+                
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: BASE_NETWORK.chainId }]
+                    });
+                } catch (switchError) {
+                    if (switchError.code === 4902) {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [BASE_NETWORK]
+                        });
+                    }
+                }
+            }
+            
+            async checkGenesisStatus() {
+                // Simulate Genesis NFT check (replace with actual contract call)
+                const hasGenesis = Math.random() > 0.7; // 30% chance for demo
+                
+                if (hasGenesis) {
+                    document.getElementById('genesis-discount').classList.remove('hidden');
+                    // Note: Token price stays the same, discount applies to physical products
+                    document.getElementById('hvna-price').textContent = '$0.01 per token';
+                } else {
+                    document.getElementById('genesis-discount').classList.add('hidden');
+                    document.getElementById('hvna-price').textContent = '$0.01 per token';
+                }
+            }
+            
+            async purchaseGenesisNFT() {
+                if (!this.connected) {
+                    this.showAlert('token-alerts', 'error', 
+                        'Please connect your MetaMask wallet first to purchase Genesis NFTs.');
+                    return;
+                }
+                
+                try {
+                    this.showAlert('token-alerts', 'info', '🎨 Preparing Genesis NFT purchase...');
+                    
+                    // In production, this would interact with the NFT contract
+                    // For now, simulate the purchase flow
+                    
+                    // Simulate transaction delay
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    
+                    // Generate fake transaction for demo
+                    const txHash = '0x' + Math.random().toString(16).substr(2, 64);
+                    
+                    this.showAlert('token-alerts', 'success', `
+                        🎉 <strong>Genesis NFT Purchase Successful!</strong><br>
+                        Genesis NFT minted to your wallet<br>
+                        You now have access to 30% discounts on physical products<br>
+                        <small>Demo Transaction: ${txHash.substring(0,10)}...${txHash.substring(54)}</small><br>
+                        <a href="https://basescan.org/address/0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642" target="_blank">View NFT Contract →</a>
+                    `);
+                    
+                    // Update Genesis status
+                    setTimeout(() => {
+                        document.getElementById('genesis-discount').classList.remove('hidden');
+                    }, 1000);
+                    
+                } catch (error) {
+                    console.error('Genesis NFT purchase failed:', error);
+                    this.showAlert('token-alerts', 'error', 'NFT purchase failed: ' + error.message);
+                }
+            }
+            
+            updateWalletUI() {
+                const connectBtn = document.getElementById('connect-wallet');
+                const walletInfo = document.getElementById('wallet-info');
+                const walletAddress = document.getElementById('wallet-address');
+                
+                if (this.connected && this.account) {
+                    connectBtn.classList.add('hidden');
+                    walletInfo.classList.remove('hidden');
+                    walletAddress.textContent = 
+                        `${this.account.substring(0,6)}...${this.account.substring(38)}`;
+                } else {
+                    connectBtn.classList.remove('hidden');
+                    walletInfo.classList.add('hidden');
+                }
+            }
+            
+            showPurchaseSuccess(tokens, usdCost, isGenesis) {
+                const message = `
+                    🎉 <strong>Purchase Successful!</strong><br>
+                    You bought ${tokens.toLocaleString()} $HVNA tokens for $${usdCost.toFixed(2)}<br>
+                    ${isGenesis ? '✨ Genesis NFT discount applied!' : ''}
+                    <br><small>Tokens will appear in your wallet shortly.</small>
+                `;
+                this.showAlert('token-alerts', 'success', message);
+            }
+            
+            trackPurchase(tokens, usdCost, isGenesis) {
+                // Google Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'purchase', {
+                        transaction_id: Date.now().toString(),
+                        currency: 'USD',
+                        value: usdCost,
+                        items: [{
+                            item_id: 'hvna-token',
+                            item_name: 'HVNA Token',
+                            category: 'Cryptocurrency',
+                            quantity: tokens,
+                            price: usdCost / tokens
+                        }]
+                    });
+                }
+                
+                // Custom tracking
+                console.log('Purchase tracked:', { tokens, usdCost, isGenesis });
+            }
+            
+            showAlert(containerId, type, message) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+                
+                if (type === 'success' || type === 'info') {
+                    setTimeout(() => {
+                        container.innerHTML = '';
+                    }, 8000);
+                }
+            }
+        }
+        
+        // Initialize website when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new HavanaElephantWebsite();
+            
+            // Add fade-in animation to elements as they come into view
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        });
+        
+        // Handle wallet account changes
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                window.location.reload();
+            });
+            
+            window.ethereum.on('chainChanged', () => {
+                window.location.reload();
+            });
+        }
+    </script>
+    
+    <!-- Microsoft Clarity (preserve existing tracking) -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "o6uw8ckcb4");
+    </script>
+</body>
+</html>

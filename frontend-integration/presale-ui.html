@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Havana Elephant Token Pre-Sale</title>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="web3-auth.js"></script>
+    <script src="web3-auth-base.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -286,15 +286,15 @@
             
             async init() {
                 try {
-                    // Update contract addresses with your deployed addresses
+                    // Deployed contract addresses on Base network
                     const contracts = {
-                        preSaleAddress: 'YOUR_PRE_SALE_CONTRACT_ADDRESS',
-                        nftAddress: 'YOUR_GENESIS_NFT_CONTRACT_ADDRESS', 
-                        tokenAddress: 'YOUR_HVNA_TOKEN_CONTRACT_ADDRESS',
-                        chainId: '0x1' // Ethereum mainnet
+                        preSaleAddress: '0x447dddB5115874698FCc3840e24Dc7EfE22deb3b',
+                        nftAddress: '0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642', 
+                        tokenAddress: '0x9B2c154C8B6B1826Df60c81033861891680EBFab',
+                        chainId: '0x2105' // Base mainnet (8453)
                     };
                     
-                    this.auth = new HavanaPreSaleAuth(contracts);
+                    this.auth = new HavanaPreSaleAuthBase(contracts);
                     await this.auth.init();
                     this.auth.setupEventListeners();
                     
@@ -398,7 +398,7 @@
                             <strong>Purchase Successful!</strong><br>
                             Tokens: ${parseInt(tokenAmount).toLocaleString()}<br>
                             Cost: ${ethCost} ETH<br>
-                            Transaction: <a href="https://etherscan.io/tx/${result.transactionHash}" target="_blank">View on Etherscan</a>
+                            Transaction: <a href="https://basescan.org/tx/${result.transactionHash}" target="_blank">View on Basescan</a>
                         `);
                         
                         // Reset form and refresh data

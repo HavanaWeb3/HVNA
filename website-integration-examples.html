@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVNA Widget Integration Examples</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .example-section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        .widget-container {
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 1rem;
+            background: #f8f9ff;
+        }
+        
+        h1 { color: #333; }
+        h2 { color: #667eea; margin-top: 2rem; }
+        h3 { color: #555; }
+        
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐘 HVNA Token Purchase Widget</h1>
+            <p>Easy website integration for HVNA token purchases on Base Network</p>
+        </div>
+        
+        <div class="example-section">
+            <h2>🚀 Quick Start - Auto-Initialize</h2>
+            <p>Add this to any webpage for instant HVNA purchase functionality:</p>
+            
+            <div class="example-grid">
+                <div>
+                    <h3>HTML Code:</h3>
+                    <div class="code-block">
+&lt;!-- 1. Include the widget script --&gt;
+&lt;script src="hvna-purchase-widget.js"&gt;&lt;/script&gt;
+
+&lt;!-- 2. Add widget container --&gt;
+&lt;div id="hvna-widget" data-hvna-widget 
+     data-theme="light" 
+     data-auto-connect="false"&gt;
+&lt;/div&gt;
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Live Example:</h3>
+                    <div class="widget-container">
+                        <div id="hvna-widget-auto" data-hvna-widget></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="example-section">
+            <h2>🎨 Dark Theme Example</h2>
+            
+            <div class="example-grid">
+                <div>
+                    <h3>Dark Theme Widget:</h3>
+                    <div class="code-block">
+&lt;div id="hvna-dark-widget" data-hvna-widget 
+     data-theme="dark"
+     data-show-header="true"
+     data-show-footer="true"
+     data-min-purchase="2000"
+     data-max-purchase="25000"&gt;
+&lt;/div&gt;
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Live Example:</h3>
+                    <div class="widget-container" style="background: #1a1a1a;">
+                        <div id="hvna-widget-dark" data-hvna-widget data-theme="dark"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="example-section">
+            <h2>⚡ Programmatic Integration</h2>
+            <p>For advanced control and custom styling:</p>
+            
+            <div class="example-grid">
+                <div>
+                    <h3>JavaScript Code:</h3>
+                    <div class="code-block">
+// Initialize widget programmatically
+const widget = new HVNAPurchaseWidget('custom-widget', {
+    theme: 'light',
+    showHeader: false,
+    showFooter: false,
+    autoConnect: true,
+    minPurchase: 5000,
+    maxPurchase: 100000
+});
+
+// Listen to purchase events
+document.getElementById('custom-widget')
+    .addEventListener('hvna:purchase', (event) => {
+        console.log('Purchase completed:', event.detail);
+        // Handle successful purchase
+        gtag('event', 'token_purchase', {
+            currency: 'USD',
+            value: event.detail.usdCost
+        });
+    });
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Live Example:</h3>
+                    <div class="widget-container">
+                        <div id="hvna-widget-custom"></div>
+                    </div>
+                    <script>
+                        // This will be initialized after the widget script loads
+                        document.addEventListener('DOMContentLoaded', () => {
+                            if (window.HVNAPurchaseWidget) {
+                                new HVNAPurchaseWidget('hvna-widget-custom', {
+                                    theme: 'light',
+                                    showHeader: false,
+                                    autoConnect: false,
+                                    minPurchase: 5000
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+        
+        <div class="example-section">
+            <h2>📱 Responsive Sidebar Widget</h2>
+            
+            <div class="example-grid">
+                <div>
+                    <h3>Sidebar Implementation:</h3>
+                    <div class="code-block">
+&lt;style&gt;
+.sidebar-widget {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    max-width: 350px;
+}
+
+@media (max-width: 768px) {
+    .sidebar-widget {
+        position: static;
+        transform: none;
+        margin: 1rem auto;
+        max-width: 100%;
+    }
+}
+&lt;/style&gt;
+
+&lt;div class="sidebar-widget"&gt;
+    &lt;div id="sidebar-widget" data-hvna-widget 
+         data-theme="light"
+         data-show-footer="false"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Configuration Options:</h3>
+                    <div class="code-block">
+Available data attributes:
+
+• data-theme="light|dark"
+• data-show-header="true|false"
+• data-show-footer="true|false"  
+• data-auto-connect="true|false"
+• data-min-purchase="1000"
+• data-max-purchase="50000"
+
+Widget automatically:
+✅ Detects MetaMask
+✅ Switches to Base network
+✅ Verifies Genesis NFT discounts
+✅ Calculates real-time pricing
+✅ Validates purchase limits
+✅ Handles transactions
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="example-section">
+            <h2>🔧 Advanced Integration Examples</h2>
+            
+            <h3>E-commerce Integration</h3>
+            <div class="code-block">
+// Shopify integration example
+const widget = new HVNAPurchaseWidget('shopify-hvna-widget', {
+    theme: 'light',
+    showHeader: true,
+    minPurchase: 1000
+});
+
+// Listen for purchases and add to cart
+document.getElementById('shopify-hvna-widget').addEventListener('hvna:purchase', (event) => {
+    const { tokens, usdCost } = event.detail;
+    
+    // Add HVNA tokens as Shopify line item
+    fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            items: [{
+                id: 'hvna-token-variant-id',
+                quantity: tokens,
+                properties: {
+                    'Blockchain': 'Base Network',
+                    'Transaction': event.detail.txHash || 'Demo'
+                }
+            }]
+        })
+    }).then(() => window.location.href = '/cart');
+});
+            </div>
+            
+            <h3>WordPress Integration</h3>
+            <div class="code-block">
+// Add to WordPress theme functions.php
+function add_hvna_widget_scripts() {
+    wp_enqueue_script('hvna-widget', 
+        get_template_directory_uri() . '/js/hvna-purchase-widget.js', 
+        array(), '1.0', true
+    );
+}
+add_action('wp_enqueue_scripts', 'add_hvna_widget_scripts');
+
+// Add shortcode for easy insertion
+function hvna_widget_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'theme' => 'light',
+        'header' => 'true',
+        'footer' => 'true'
+    ), $atts);
+    
+    $id = 'hvna-widget-' . uniqid();
+    
+    return "&lt;div id='{$id}' data-hvna-widget 
+                data-theme='{$atts['theme']}'
+                data-show-header='{$atts['header']}'
+                data-show-footer='{$atts['footer']}'&gt;&lt;/div&gt;";
+}
+add_shortcode('hvna_purchase', 'hvna_widget_shortcode');
+
+// Usage: [hvna_purchase theme="dark" header="false"]
+            </div>
+            
+            <h3>React/Vue Integration</h3>
+            <div class="code-block">
+// React component example
+import React, { useEffect, useRef } from 'react';
+
+const HVNAWidget = ({ theme = 'light', onPurchase }) => {
+    const widgetRef = useRef();
+    const containerRef = useRef();
+    
+    useEffect(() => {
+        if (window.HVNAPurchaseWidget) {
+            widgetRef.current = new HVNAPurchaseWidget(containerRef.current.id, {
+                theme,
+                showHeader: false,
+                showFooter: false
+            });
+            
+            containerRef.current.addEventListener('hvna:purchase', onPurchase);
+        }
+        
+        return () => {
+            containerRef.current?.removeEventListener('hvna:purchase', onPurchase);
+        };
+    }, [theme, onPurchase]);
+    
+    return &lt;div id={`hvna-${Date.now()}`} ref={containerRef} /&gt;;
+};
+            </div>
+        </div>
+        
+        <div class="note">
+            <strong>📋 Integration Checklist:</strong><br>
+            1. Include <code>hvna-purchase-widget.js</code> in your webpage<br>
+            2. Add widget container with desired configuration<br>
+            3. Test MetaMask connection and Base network switching<br>
+            4. Verify Genesis NFT discount detection works<br>
+            5. Test purchase flow with small amounts<br>
+            6. Set up event listeners for purchase tracking<br>
+            7. Style widget to match your brand colors
+        </div>
+        
+        <div class="example-section">
+            <h2>🔗 Ready-to-Use Files</h2>
+            <p><strong>Your token purchase system includes:</strong></p>
+            <ul>
+                <li><strong>hvna-purchase-widget.js</strong> - Production widget for websites</li>
+                <li><strong>hvna-purchase-instant.html</strong> - Standalone promotional page</li>
+                <li><strong>frontend-integration/web3-auth-base.js</strong> - Advanced Web3 SDK</li>
+                <li><strong>TOKEN-PURCHASE-GUIDE.md</strong> - Complete documentation</li>
+            </ul>
+            
+            <p><strong>All contracts deployed on Base Network:</strong></p>
+            <ul>
+                <li>HVNA Token: <code>0x9B2c154C8B6B1826Df60c81033861891680EBFab</code></li>
+                <li>Pre-Sale: <code>0x447dddB5115874698FCc3840e24Dc7EfE22deb3b</code></li>
+                <li>Genesis NFT: <code>0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642</code></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Load the widget script -->
+    <script src="hvna-purchase-widget.js"></script>
+    
+    <script>
+        // Additional initialization for examples
+        document.addEventListener('DOMContentLoaded', () => {
+            // Listen to all widget events for demo
+            document.addEventListener('hvna:purchase', (event) => {
+                console.log('HVNA Purchase Event:', event.detail);
+                alert(`Demo Purchase: ${event.detail.tokens} HVNA tokens for $${event.detail.usdCost.toFixed(2)}`);
+            });
+        });
+    </script>
+</body>
+</html>

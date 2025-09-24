@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVNA Token Purchase - Base Network</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .network-badge {
+            background: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #28a745;
+            text-align: center;
+        }
+        
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .genesis-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 1rem 0;
+            border: 2px solid #ffc107;
+        }
+        
+        .purchase-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .input-group {
+            margin: 1.5rem 0;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin: 0.5rem 0;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-connect {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #cce8ff;
+            color: #004085;
+            border: 1px solid #99d3ff;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+        
+        .contract-links {
+            margin: 1rem 0;
+        }
+        
+        .contract-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+        
+        .contract-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🐘</div>
+            <h1>HVNA Token Purchase</h1>
+            <p>Havana Elephant Token Pre-Sale on Base Network</p>
+            <div class="network-badge">⚡ Base Network</div>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Initializing Web3 connection...</p>
+        </div>
+        
+        <!-- Connect Wallet -->
+        <div id="connect-section" class="hidden">
+            <div class="alert alert-info">
+                <strong>Ready to connect!</strong> Make sure you have MetaMask installed and ready to use.
+            </div>
+            <button id="connect-btn" class="btn btn-connect">🦊 Connect MetaMask Wallet</button>
+            <p style="text-align: center; margin-top: 1rem; color: #666;">
+                You'll be automatically switched to Base network
+            </p>
+        </div>
+        
+        <!-- Purchase Interface -->
+        <div id="purchase-section" class="hidden">
+            <!-- User Status -->
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-value" id="wallet-display">Not Connected</div>
+                    <div class="status-label">Connected Wallet</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="phase-display">Loading...</div>
+                    <div class="status-label">Current Phase</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="price-display">$0.01</div>
+                    <div class="status-label">Price per Token (USD)</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="remaining-display">Loading...</div>
+                    <div class="status-label">Tokens Remaining</div>
+                </div>
+            </div>
+            
+            <!-- Genesis Status -->
+            <div id="genesis-status" class="hidden">
+                <div class="genesis-badge">
+                    ✨ Genesis NFT Holder - 30% Discount Active!
+                </div>
+            </div>
+            
+            <!-- Purchase Form -->
+            <div class="purchase-section">
+                <h3>Purchase HVNA Tokens</h3>
+                
+                <div class="input-group">
+                    <label for="token-amount">Number of Tokens (Min: 1,000)</label>
+                    <input 
+                        type="number" 
+                        id="token-amount" 
+                        placeholder="Enter token amount (e.g., 5000)" 
+                        min="1000" 
+                        step="100"
+                    >
+                </div>
+                
+                <div class="input-group">
+                    <label for="eth-cost">ETH Cost (Auto-calculated)</label>
+                    <input type="text" id="eth-cost" readonly placeholder="0.000000 ETH">
+                </div>
+                
+                <div class="input-group">
+                    <label for="usd-cost">USD Cost (Auto-calculated)</label>
+                    <input type="text" id="usd-cost" readonly placeholder="$0.00 USD">
+                </div>
+                
+                <div id="validation-messages"></div>
+                
+                <button id="purchase-btn" class="btn" disabled>
+                    🚀 Purchase Tokens
+                </button>
+                
+                <button id="refresh-btn" class="btn" style="background: #6c757d;">
+                    🔄 Refresh Data
+                </button>
+            </div>
+            
+            <!-- Transaction Status -->
+            <div id="transaction-status"></div>
+            
+            <!-- User Purchase History -->
+            <div class="status-grid" style="margin-top: 2rem;">
+                <div class="status-card">
+                    <div class="status-value" id="purchased-display">0</div>
+                    <div class="status-label">Your Total Purchased</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="limit-display">Loading...</div>
+                    <div class="status-label">Your Purchase Limit</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="eth-rate-display">Loading...</div>
+                    <div class="status-label">ETH/USD Rate</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="network-display">Base</div>
+                    <div class="status-label">Network</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="contract-links">
+                <strong>Contract Addresses:</strong><br>
+                <a href="https://basescan.org/address/0x9B2c154C8B6B1826Df60c81033861891680EBFab" target="_blank">HVNA Token</a> |
+                <a href="https://basescan.org/address/0x447dddB5115874698FCc3840e24Dc7EfE22deb3b" target="_blank">Pre-Sale Contract</a> |
+                <a href="https://basescan.org/address/0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642" target="_blank">Genesis NFT</a>
+            </div>
+            <p>Powered by Base Network • HVNA Ecosystem</p>
+        </div>
+    </div>
+
+    <script>
+        // Base Network Pre-Sale Integration
+        class HVNATokenPurchase {
+            constructor() {
+                this.web3 = null;
+                this.account = null;
+                this.preSaleContract = null;
+                this.nftContract = null;
+                this.userInfo = {};
+                this.isGenesisHolder = false;
+                
+                // Base Network Configuration
+                this.BASE_NETWORK = {
+                    chainId: '0x2105', // 8453 in hex
+                    chainName: 'Base',
+                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                    rpcUrls: ['https://mainnet.base.org'],
+                    blockExplorerUrls: ['https://basescan.org']
+                };
+                
+                // Deployed contract addresses
+                this.contracts = {
+                    preSaleAddress: '0x447dddB5115874698FCc3840e24Dc7EfE22deb3b',
+                    nftAddress: '0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642',
+                    tokenAddress: '0x9B2c154C8B6B1826Df60c81033861891680EBFab'
+                };
+                
+                // Contract ABIs (simplified for demo)
+                this.preSaleABI = [
+                    "function buyTokens(uint256 tokenAmount) payable",
+                    "function isGenesisHolder(address user) view returns (bool)",
+                    "function getPreSaleInfo() view returns (uint8, uint256, uint256, uint256, uint256, bool, uint256, uint256)",
+                    "function getCurrentPrice(address user) view returns (uint256)",
+                    "function getRemainingTokens() view returns (uint256)",
+                    "function purchasedAmount(address user) view returns (uint256)"
+                ];
+                
+                this.nftABI = [
+                    "function balanceOf(address owner) view returns (uint256)"
+                ];
+            }
+            
+            async init() {
+                try {
+                    if (typeof window.ethereum === 'undefined') {
+                        throw new Error('MetaMask not found! Please install MetaMask.');
+                    }
+                    
+                    this.web3 = new Web3(window.ethereum);
+                    this.setupEventListeners();
+                    this.showConnectSection();
+                    
+                } catch (error) {
+                    this.showError('Initialization failed: ' + error.message);
+                }
+            }
+            
+            async connectWallet() {
+                try {
+                    this.showLoading('Connecting wallet...');
+                    
+                    // Request account access
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    if (accounts.length === 0) {
+                        throw new Error('No accounts found');
+                    }
+                    
+                    this.account = accounts[0];
+                    
+                    // Switch to Base network
+                    await this.switchToBase();
+                    
+                    // Setup contracts
+                    await this.setupContracts();
+                    
+                    // Load user data
+                    await this.loadUserData();
+                    
+                    this.showPurchaseSection();
+                    
+                } catch (error) {
+                    console.error('Connection failed:', error);
+                    this.showError('Connection failed: ' + error.message);
+                    this.showConnectSection();
+                }
+            }
+            
+            async switchToBase() {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: this.BASE_NETWORK.chainId }]
+                    });
+                } catch (switchError) {
+                    if (switchError.code === 4902) {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [this.BASE_NETWORK]
+                        });
+                    } else {
+                        throw new Error('Failed to switch to Base network');
+                    }
+                }
+            }
+            
+            async setupContracts() {
+                this.preSaleContract = new this.web3.eth.Contract(
+                    this.preSaleABI, 
+                    this.contracts.preSaleAddress
+                );
+                
+                this.nftContract = new this.web3.eth.Contract(
+                    this.nftABI, 
+                    this.contracts.nftAddress
+                );
+            }
+            
+            async loadUserData() {
+                try {
+                    // Check Genesis NFT status
+                    const nftBalance = await this.nftContract.methods
+                        .balanceOf(this.account)
+                        .call();
+                    
+                    this.isGenesisHolder = parseInt(nftBalance) > 0;
+                    
+                    // Get pre-sale info
+                    const preSaleInfo = await this.preSaleContract.methods
+                        .getPreSaleInfo()
+                        .call({ from: this.account });
+                    
+                    const currentPrice = await this.preSaleContract.methods
+                        .getCurrentPrice(this.account)
+                        .call();
+                    
+                    const remainingTokens = await this.preSaleContract.methods
+                        .getRemainingTokens()
+                        .call();
+                    
+                    const userPurchased = await this.preSaleContract.methods
+                        .purchasedAmount(this.account)
+                        .call();
+                    
+                    this.userInfo = {
+                        phase: this.getPhaseString(preSaleInfo[0]),
+                        priceETH: this.web3.utils.fromWei(currentPrice, 'ether'),
+                        priceUSD: this.isGenesisHolder ? '0.007' : '0.01', // Simplified for demo
+                        remainingTokens: this.web3.utils.fromWei(remainingTokens, 'ether'),
+                        userPurchased: this.web3.utils.fromWei(userPurchased, 'ether'),
+                        maxPurchase: this.isGenesisHolder ? '50000' : '25000' // Simplified
+                    };
+                    
+                    this.updateUI();
+                    
+                } catch (error) {
+                    console.error('Failed to load user data:', error);
+                    this.showError('Failed to load user data');
+                }
+            }
+            
+            updateUI() {
+                // Update wallet display
+                document.getElementById('wallet-display').textContent = 
+                    `${this.account.substring(0,6)}...${this.account.substring(38)}`;
+                
+                // Update status cards
+                document.getElementById('phase-display').textContent = this.userInfo.phase || 'Unknown';
+                document.getElementById('price-display').textContent = `$${this.userInfo.priceUSD}`;
+                document.getElementById('remaining-display').textContent = 
+                    parseInt(this.userInfo.remainingTokens || 0).toLocaleString();
+                document.getElementById('purchased-display').textContent = 
+                    parseInt(this.userInfo.userPurchased || 0).toLocaleString();
+                document.getElementById('limit-display').textContent = 
+                    parseInt(this.userInfo.maxPurchase || 0).toLocaleString();
+                document.getElementById('eth-rate-display').textContent = '$2,500'; // Simplified
+                
+                // Show Genesis badge if applicable
+                const genesisStatus = document.getElementById('genesis-status');
+                if (this.isGenesisHolder) {
+                    genesisStatus.classList.remove('hidden');
+                } else {
+                    genesisStatus.classList.add('hidden');
+                }
+            }
+            
+            calculateCost() {
+                const tokenAmount = document.getElementById('token-amount').value;
+                const ethCostField = document.getElementById('eth-cost');
+                const usdCostField = document.getElementById('usd-cost');
+                const purchaseBtn = document.getElementById('purchase-btn');
+                const validationDiv = document.getElementById('validation-messages');
+                
+                if (tokenAmount && this.userInfo.priceETH) {
+                    const tokens = parseFloat(tokenAmount);
+                    const pricePerToken = parseFloat(this.userInfo.priceETH);
+                    const ethCost = (tokens * pricePerToken).toFixed(6);
+                    const usdCost = (tokens * parseFloat(this.userInfo.priceUSD)).toFixed(2);
+                    
+                    ethCostField.value = `${ethCost} ETH`;
+                    usdCostField.value = `$${usdCost} USD`;
+                    
+                    // Validation
+                    const errors = this.validatePurchase(tokens);
+                    if (errors.length === 0) {
+                        purchaseBtn.disabled = false;
+                        validationDiv.innerHTML = '';
+                    } else {
+                        purchaseBtn.disabled = true;
+                        validationDiv.innerHTML = errors.map(error => 
+                            `<div class="alert alert-error">${error}</div>`
+                        ).join('');
+                    }
+                } else {
+                    ethCostField.value = '';
+                    usdCostField.value = '';
+                    purchaseBtn.disabled = true;
+                    validationDiv.innerHTML = '';
+                }
+            }
+            
+            validatePurchase(tokenAmount) {
+                const errors = [];
+                
+                if (tokenAmount < 1000) {
+                    errors.push('Minimum purchase: 1,000 tokens');
+                }
+                
+                if (this.userInfo.remainingTokens && tokenAmount > parseFloat(this.userInfo.remainingTokens)) {
+                    errors.push('Exceeds available tokens');
+                }
+                
+                const userRemaining = parseFloat(this.userInfo.maxPurchase) - parseFloat(this.userInfo.userPurchased || 0);
+                if (tokenAmount > userRemaining) {
+                    errors.push(`Exceeds your remaining limit: ${userRemaining.toLocaleString()} tokens`);
+                }
+                
+                return errors;
+            }
+            
+            async purchaseTokens() {
+                const tokenAmount = document.getElementById('token-amount').value;
+                
+                try {
+                    this.showLoading('Processing purchase...');
+                    
+                    const tokenAmountWei = this.web3.utils.toWei(tokenAmount, 'ether');
+                    const pricePerToken = this.web3.utils.toWei(this.userInfo.priceETH, 'ether');
+                    const totalCostWei = this.web3.utils.toBN(tokenAmountWei)
+                        .mul(this.web3.utils.toBN(pricePerToken))
+                        .div(this.web3.utils.toBN(this.web3.utils.toWei('1', 'ether')));
+                    
+                    // Estimate gas
+                    const gasEstimate = await this.preSaleContract.methods
+                        .buyTokens(tokenAmountWei)
+                        .estimateGas({
+                            from: this.account,
+                            value: totalCostWei.toString()
+                        });
+                    
+                    // Execute transaction
+                    const transaction = await this.preSaleContract.methods
+                        .buyTokens(tokenAmountWei)
+                        .send({
+                            from: this.account,
+                            value: totalCostWei.toString(),
+                            gas: Math.floor(gasEstimate * 1.2)
+                        });
+                    
+                    // Show success
+                    this.showSuccess(`
+                        <strong>🎉 Purchase Successful!</strong><br>
+                        Tokens: ${parseInt(tokenAmount).toLocaleString()} HVNA<br>
+                        Cost: ${this.web3.utils.fromWei(totalCostWei, 'ether')} ETH<br>
+                        <a href="https://basescan.org/tx/${transaction.transactionHash}" target="_blank">View Transaction →</a>
+                    `);
+                    
+                    // Clear form and refresh
+                    document.getElementById('token-amount').value = '';
+                    this.calculateCost();
+                    await this.loadUserData();
+                    
+                } catch (error) {
+                    console.error('Purchase failed:', error);
+                    this.showError('Purchase failed: ' + (error.message || 'Unknown error'));
+                } finally {
+                    this.hidePurchaseSection();
+                    this.showPurchaseSection();
+                }
+            }
+            
+            setupEventListeners() {
+                document.getElementById('connect-btn').addEventListener('click', () => this.connectWallet());
+                document.getElementById('token-amount').addEventListener('input', () => this.calculateCost());
+                document.getElementById('purchase-btn').addEventListener('click', () => this.purchaseTokens());
+                document.getElementById('refresh-btn').addEventListener('click', () => this.loadUserData());
+                
+                // Wallet event listeners
+                if (window.ethereum) {
+                    window.ethereum.on('accountsChanged', (accounts) => {
+                        if (accounts.length > 0) {
+                            this.account = accounts[0];
+                            this.loadUserData();
+                        } else {
+                            this.disconnect();
+                        }
+                    });
+                    
+                    window.ethereum.on('chainChanged', () => {
+                        window.location.reload();
+                    });
+                }
+            }
+            
+            // Helper functions
+            getPhaseString(phaseNumber) {
+                const phases = ['Genesis', 'Public', 'Ended'];
+                return phases[phaseNumber] || 'Unknown';
+            }
+            
+            disconnect() {
+                this.account = null;
+                this.isGenesisHolder = false;
+                this.userInfo = {};
+                this.showConnectSection();
+            }
+            
+            // UI State Management
+            showLoading(message = 'Loading...') {
+                document.getElementById('loading').classList.remove('hidden');
+                document.getElementById('loading').querySelector('p').textContent = message;
+                document.getElementById('connect-section').classList.add('hidden');
+                document.getElementById('purchase-section').classList.add('hidden');
+            }
+            
+            showConnectSection() {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('connect-section').classList.remove('hidden');
+                document.getElementById('purchase-section').classList.add('hidden');
+            }
+            
+            showPurchaseSection() {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('connect-section').classList.add('hidden');
+                document.getElementById('purchase-section').classList.remove('hidden');
+            }
+            
+            hidePurchaseSection() {
+                document.getElementById('purchase-section').classList.add('hidden');
+            }
+            
+            showError(message) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-error';
+                alertDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+                document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.footer'));
+                
+                setTimeout(() => alertDiv.remove(), 5000);
+            }
+            
+            showSuccess(message) {
+                const statusDiv = document.getElementById('transaction-status');
+                statusDiv.className = 'alert alert-success';
+                statusDiv.innerHTML = message;
+                
+                setTimeout(() => statusDiv.innerHTML = '', 10000);
+            }
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            const app = new HVNATokenPurchase();
+            await app.init();
+        });
+    </script>
+</body>
+</html>
