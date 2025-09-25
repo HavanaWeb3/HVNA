@@ -202,21 +202,21 @@ function App() {
               <Crown className="h-8 w-8 text-yellow-400" />
               <span className="text-xl font-bold text-white">Havana Elephant</span>
             </div>
-            <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
-              <button onClick={() => scrollToSection('about')} className="text-gray-300 hover:text-white transition-colors">About</button>
-              <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors">Tokenomics</button>
-              <button onClick={() => scrollToSection('tokens')} className="text-gray-300 hover:text-yellow-400 transition-colors font-semibold">Buy $HVNA</button>
-              <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors">NFTs</button>
-              <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors">Buy Genesis</button>
-              <button onClick={() => window.open('/whitepaper.html', '_blank')} className="text-gray-300 hover:text-yellow-400 transition-colors">Whitepaper</button>
-              <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors">Roadmap</button>
-              <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors">Community</button>
-              <button onClick={() => scrollToSection('faq')} className="text-gray-300 hover:text-white transition-colors">FAQ</button>
-              <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
-              <button onClick={() => scrollToSection('legal')} className="text-gray-300 hover:text-white transition-colors">Legal</button>
+            <div className="hidden md:flex items-center space-x-3 lg:space-x-4 xl:space-x-6">
+              <button onClick={() => scrollToSection('about')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">About</button>
+              <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Tokenomics</button>
+              <button onClick={() => scrollToSection('tokens')} className="text-gray-300 hover:text-yellow-400 transition-colors font-semibold text-sm lg:text-base">Buy $HVNA</button>
+              <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">NFTs</button>
+              <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Buy Genesis</button>
+              <button onClick={() => window.open('/whitepaper.html', '_blank')} className="text-gray-300 hover:text-yellow-400 transition-colors text-sm lg:text-base">Whitepaper</button>
+              <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Roadmap</button>
+              <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Community</button>
+              <button onClick={() => scrollToSection('faq')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">FAQ</button>
+              <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Contact</button>
+              <button onClick={() => scrollToSection('legal')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Legal</button>
             </div>
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20">
+            <div className="flex items-center space-x-2 ml-4 lg:ml-6 xl:ml-8">
+              <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-sm lg:text-base px-3 lg:px-4">
                 Connect Wallet
               </Button>
             </div>
