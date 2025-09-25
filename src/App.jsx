@@ -29,6 +29,7 @@ import {
 } from 'lucide-react'
 import heroImage from './assets/hero_mockup.png'
 import GenesisPurchase from './components/GenesisPurchase.jsx'
+import HVNATokenPurchase from './components/HVNATokenPurchase.jsx'
 import './App.css'
 
 function App() {
@@ -204,6 +205,7 @@ function App() {
             <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
               <button onClick={() => scrollToSection('about')} className="text-gray-300 hover:text-white transition-colors">About</button>
               <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors">Tokenomics</button>
+              <button onClick={() => scrollToSection('tokens')} className="text-gray-300 hover:text-yellow-400 transition-colors font-semibold">Buy $HVNA</button>
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors">NFTs</button>
               <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors">Buy Genesis</button>
               <button onClick={() => window.open('/whitepaper.html', '_blank')} className="text-gray-300 hover:text-yellow-400 transition-colors">Whitepaper</button>
@@ -235,8 +237,8 @@ function App() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Content */}
             <div className="text-center lg:text-left">
-              <Badge className="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold">
-                🚀 Presale Coming Soon
+              <Badge className="mb-6 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold animate-pulse">
+                🔥 $HVNA Token Sale LIVE NOW
               </Badge>
               
               <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -256,7 +258,7 @@ function App() {
               <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-6 mb-8 border border-purple-500/20">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-semibold text-white">$HVNA Token Presale</h3>
-                  <Badge className="bg-blue-500 text-white animate-pulse">🚀 Coming Q4 2025</Badge>
+                  <Badge className="bg-green-500 text-white animate-pulse">🔥 LIVE NOW</Badge>
                 </div>
                 
                 {/* Current Phase Highlight */}
@@ -276,8 +278,8 @@ function App() {
                         style={{ width: '0%' }}
                       ></div>
                     </div>
-                    <div className="text-center text-sm text-gray-400 mt-2">
-                      Presale launches Q4 2025
+                    <div className="text-center text-sm text-green-400 mt-2">
+                      🔥 Token sale is LIVE - Buy now!
                     </div>
                   </div>
 
@@ -288,8 +290,8 @@ function App() {
                     <div className="text-sm text-blue-300 font-semibold mb-2">
                       {currentPhase.benefits}
                     </div>
-                    <div className="text-sm text-gray-400">
-                      Register interest to secure your founder spot when presale launches!
+                    <div className="text-sm text-green-400">
+                      Token sale is LIVE! Genesis NFT holders get 30% discount - Buy now!
                     </div>
                   </div>
                 </div>
@@ -322,12 +324,12 @@ function App() {
                 </div>
 
                 {/* FOMO Message */}
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-center">
-                  <div className="text-blue-400 font-semibold text-sm">
-                    👑 Genesis Founders get 30% lifetime discount + founder status!
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-center">
+                  <div className="text-green-400 font-semibold text-sm">
+                    🔥 $HVNA Token Sale is LIVE! Genesis holders get 30% discount!
                   </div>
-                  <div className="text-gray-300 text-xs mt-1">
-                    Price increases to $0.05 in Month 3 - Register now for $0.01 founder pricing
+                  <div className="text-green-300 text-xs mt-1">
+                    Buy now at $0.01 per token (Genesis: $0.007) - Start earning rewards immediately
                   </div>
                 </div>
               </div>
@@ -337,6 +339,17 @@ function App() {
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-lg px-8 py-6 relative z-20 cursor-pointer"
+                  onClick={() => scrollToSection('tokens')}
+                  style={{ pointerEvents: 'auto' }}
+                >
+                  <Coins className="mr-2 h-5 w-5" />
+                  Buy $HVNA Tokens
+                </Button>
+                
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-yellow-500 text-yellow-300 hover:bg-yellow-500/20 text-lg px-8 py-6 relative z-20 cursor-pointer"
                   onClick={() => setIsInterestDialogOpen(true)}
                   style={{ pointerEvents: 'auto' }}
                 >
@@ -432,7 +445,7 @@ function App() {
                   onClick={() => window.open('/whitepaper.html', '_blank')}
                 >
                   <Download className="mr-2 h-5 w-5" />
-                  Download White Paper
+                  Whitepaper
                 </Button>
               </div>
 
@@ -549,8 +562,22 @@ function App() {
         </div>
       </section>
 
+      {/* $HVNA Token Purchase Section */}
+      <section id="tokens" className="py-20 bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-white mb-6">🚀 TEST: Token Purchase Section</h2>
+            <p className="text-xl text-yellow-400">If you can see this, navigation is working!</p>
+            <div className="bg-slate-900/50 p-8 rounded-2xl mt-8">
+              <p className="text-white">Loading token purchase interface...</p>
+            </div>
+          </div>
+          <HVNATokenPurchase />
+        </div>
+      </section>
+
       {/* Tokenomics Section */}
-      <section id="tokenomics" className="py-20">
+      <section id="tokenomics" className="py-20 bg-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-6">Tokenomics</h2>

@@ -1,0 +1,21 @@
+{
+  "network": "Base Mainnet",
+  "chainId": 8453,
+  "deployer": "0x0099B85B9a5f117AfB7877A36D4BBe0388DD0F66",
+  "deploymentDate": "2025-09-25T17:33:33.918Z",
+  "contracts": {
+    "hvnaToken": "0x9B2c154C8B6B1826Df60c81033861891680EBFab",
+    "tokenPreSaleFixed": "0x834E1f85Aab642Ecc31D87dc48cE32D93CecC70E",
+    "tokenPreSaleOld": "0x637005bc97844da75e4Cd95716c62003E4Edf041",
+    "discountManager": "0xdD75a7B5CD76Df246dc523a78fD284D8A2d390c2",
+    "genesisNFT": "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
+  },
+  "configuration": {
+    "genesisPriceCents": "700",
+    "publicPriceCents": "1000",
+    "ethPriceUSD": "4000",
+    "maxTokens": "25000000.0",
+    "saleActive": true,
+    "currentPhase": "1"
+  }
+}
