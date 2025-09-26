@@ -14,6 +14,9 @@ import {
 } from 'lucide-react'
 
 const GenesisPurchase = () => {
+  // EMERGENCY MAINTENANCE MODE - SALES DISABLED
+  const EMERGENCY_MAINTENANCE = true
+  
   const [isConnected, setIsConnected] = useState(false)
   const [userAddress, setUserAddress] = useState('')
   const [selectedNFT, setSelectedNFT] = useState(null)
@@ -458,6 +461,30 @@ const GenesisPurchase = () => {
     
     loadNFTMetadata()
   }, [])
+
+  // EMERGENCY MAINTENANCE DISPLAY
+  if (EMERGENCY_MAINTENANCE) {
+    return (
+      <div className="space-y-8 text-center">
+        <div className="bg-red-900/50 border border-red-500 rounded-lg p-8">
+          <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
+          <h2 className="text-3xl font-bold text-red-400 mb-4">🚨 EMERGENCY MAINTENANCE</h2>
+          <p className="text-xl text-white mb-4">Genesis NFT sales are temporarily disabled</p>
+          <p className="text-gray-300 mb-4">
+            We are conducting urgent security maintenance. All sales have been suspended to protect our customers.
+          </p>
+          <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-lg p-4 max-w-2xl mx-auto">
+            <p className="text-yellow-300 font-semibold">
+              ⚠️ DO NOT attempt to purchase Genesis NFTs on OpenSea or other platforms until this notice is removed.
+            </p>
+          </div>
+          <p className="text-gray-400 mt-4 text-sm">
+            We will resume sales as soon as the security maintenance is complete. Thank you for your patience.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8">
