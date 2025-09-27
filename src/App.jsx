@@ -565,13 +565,6 @@ function App() {
       {/* $HVNA Token Purchase Section */}
       <section id="tokens" className="py-20 bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-4xl font-bold text-white mb-6">🚀 TEST: Token Purchase Section</h2>
-            <p className="text-xl text-yellow-400">If you can see this, navigation is working!</p>
-            <div className="bg-slate-900/50 p-8 rounded-2xl mt-8">
-              <p className="text-white">Loading token purchase interface...</p>
-            </div>
-          </div>
           <HVNATokenPurchase />
         </div>
       </section>
@@ -668,19 +661,19 @@ function App() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="text-center p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                      <div className="text-blue-400 font-semibold text-lg mb-2">
-                        🚀 Presale Not Yet Started
+                    <div className="text-center p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                      <div className="text-green-400 font-semibold text-lg mb-2">
+                        🔥 Token Sale LIVE NOW!
                       </div>
                       <div className="text-gray-300 text-sm">
-                        Target: $2.75M | Launch: Q4 2025
+                        Active presale with secure smart contract
                       </div>
                     </div>
                     <div className="bg-gray-700/30 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-blue-400 to-purple-500 h-3 rounded-full" style={{width: '0%'}}></div>
+                      <div className="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full" style={{width: '15%'}}></div>
                     </div>
                     <div className="text-center text-sm text-gray-400">
-                      Presale launches Q4 2025 - Register interest to be notified!
+                      Genesis NFT holders get 30% discount - Buy tokens now!
                     </div>
                   </div>
                 </CardContent>
