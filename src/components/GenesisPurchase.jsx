@@ -231,13 +231,13 @@ const GenesisPurchase = () => {
     }
   }
 
-  // NFT image mapping - maps token ID to actual image filename
+  // NFT image mapping - maps token ID to actual image filename for Boldly Elephunky Genesis
   const nftImageMapping = {
-    1: 'TheDistinguishedPachyderm.jpg',
-    2: 'TheGentlemen.jpg', 
-    3: 'TheRomanEmperor.jpg',
-    4: 'TheMoscowAristocrat.jpg',
-    5: 'TheParisianNoble.jpg',
+    1: 'TheMoonlightDreamer.jpg', // Moon Dreamer - Boldly Elephunky Genesis #1
+    2: 'TheHighlandLaird.jpg',    // Highland - Boldly Elephunky Genesis #2
+    3: 'TheSteamEngineer.jpg',    // Rail Master - Boldly Elephunky Genesis #3
+    4: 'TheHighRoller.jpg',       // High Roller - Boldly Elephunky Genesis #4
+    5: 'TheVenetianVoyager.jpg',  // Venetian Voyager - Boldly Elephunky Genesis #5
     6: 'TheAthenianScholar.jpg',
     7: 'TheBerlinAristocrat.jpg',
     8: 'TheItalianConnoisseur.jpg',
