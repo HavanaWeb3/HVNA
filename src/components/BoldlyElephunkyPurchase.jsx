@@ -197,11 +197,11 @@ const BoldlyElephunkyPurchase = () => {
 
   // NFT image mapping for your 5 Boldly Elephunky Genesis NFTs
   const nftImageMapping = {
-    1: 'TheMoonlightDreamer.jpg', // Moon Dreamer - Boldly Elephunky Genesis #1
-    2: 'TheHighlandLaird.jpg',    // Highland - Boldly Elephunky Genesis #2
-    3: 'TheSteamEngineer.jpg',    // Rail Master - Boldly Elephunky Genesis #3
-    4: 'TheHighRoller.jpg',       // High Roller - Boldly Elephunky Genesis #4
-    5: 'TheVenetianVoyager.jpg'   // Venetian Voyager - Boldly Elephunky Genesis #5
+    1: 'MoonDreamer.jpg',        // Moon Dreamer - Boldly Elephunky Genesis #1
+    2: 'HighlandLaird.jpg',      // Highland Laird - Boldly Elephunky Genesis #2
+    3: 'RailMaster.jpg',         // Rail Master - Boldly Elephunky Genesis #3
+    4: 'HighRoller.jpg',         // High Roller - Boldly Elephunky Genesis #4
+    5: 'VenetianVoyager.jpg'     // Venetian Voyager - Boldly Elephunky Genesis #5
   }
 
   // Get real image for available NFTs
