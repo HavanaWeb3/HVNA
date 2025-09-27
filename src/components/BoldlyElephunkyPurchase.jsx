@@ -10,23 +10,20 @@ import {
   Loader2,
   ExternalLink,
   Shield,
-  Star
+  Star,
+  Flame
 } from 'lucide-react'
 
-const GenesisPurchase = () => {
-  // EMERGENCY MAINTENANCE MODE - SALES DISABLED
-  const EMERGENCY_MAINTENANCE = false  // ✅ RESOLVED: Now using secure infrastructure
-  
+const BoldlyElephunkyPurchase = () => {
   const [isConnected, setIsConnected] = useState(false)
   const [userAddress, setUserAddress] = useState('')
   const [selectedNFT, setSelectedNFT] = useState(null)
   const [purchaseStatus, setPurchaseStatus] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [userBalance, setUserBalance] = useState('0')
-  const [ownedGenesis, setOwnedGenesis] = useState([])
-  const [nftMetadata, setNftMetadata] = useState({})
+  const [ownedNFTs, setOwnedNFTs] = useState([])
 
-  // Contract details - NEW BOLDLY ELEPHUNKY GENESIS
+  // Contract details - NEW SECURE COLLECTION
   const NFT_CONTRACT = "0x815D1bfaF945aCa39049FF243D6E406e2aEc3ff5" // Boldly Elephunky Genesis
   const SECURE_WALLET = "0x12EDd8CA5D79e4f1269E4Ce9e941bD05c4ceeE05" // Your secure Rabby wallet
 
@@ -34,38 +31,42 @@ const GenesisPurchase = () => {
   const availableNFTs = [1, 2, 3, 4, 5] // Your 5 current NFTs
   const comingSoonNFTs = Array.from({length: 95}, (_, i) => i + 6) // Daily additions
 
-  // 4-Tier pricing structure for Boldly Elephunky Genesis
+  // 4-Tier pricing structure (starting at 0.25 ETH)
   const pricingTiers = [
     { 
       ids: [1, 2, 3, 4, 5], 
       price: '0.25', 
       tier: 'Genesis Launch', 
-      description: 'First 5 Boldly Elephunky - Launch tier'
+      description: 'First 5 Boldly Elephunky - Launch tier',
+      ethUSD: 2500 // Current ETH price for display
     },
     { 
       ids: Array.from({length: 20}, (_, i) => i + 6), 
       price: '0.50', 
       tier: 'Growth Tier', 
-      description: 'Next 20 NFTs - 2x launch price'
+      description: 'Next 20 NFTs - 2x launch price',
+      ethUSD: 2500
     },
     { 
       ids: Array.from({length: 25}, (_, i) => i + 26), 
       price: '0.75', 
       tier: 'Premium Tier', 
-      description: '25 Premium NFTs - High value'
+      description: '25 Premium NFTs - High value',
+      ethUSD: 2500
     },
     { 
       ids: Array.from({length: 50}, (_, i) => i + 51), 
       price: '1.0', 
       tier: 'Elite Tier', 
-      description: 'Final 50 NFTs - Maximum exclusivity'
+      description: 'Final 50 NFTs - Maximum exclusivity',
+      ethUSD: 2500
     }
   ]
 
   // Get price for NFT ID
   const getPriceForNFT = (tokenId) => {
     const tier = pricingTiers.find(tier => tier.ids.includes(tokenId))
-    return tier ? tier.price : '1.0'
+    return tier ? tier.price : '0.25'
   }
 
   // Get tier info for NFT ID
@@ -73,9 +74,8 @@ const GenesisPurchase = () => {
     return pricingTiers.find(tier => tier.ids.includes(tokenId))
   }
 
-  // Connect wallet - simplified approach
+  // Connect wallet
   const connectWallet = async () => {
-    // Check if MetaMask is installed
     if (!window.ethereum) {
       setPurchaseStatus('❌ MetaMask not installed. Please install MetaMask extension.')
       return
@@ -85,7 +85,6 @@ const GenesisPurchase = () => {
       setIsLoading(true)
       setPurchaseStatus('🔄 Requesting wallet connection...')
       
-      // Simple direct connection request
       const accounts = await window.ethereum.request({ 
         method: 'eth_requestAccounts' 
       })
@@ -96,15 +95,7 @@ const GenesisPurchase = () => {
         setPurchaseStatus('✅ Wallet connected successfully!')
         
         // Update user info
-        try {
-          const balance = await window.ethereum.request({
-            method: 'eth_getBalance',
-            params: [accounts[0], 'latest']
-          })
-          setUserBalance((parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4))
-        } catch (balanceError) {
-          console.log('Could not get balance:', balanceError)
-        }
+        await updateUserInfo(accounts[0])
         
       } else {
         setPurchaseStatus('❌ No accounts found')
@@ -158,55 +149,28 @@ const GenesisPurchase = () => {
       const balanceETH = parseInt(balance, 16) / Math.pow(10, 18)
       setUserBalance(balanceETH.toFixed(4))
 
-      // Check owned Genesis NFTs
-      await checkOwnedGenesis(address)
+      // Check owned NFTs
+      await checkOwnedNFTs(address)
       
     } catch (error) {
       console.error('Failed to update user info:', error)
     }
   }
 
-  // Check owned Genesis NFTs
-  const checkOwnedGenesis = async (address) => {
+  // Check owned NFTs
+  const checkOwnedNFTs = async (address) => {
     try {
       const owned = []
-      // Check first 20 Genesis NFTs for ownership (to avoid too many calls)
-      for (let i = 1; i <= 20; i++) {
+      // Check first 10 NFTs for ownership
+      for (let i = 1; i <= 10; i++) {
         const owner = await getTokenOwner(i)
         if (owner && owner.toLowerCase() === address.toLowerCase()) {
           owned.push(i)
         }
       }
-      setOwnedGenesis(owned)
+      setOwnedNFTs(owned)
     } catch (error) {
-      console.error('Failed to check owned Genesis:', error)
-    }
-  }
-
-  // Check marketplace listings
-  const checkMarketplaceListings = async () => {
-    try {
-      const listings = {}
-      // Check if available NFTs are actually listed in marketplace
-      for (const tokenId of availableNFTs) {
-        try {
-          const isForSaleSignature = "0x94383f14" // isForSale(uint256)
-          const tokenIdParam = tokenId.toString(16).padStart(64, '0')
-          const data = isForSaleSignature + tokenIdParam
-
-          const result = await window.ethereum.request({
-            method: 'eth_call',
-            params: [{ to: MARKETPLACE_CONTRACT, data: data }, 'latest']
-          })
-
-          listings[tokenId] = result && result !== '0x' && parseInt(result, 16) === 1
-        } catch (error) {
-          listings[tokenId] = false
-        }
-      }
-      setMarketplaceListings(listings)
-    } catch (error) {
-      console.error('Failed to check marketplace listings:', error)
+      console.error('Failed to check owned NFTs:', error)
     }
   }
 
@@ -231,76 +195,16 @@ const GenesisPurchase = () => {
     }
   }
 
-  // NFT image mapping - maps token ID to actual image filename
+  // NFT image mapping for your 5 Boldly Elephunky Genesis NFTs
   const nftImageMapping = {
     1: 'TheDistinguishedPachyderm.jpg',
     2: 'TheGentlemen.jpg', 
     3: 'TheRomanEmperor.jpg',
     4: 'TheMoscowAristocrat.jpg',
-    5: 'TheParisianNoble.jpg',
-    6: 'TheAthenianScholar.jpg',
-    7: 'TheBerlinAristocrat.jpg',
-    8: 'TheItalianConnoisseur.jpg',
-    9: 'TheHighlandLaird.jpg',
-    10: 'TheBavarianBaron.jpg',
-    11: 'TheVaticanVisitor.jpg',
-    12: 'TheTajMaharaja.jpg',
-    13: 'TheCapeTownConnosoir.jpg',
-    14: 'TheJazzVirtuoso.jpg',
-    15: 'ThePianoMaestro.jpg',
-    16: 'TheVirtuosoViolinist.jpg',
-    17: 'TheParisianGentlemen.jpg',
-    18: 'TheManhattanSocialite.jpg',
-    19: 'TheSydneySocialite.jpg',
-    20: 'TheWallStreetTitan.jpg',
-    21: 'TheAcePilot.jpg',
-    22: 'TheRocketExplorer.jpg',
-    23: 'TheCosmicVoyager.jpg',
-    24: 'TheGreatWallAdventurer.jpg',
-    25: 'TheLondonMonument.jpg',
-    26: 'TheVenetianVoyager.jpg',
-    27: 'TheBalloonVoyager.jpg',
-    28: 'TheOceanVoyager.jpg',
-    29: 'TheOceanExplorer.jpg',
-    30: 'TheParadiseExplorer.jpg',
-    31: 'TheRiverNavigator.jpg',
-    32: 'TheRiverNavi.jpg',
-    33: 'TheDesertRider.jpg',
-    34: 'TheMountainSpirit.jpg',
-    35: 'TheWIldernessExplorer.jpg',
-    36: 'TheBeachCruiser.jpg',
-    37: 'TheSkyAdventurer.jpg',
-    38: 'TheGothicRider.jpg',
-    39: 'TheCountrysideConnoisseur.jpg',
-    40: 'TheCanyonCyclist.jpg',
-    41: 'TheRegattaChampion.jpg',
-    42: 'TheRacingChampion.jpg',
-    43: 'TheSprintChampion.jpg',
-    44: 'ThePowerLifter.jpg',
-    45: 'TheJetSkiMerrymaker.jpg',
-    46: 'TheVespaVoyager.jpg',
-    47: 'TheParkRoller.jpg',
-    48: 'TheGardenSkater.jpg',
-    49: 'TheFestivalHeadliner.jpg',
-    50: 'TheHighRoller.jpg',
-    51: 'TheSteamEngineer.jpg',
-    52: 'TheEveningConnoisseur.jpg',
-    53: 'TheSunsetSophisticate.jpg',
-    54: 'TheMoonlightDreamer.jpg',
-    55: 'TheMoonWorshipper.jpg',
-    56: 'TheOceanDeity.jpg',
-    57: 'TheBallet.Patron.jpg',
-    58: 'TheWinterDancer.jpg',
-    59: 'TheDutchGardener.jpg',
-    60: 'TheTropicalGuitarist.jpg',
-    61: 'TheSafari.Lounger.jpg',
-    62: 'FIrstClassVoyager.jpg',
-    63: 'ParliamentarySession.jpg',
-    64: 'THeClubMember.jpg',
-    65: 'THeRussianAristocrat.jpg'
+    5: 'TheParisianNoble.jpg'
   }
 
-  // Get real image for available NFTs (1-5)
+  // Get real image for available NFTs
   const getNFTImage = (tokenId) => {
     const imageFilename = nftImageMapping[tokenId]
     if (imageFilename) {
@@ -308,45 +212,6 @@ const GenesisPurchase = () => {
     }
     return generatePlaceholderImage(tokenId)
   }
-
-  // Fetch NFT metadata and image
-  const fetchNFTMetadata = async (tokenId) => {
-    // Check if we have a real image for this token
-    const imageFilename = nftImageMapping[tokenId]
-    
-    if (imageFilename) {
-      // Use real image
-      return {
-        name: `Genesis Elephant #${tokenId}`,
-        image: `/nft-images/${imageFilename}`,
-        description: `Genesis Elephant #${tokenId} - Ultra rare NFT with exclusive founder benefits`
-      }
-    }
-    
-    // Fallback to placeholder for unminted NFTs
-    return {
-      name: `Genesis Elephant #${tokenId}`,
-      image: generatePlaceholderImage(tokenId),
-      description: `Genesis Elephant #${tokenId} - Coming soon with exclusive founder benefits`
-    }
-  }
-
-  // Decode URI data from hex
-  const decodeURIData = (hex) => {
-    try {
-      // Skip length prefix and decode
-      const data = hex.slice(64)
-      let result = ''
-      for (let i = 0; i < data.length; i += 2) {
-        const char = String.fromCharCode(parseInt(data.substr(i, 2), 16))
-        if (char !== '\0') result += char
-      }
-      return result
-    } catch (error) {
-      return null
-    }
-  }
-
 
   // Generate placeholder image
   const generatePlaceholderImage = (tokenId) => {
@@ -375,141 +240,11 @@ const GenesisPurchase = () => {
     `)}`
   }
 
-  // Purchase Genesis NFT through marketplace
-  const purchaseNFT = async (tokenId) => {
-    if (!isConnected) {
-      setPurchaseStatus('❌ Please connect your wallet first')
-      return
-    }
-
-    const price = getPriceForNFT(tokenId)
-    const priceWei = `0x${Math.floor(parseFloat(price) * Math.pow(10, 18)).toString(16)}`
-
-    try {
-      setIsLoading(true)
-      setSelectedNFT(tokenId)
-      setPurchaseStatus('🔄 Purchasing NFT...')
-
-      // Ensure we're on Base network
-      await ensureBaseNetwork()
-      setPurchaseStatus('🔄 Network verified, purchasing NFT...')
-
-      // Call marketplace buyNFT function
-      const buyNFTSignature = "0x961f0944" // buyNFT(uint256)
-      const tokenIdParam = tokenId.toString(16).padStart(64, '0')
-      const data = buyNFTSignature + tokenIdParam
-
-      const txHash = await window.ethereum.request({
-        method: 'eth_sendTransaction',
-        params: [{
-          from: userAddress,
-          to: MARKETPLACE_CONTRACT,
-          data: data,
-          value: priceWei
-        }]
-      })
-
-      setPurchaseStatus('🔄 Transaction submitted: ' + txHash)
-      
-      // Wait for confirmation
-      const receipt = await waitForTransaction(txHash)
-      
-      if (receipt.status === '0x1') {
-        setPurchaseStatus('🎉 Genesis NFT purchased successfully!')
-        await updateUserInfo(userAddress) // Refresh user info
-      } else {
-        setPurchaseStatus('❌ Transaction failed')
-      }
-
-    } catch (error) {
-      setPurchaseStatus('❌ Purchase failed: ' + error.message)
-    } finally {
-      setIsLoading(false)
-      setSelectedNFT(null)
-    }
-  }
-
-  // Wait for transaction
-  const waitForTransaction = async (txHash) => {
-    let attempts = 0
-    const maxAttempts = 60
-
-    while (attempts < maxAttempts) {
-      try {
-        const receipt = await window.ethereum.request({
-          method: 'eth_getTransactionReceipt',
-          params: [txHash]
-        })
-        
-        if (receipt) {
-          return receipt
-        }
-      } catch (error) {
-        console.error('Error checking transaction:', error)
-      }
-      
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      attempts++
-    }
-    
-    throw new Error('Transaction timeout')
-  }
-
-  // Load NFT metadata with real images
-  useEffect(() => {
-    const loadNFTMetadata = () => {
-      const metadataCache = {}
-      
-      for (let tokenId = 1; tokenId <= 100; tokenId++) {
-        // Check if we have a real image for this token
-        const imageFilename = nftImageMapping[tokenId]
-        
-        if (imageFilename) {
-          // Use real image
-          metadataCache[tokenId] = {
-            name: `Genesis Elephant #${tokenId}`,
-            image: `nft-images/${imageFilename}`,
-            description: `Genesis Elephant #${tokenId} - Ultra rare NFT with exclusive founder benefits`
-          }
-        } else {
-          // Fallback to placeholder
-          metadataCache[tokenId] = {
-            name: `Genesis Elephant #${tokenId}`,
-            image: generatePlaceholderImage(tokenId),
-            description: `Genesis Elephant #${tokenId} - Coming soon with exclusive founder benefits`
-          }
-        }
-      }
-      
-      console.log('NFT metadata loaded:', metadataCache[1], metadataCache[2]) // Debug
-      setNftMetadata(metadataCache)
-    }
-    
-    loadNFTMetadata()
-  }, [])
-
-  // EMERGENCY MAINTENANCE DISPLAY
-  if (EMERGENCY_MAINTENANCE) {
-    return (
-      <div className="space-y-8 text-center">
-        <div className="bg-red-900/50 border border-red-500 rounded-lg p-8">
-          <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-3xl font-bold text-red-400 mb-4">🚨 EMERGENCY MAINTENANCE</h2>
-          <p className="text-xl text-white mb-4">Genesis NFT sales are temporarily disabled</p>
-          <p className="text-gray-300 mb-4">
-            We are conducting urgent security maintenance. All sales have been suspended to protect our customers.
-          </p>
-          <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-lg p-4 max-w-2xl mx-auto">
-            <p className="text-yellow-300 font-semibold">
-              ⚠️ DO NOT attempt to purchase Genesis NFTs on OpenSea or other platforms until this notice is removed.
-            </p>
-          </div>
-          <p className="text-gray-400 mt-4 text-sm">
-            We will resume sales as soon as the security maintenance is complete. Thank you for your patience.
-          </p>
-        </div>
-      </div>
-    )
+  // Open OpenSea for direct purchase
+  const openOpenSea = (tokenId) => {
+    const openSeaUrl = `https://opensea.io/assets/base/${NFT_CONTRACT}/${tokenId}`
+    window.open(openSeaUrl, '_blank')
+    setPurchaseStatus(`🔗 Opened OpenSea for Boldly Elephunky #${tokenId}`)
   }
 
   return (
@@ -517,30 +252,30 @@ const GenesisPurchase = () => {
       {/* Header */}
       <div className="text-center">
         <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3">
-          <Crown className="h-10 w-10 text-orange-400" />
-          🔥 Boldly Elephunky Genesis Collection
+          <Flame className="h-10 w-10 text-orange-400" />
+          Boldly Elephunky Genesis Collection
         </h2>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-          Own a secure Boldly Elephunky NFT! 5 available now at 0.25 ETH, with 95 more coming daily. 
-          Each NFT grants 30% lifetime discounts and exclusive benefits.
+          🔥 New secure collection on Base network! Own a Boldly Elephunky NFT and get 30% lifetime discounts 
+          plus exclusive benefits on havanaelephantbrand.com
         </p>
       </div>
 
       {/* Trust & Credibility */}
-      <Card className="bg-gradient-to-r from-green-900/20 to-blue-900/20 border-green-500/30 backdrop-blur-md">
+      <Card className="bg-gradient-to-r from-orange-900/20 to-yellow-900/20 border-orange-500/30 backdrop-blur-md">
         <CardContent className="pt-6">
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <CheckCircle className="h-5 w-5 text-green-400" />
-              <span className="text-green-400 font-semibold">Verified Collection</span>
+              <span className="text-green-400 font-semibold">🔒 Secure Collection</span>
             </div>
             <p className="text-gray-300 text-sm mb-3">
-              Official Genesis Elephants collection. Each NFT is a genuine ERC-721 token on Base network.
+              Brand new collection deployed on secure infrastructure. Each NFT grants automatic discounts on havanaelephantbrand.com
             </p>
             <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-1">
                 <ExternalLink className="h-4 w-4" />
-                <span>Also available on OpenSea</span>
+                <span>Available on OpenSea</span>
               </div>
               <div className="flex items-center gap-1">
                 <Shield className="h-4 w-4" />
@@ -562,7 +297,7 @@ const GenesisPurchase = () => {
         <CardContent>
           {!isConnected ? (
             <div className="space-y-4">
-              <p className="text-gray-300">Connect your wallet to purchase Genesis NFTs</p>
+              <p className="text-gray-300">Connect your wallet to check for discounts and view NFTs</p>
               <button 
                 onClick={connectWallet}
                 disabled={isLoading}
@@ -590,9 +325,9 @@ const GenesisPurchase = () => {
               <div className="text-gray-300">
                 Balance: {userBalance} ETH
               </div>
-              {ownedGenesis.length > 0 && (
+              {ownedNFTs.length > 0 && (
                 <div className="text-yellow-400">
-                  You own Genesis NFTs: {ownedGenesis.join(', ')}
+                  You own Boldly Elephunky NFTs: {ownedNFTs.join(', ')} - 30% discount active!
                 </div>
               )}
             </div>
@@ -621,10 +356,10 @@ const GenesisPurchase = () => {
       {/* Pricing Tiers */}
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {pricingTiers.map((tier, index) => (
-          <Card key={index} className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+          <Card key={index} className="bg-slate-900/50 border-orange-500/20 backdrop-blur-md">
             <CardHeader>
               <div className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-400" />
+                <Star className="h-5 w-5 text-orange-400" />
                 <CardTitle className="text-white">{tier.tier}</CardTitle>
               </div>
               <CardDescription className="text-gray-400">
@@ -634,17 +369,14 @@ const GenesisPurchase = () => {
             <CardContent>
               <div className="space-y-3">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-400">{tier.price} ETH</div>
-                  <div className="text-sm text-gray-400">${(parseFloat(tier.price) * 2500).toLocaleString()}</div>
+                  <div className="text-3xl font-bold text-orange-400">{tier.price} ETH</div>
+                  <div className="text-sm text-gray-400">${(parseFloat(tier.price) * tier.ethUSD).toLocaleString()}</div>
                 </div>
                 <Badge variant="outline" className="w-full justify-center">
-                  {tier.ids.length} NFTs Available
+                  {tier.ids.length} NFTs in Tier
                 </Badge>
                 <div className="text-xs text-gray-400 text-center">
-                  IDs: {tier.ids.length > 10 ? 
-                    `${tier.ids.slice(0, 3).join(', ')}...${tier.ids.slice(-2).join(', ')}` : 
-                    tier.ids.join(', ')
-                  }
+                  {index === 0 ? '✅ Available Now' : '⏳ Coming Soon'}
                 </div>
               </div>
             </CardContent>
@@ -675,13 +407,13 @@ const GenesisPurchase = () => {
           {availableNFTs.map(tokenId => {
             const tier = getTierForNFT(tokenId)
             const price = getPriceForNFT(tokenId)
-            const isOwned = ownedGenesis.includes(tokenId)
+            const isOwned = ownedNFTs.includes(tokenId)
             
             return (
               <div 
                 key={tokenId}
                 className="relative rounded-lg border-2 border-orange-400 bg-orange-400/20 transition-all overflow-hidden cursor-pointer hover:border-orange-300 hover:bg-orange-400/30"
-                onClick={() => window.open(`https://opensea.io/assets/base/${NFT_CONTRACT}/${tokenId}`, '_blank')}
+                onClick={() => openOpenSea(tokenId)}
               >
                 {/* NFT Image */}
                 <div className="aspect-square bg-gradient-to-br from-orange-700 to-yellow-800">
@@ -792,4 +524,4 @@ const GenesisPurchase = () => {
   )
 }
 
-export default GenesisPurchase
+export default BoldlyElephunkyPurchase
