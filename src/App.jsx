@@ -30,6 +30,7 @@ import {
 import heroImage from './assets/hero_mockup.png'
 import GenesisPurchase from './components/GenesisPurchase.jsx'
 import HVNATokenPurchase from './components/HVNATokenPurchase.jsx'
+import BoldlyElephunkyPurchase from './components/BoldlyElephunkyPurchase.jsx'
 import './App.css'
 
 function App() {
@@ -207,6 +208,7 @@ function App() {
               <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Tokenomics</button>
               <button onClick={() => scrollToSection('tokens')} className="text-gray-300 hover:text-yellow-400 transition-colors font-semibold text-sm lg:text-base">Buy $HVNA</button>
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">NFTs</button>
+              <button onClick={() => scrollToSection('boldly-elephunky')} className="text-gray-300 hover:text-orange-400 transition-colors font-semibold text-sm lg:text-base">🔥 Boldly Elephunky</button>
               <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Buy Genesis</button>
               <button onClick={() => window.open('/whitepaper.html', '_blank')} className="text-gray-300 hover:text-yellow-400 transition-colors text-sm lg:text-base">Whitepaper</button>
               <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Roadmap</button>
@@ -726,14 +728,18 @@ function App() {
       <section id="nfts" className="py-20 bg-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-6">Boldly Elephunky NFT Collection</h2>
+            <h2 className="text-4xl font-bold text-white mb-6">NFT Collections</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              <span className="text-yellow-400 font-semibold">100 Ultra-Rare Genesis Elephants</span> available now + 
-              <span className="text-purple-400 font-semibold"> 9,900 NFT minting opportunities</span> with tiered discounts and exclusive benefits
+              <span className="text-orange-400 font-semibold">🔥 Boldly Elephunky Genesis (LIVE!)</span> - 5 available at 0.25 ETH + 
+              <span className="text-yellow-400 font-semibold"> Classic Genesis Collection</span> + 
+              <span className="text-purple-400 font-semibold"> 9,900 Future NFTs</span> with tiered benefits
             </p>
-            <div className="flex justify-center items-center space-x-8 mt-6">
+            <div className="flex justify-center items-center space-x-4 mt-6">
+              <Badge className="bg-gradient-to-r from-orange-400 to-yellow-500 text-black font-bold text-lg px-4 py-2">
+                🔥 Boldly Elephunky LIVE
+              </Badge>
               <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold text-lg px-4 py-2">
-                🔥 Genesis Collection Live
+                ✅ Classic Genesis Live
               </Badge>
               <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-lg px-4 py-2">
                 ⏳ Main Mint Coming Soon
@@ -762,8 +768,8 @@ function App() {
                   <li>• Genesis holder exclusive events</li>
                 </ul>
                 <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-4 rounded-lg text-center mb-4">
-                  <div className="text-2xl font-bold text-black">$250 - $1,000</div>
-                  <div className="text-sm text-black font-semibold">Genesis Price Range</div>
+                  <div className="text-2xl font-bold text-black">0.25 - 1.0 ETH</div>
+                  <div className="text-sm text-black font-semibold">Genesis Price Range ($625 - $2,500)</div>
                 </div>
                 <Button 
                   size="lg" 
@@ -869,6 +875,13 @@ function App() {
               Join Main Mint Waitlist
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Boldly Elephunky Genesis Section */}
+      <section id="boldly-elephunky" className="py-20 bg-gradient-to-br from-orange-500/20 to-yellow-500/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BoldlyElephunkyPurchase />
         </div>
       </section>
 

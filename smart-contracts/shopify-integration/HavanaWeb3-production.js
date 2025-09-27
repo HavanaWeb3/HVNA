@@ -15,8 +15,9 @@ class ShopifyHVNAWidget {
                 rpcUrls: ['https://sepolia.infura.io/v3/', 'https://rpc.sepolia.org']
             },
             base: {
-                nft: "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642", // DEPLOYED! Enhanced NFT with Genesis support
-                token: null, // Token deployment pending
+                nft: "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642", // Original Genesis collection (compromised wallet)
+                newNft: "0x815D1bfaF945aCa39049FF243D6E406e2aEc3ff5", // New Boldly Elephunky Genesis collection
+                token: "0x72a2310fc7422ddC3939a481A1211ce5e0113fd6", // Secure token contract
                 chainId: 8453,
                 rpcUrls: ['https://mainnet.base.org']
             },
@@ -63,9 +64,9 @@ class ShopifyHVNAWidget {
         const benefits = document.createElement('div');
         benefits.innerHTML = `
             <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 15px;">
-                <div><strong>Genesis NFT:</strong> 30% off (Ultimate tier)</div>
-                <div><strong>NFT Holders:</strong> Silver 10% | Gold 20% | Platinum 30%</div>
-                <div><strong>Token Holders:</strong> €150+ 10% | €250+ 20% | €500+ 30%</div>
+                <div><strong>🔥 Boldly Elephunky Genesis:</strong> 30% off (0.25+ ETH tier)</div>
+                <div><strong>📈 NFT Holders:</strong> Silver 10% | Gold 20% | Platinum 30%</div>
+                <div><strong>💰 Token Holders:</strong> €150+ 10% | €250+ 20% | €500+ 30%</div>
             </div>
         `;
         
@@ -277,7 +278,24 @@ class ShopifyHVNAWidget {
     }
     
     async checkNFTBalance() {
-        const nftAddress = this.contracts[this.selectedNetwork].nft;
+        let totalNfts = 0;
+        
+        // Check original collection
+        const oldNftAddress = this.contracts[this.selectedNetwork].nft;
+        if (oldNftAddress) {
+            totalNfts += await this.checkNFTBalanceFromContract(oldNftAddress);
+        }
+        
+        // Check new Boldly Elephunky Genesis collection
+        const newNftAddress = this.contracts[this.selectedNetwork].newNft;
+        if (newNftAddress && newNftAddress !== "YOUR_BOLDLY_ELEPHUNKY_GENESIS_CONTRACT") {
+            totalNfts += await this.checkNFTBalanceFromContract(newNftAddress);
+        }
+        
+        return totalNfts;
+    }
+    
+    async checkNFTBalanceFromContract(nftAddress) {
         if (!nftAddress) return 0;
         
         const balanceOfSignature = "0x70a08231"; // balanceOf(address)
@@ -297,7 +315,26 @@ class ShopifyHVNAWidget {
     }
     
     async checkGenesisBalance() {
-        const nftAddress = this.contracts[this.selectedNetwork].nft;
+        // Check both old Genesis collection and new Boldly Elephunky Genesis
+        const oldNftAddress = this.contracts[this.selectedNetwork].nft;
+        const newNftAddress = this.contracts[this.selectedNetwork].newNft;
+        
+        let totalGenesis = 0;
+        
+        // Check original Genesis collection (if accessible)
+        if (oldNftAddress) {
+            totalGenesis += await this.checkGenesisBalanceFromContract(oldNftAddress);
+        }
+        
+        // Check new Boldly Elephunky Genesis collection
+        if (newNftAddress && newNftAddress !== "YOUR_BOLDLY_ELEPHUNKY_GENESIS_CONTRACT") {
+            totalGenesis += await this.checkGenesisBalanceFromContract(newNftAddress);
+        }
+        
+        return totalGenesis;
+    }
+    
+    async checkGenesisBalanceFromContract(nftAddress) {
         if (!nftAddress) return 0;
         
         // Call genesisBalanceOf(address) function from enhanced contract
