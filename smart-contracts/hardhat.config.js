@@ -26,7 +26,7 @@ module.exports = {
       gasPrice: 20000000000 // 20 gwei
     },
     base: {
-      url: "https://base.llamarpc.com",
+      url: "https://mainnet.base.org",
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : []
     },
     polygon: {
