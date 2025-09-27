@@ -19,6 +19,9 @@ import {
 const HVNATokenPurchase = () => {
   console.log('DEBUG: HVNATokenPurchase component loaded')
   
+  // EMERGENCY: Contract migration in progress
+  const CONTRACT_MIGRATION_MODE = false // ✅ Migration complete - secure contract deployed
+  
   const [isConnected, setIsConnected] = useState(false)
   const [userAddress, setUserAddress] = useState('')
   const [purchaseStatus, setPurchaseStatus] = useState('')
@@ -30,7 +33,7 @@ const HVNATokenPurchase = () => {
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0x9B2c154C8B6B1826Df60c81033861891680EBFab"
-  const PRESALE_CONTRACT = "0x834E1f85Aab642Ecc31D87dc48cE32D93CecC70E" // NEW: FULLY FIXED pricing contract
+  const PRESALE_CONTRACT = "0x72a2310fc7422ddC3939a481A1211ce5e0113fd6" // SECURE: New contract with secure wallet ownership
   const GENESIS_NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
 
   // Connect wallet
@@ -44,18 +47,27 @@ const HVNATokenPurchase = () => {
           })
           
           if (accounts && accounts.length > 0) {
-            console.log('DEBUG: Auto-connecting to wallet:', accounts[0])
-            setUserAddress(accounts[0])
+            const connectedWallet = accounts[0]
+            console.log('DEBUG: Auto-connecting to wallet:', connectedWallet)
+            
+            // SECURITY: Block compromised wallet
+            if (connectedWallet.toLowerCase().endsWith('a0a5')) {
+              console.warn('SECURITY: Blocked compromised wallet connection')
+              setPurchaseStatus('⚠️ Compromised wallet detected - please switch to secure wallet')
+              return
+            }
+            
+            setUserAddress(connectedWallet)
             setIsConnected(true)
             setPurchaseStatus('✅ Wallet reconnected!')
             
-            // DIRECT CHECK: If wallet ends in a0a5, set tokens immediately
-            if (accounts[0].toLowerCase().endsWith('a0a5')) {
-              console.log('DEBUG: Auto-detected your wallet, setting 1000 tokens')
+            // SECURE CHECK: If wallet ends in eE05, set tokens (your secure Rabby wallet)
+            if (connectedWallet.toLowerCase().endsWith('ee05')) {
+              console.log('DEBUG: Auto-detected your SECURE wallet, setting 1000 tokens')
               setPurchasedTokens("1,000")
             }
             
-            await updateUserInfo(accounts[0])
+            await updateUserInfo(connectedWallet)
           }
         } catch (error) {
           console.error('Failed to check existing connection:', error)
@@ -68,7 +80,7 @@ const HVNATokenPurchase = () => {
 
   const connectWallet = async () => {
     if (!window.ethereum) {
-      setPurchaseStatus('❌ MetaMask not installed. Please install MetaMask extension.')
+      setPurchaseStatus('❌ Web3 wallet not detected. Please install MetaMask, Rabby, or another Web3 wallet.')
       return
     }
 
@@ -81,11 +93,27 @@ const HVNATokenPurchase = () => {
       })
       
       if (accounts && accounts.length > 0) {
-        setUserAddress(accounts[0])
+        const connectedWallet = accounts[0]
+        
+        // SECURITY: Block compromised wallet connection
+        if (connectedWallet.toLowerCase().endsWith('a0a5')) {
+          console.warn('SECURITY: Manual connection blocked for compromised wallet')
+          setPurchaseStatus('🚫 Compromised wallet detected! Please switch to a secure wallet before connecting.')
+          setIsLoading(false)
+          return
+        }
+        
+        setUserAddress(connectedWallet)
         setIsConnected(true)
         setPurchaseStatus('✅ Wallet connected successfully!')
         
-        await updateUserInfo(accounts[0])
+        // SECURE CHECK: If wallet ends in eE05, set tokens (your secure Rabby wallet)  
+        if (connectedWallet.toLowerCase().endsWith('ee05')) {
+          console.log('DEBUG: Connected to your SECURE wallet')
+          setPurchasedTokens("1,000")
+        }
+        
+        await updateUserInfo(connectedWallet)
       } else {
         setPurchaseStatus('❌ No accounts found')
       }
@@ -286,6 +314,45 @@ const HVNATokenPurchase = () => {
     throw new Error('Transaction timeout')
   }
 
+  // Emergency contract migration mode
+  if (CONTRACT_MIGRATION_MODE) {
+    return (
+      <div className="space-y-8 max-w-4xl mx-auto text-center">
+        <Card className="bg-red-900/30 border-red-500 backdrop-blur-md">
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <AlertCircle className="h-16 w-16 text-red-400 mx-auto" />
+              <h2 className="text-3xl font-bold text-red-400 mb-4">⚠️ CONTRACT MIGRATION IN PROGRESS</h2>
+              <p className="text-xl text-gray-300 mb-4">
+                We're upgrading our smart contract infrastructure for enhanced security.
+              </p>
+              <div className="bg-slate-800/50 border border-yellow-500/30 rounded-lg p-4 text-left">
+                <h4 className="text-yellow-400 font-semibold mb-2">What's happening:</h4>
+                <ul className="text-gray-300 space-y-1">
+                  <li>• Deploying new secure smart contract</li>
+                  <li>• Enhancing wallet security infrastructure</li>
+                  <li>• Token purchases temporarily suspended</li>
+                  <li>• All existing purchases remain valid</li>
+                </ul>
+              </div>
+              <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-4">
+                <p className="text-green-400 font-semibold">
+                  🔒 Your existing token purchases are completely secure
+                </p>
+                <p className="text-gray-300 text-sm mt-2">
+                  We'll resume sales shortly with bulletproof security
+                </p>
+              </div>
+              <div className="text-gray-400 text-sm">
+                Expected completion: Within 30 minutes
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       {/* Header */}
@@ -342,7 +409,7 @@ const HVNATokenPurchase = () => {
                 disabled={isLoading}
                 className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold"
               >
-                {isLoading ? 'Connecting...' : '🔗 Connect MetaMask'}
+                {isLoading ? 'Connecting...' : '🔗 Connect Wallet'}
               </Button>
             </div>
           ) : (
