@@ -31,8 +31,8 @@ const GenesisPurchase = () => {
   const SECURE_WALLET = "0x12EDd8CA5D79e4f1269E4Ce9e941bD05c4ceeE05" // Your secure Rabby wallet
 
   // Available NFTs (your current 5 minted)
-  const availableNFTs = [1, 2, 3, 4, 5] // Your 5 current NFTs
-  const comingSoonNFTs = Array.from({length: 95}, (_, i) => i + 6) // Daily additions
+  const availableNFTs = [1, 2, 3, 4, 5, 6] // Your 6 current NFTs (Jazz Virtuoso added today!)
+  const comingSoonNFTs = Array.from({length: 94}, (_, i) => i + 7) // Daily additions
 
   // 4-Tier pricing structure for Boldly Elephunky Genesis
   const pricingTiers = [
@@ -237,70 +237,21 @@ const GenesisPurchase = () => {
     2: 'HighlandLaird.jpg',      // Highland Laird - Boldly Elephunky Genesis #2
     3: 'RailMaster.jpg',         // Rail Master - Boldly Elephunky Genesis #3
     4: 'HighRoller.jpg',         // High Roller - Boldly Elephunky Genesis #4
-    5: 'VenetianVoyager.jpg',    // Venetian Voyager - Boldly Elephunky Genesis #5
-    6: 'TheAthenianScholar.jpg',
-    7: 'TheBerlinAristocrat.jpg',
-    8: 'TheItalianConnoisseur.jpg',
-    9: 'TheHighlandLaird.jpg',
-    10: 'TheBavarianBaron.jpg',
-    11: 'TheVaticanVisitor.jpg',
-    12: 'TheTajMaharaja.jpg',
-    13: 'TheCapeTownConnosoir.jpg',
-    14: 'TheJazzVirtuoso.jpg',
-    15: 'ThePianoMaestro.jpg',
-    16: 'TheVirtuosoViolinist.jpg',
-    17: 'TheParisianGentlemen.jpg',
-    18: 'TheManhattanSocialite.jpg',
-    19: 'TheSydneySocialite.jpg',
-    20: 'TheWallStreetTitan.jpg',
-    21: 'TheAcePilot.jpg',
-    22: 'TheRocketExplorer.jpg',
-    23: 'TheCosmicVoyager.jpg',
-    24: 'TheGreatWallAdventurer.jpg',
-    25: 'TheLondonMonument.jpg',
-    26: 'TheVenetianVoyager.jpg',
-    27: 'TheBalloonVoyager.jpg',
-    28: 'TheOceanVoyager.jpg',
-    29: 'TheOceanExplorer.jpg',
-    30: 'TheParadiseExplorer.jpg',
-    31: 'TheRiverNavigator.jpg',
-    32: 'TheRiverNavi.jpg',
-    33: 'TheDesertRider.jpg',
-    34: 'TheMountainSpirit.jpg',
-    35: 'TheWIldernessExplorer.jpg',
-    36: 'TheBeachCruiser.jpg',
-    37: 'TheSkyAdventurer.jpg',
-    38: 'TheGothicRider.jpg',
-    39: 'TheCountrysideConnoisseur.jpg',
-    40: 'TheCanyonCyclist.jpg',
-    41: 'TheRegattaChampion.jpg',
-    42: 'TheRacingChampion.jpg',
-    43: 'TheSprintChampion.jpg',
-    44: 'ThePowerLifter.jpg',
-    45: 'TheJetSkiMerrymaker.jpg',
-    46: 'TheVespaVoyager.jpg',
-    47: 'TheParkRoller.jpg',
-    48: 'TheGardenSkater.jpg',
-    49: 'TheFestivalHeadliner.jpg',
-    50: 'TheHighRoller.jpg',
-    51: 'TheSteamEngineer.jpg',
-    52: 'TheEveningConnoisseur.jpg',
-    53: 'TheSunsetSophisticate.jpg',
-    54: 'TheMoonlightDreamer.jpg',
-    55: 'TheMoonWorshipper.jpg',
-    56: 'TheOceanDeity.jpg',
-    57: 'TheBallet.Patron.jpg',
-    58: 'TheWinterDancer.jpg',
-    59: 'TheDutchGardener.jpg',
-    60: 'TheTropicalGuitarist.jpg',
-    61: 'TheSafari.Lounger.jpg',
-    62: 'FIrstClassVoyager.jpg',
-    63: 'ParliamentarySession.jpg',
-    64: 'THeClubMember.jpg',
-    65: 'THeRussianAristocrat.jpg'
+    5: 'VenetianVoyager.jpg',    // Venetian Voyager - Boldly Elephunky Genesis #5 (reminted)
+    6: 'JazzVirtuoso.jpg'        // Jazz Virtuoso - Boldly Elephunky Genesis #6 (NEW TODAY)
   }
 
-  // Get real image for available NFTs (1-5)
+  // OpenSea token ID mapping (website position -> actual OpenSea token ID)
+  const openSeaTokenMapping = {
+    1: 1, // Moon Dreamer
+    2: 2, // Highland Laird  
+    3: 3, // Rail Master
+    4: 5, // High Roller (OpenSea token 5)
+    5: 4, // Venetian Voyager (OpenSea token 4)
+    6: 7  // Jazz Virtuoso (OpenSea token 7)
+  }
+
+  // Get real image for available NFTs (1-6)
   const getNFTImage = (tokenId) => {
     const imageFilename = nftImageMapping[tokenId]
     if (imageFilename) {
@@ -681,7 +632,10 @@ const GenesisPurchase = () => {
               <div 
                 key={tokenId}
                 className="relative rounded-lg border-2 border-orange-400 bg-orange-400/20 transition-all overflow-hidden cursor-pointer hover:border-orange-300 hover:bg-orange-400/30"
-                onClick={() => window.open(`https://opensea.io/assets/base/${NFT_CONTRACT}/${tokenId}`, '_blank')}
+                onClick={() => {
+                  const realTokenId = tokenId === 4 ? 5 : tokenId === 5 ? 4 : tokenId === 6 ? 7 : tokenId;
+                  window.open(`https://opensea.io/assets/base/${NFT_CONTRACT}/${realTokenId}`, '_blank');
+                }}
               >
                 {/* NFT Image */}
                 <div className="aspect-square bg-gradient-to-br from-orange-700 to-yellow-800">
