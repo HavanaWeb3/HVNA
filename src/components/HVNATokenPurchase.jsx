@@ -221,31 +221,20 @@ const HVNATokenPurchase = () => {
     }
   }
 
-  // Calculate purchase cost from contract's calculatePurchaseCost function
-  const calculateCost = async () => {
+  // Calculate purchase cost - contract will verify exact amount
+  const calculateCost = () => {
     if (!tokenAmount) return '0'
 
-    try {
-      const tokens = parseFloat(tokenAmount)
-      const tokenAmountWei = ethers.parseUnits(tokens.toString(), 18)
+    // Simple calculation - contract uses Chainlink for exact pricing
+    // This is an estimate, contract will calculate exact ETH needed
+    const tokens = parseFloat(tokenAmount)
+    const pricePerTokenUSD = isGenesisHolder ? 0.007 : 0.01
+    const totalCostUSD = tokens * pricePerTokenUSD
+    const ethPrice = 4533 // Approximate current ETH price
+    const estimatedETH = totalCostUSD / ethPrice
 
-      // Call contract's calculatePurchaseCost(tokenAmount, isGenesis)
-      const presaleABI = [
-        "function calculatePurchaseCost(uint256 tokenAmount, bool isGenesis) view returns (uint256 ethCost, uint256 usdCost)"
-      ]
-      const presaleContract = new ethers.Contract(PRESALE_CONTRACT, presaleABI, provider)
-      const [ethCost, usdCost] = await presaleContract.calculatePurchaseCost(tokenAmountWei, isGenesisHolder)
-
-      return ethers.formatEther(ethCost)
-    } catch (error) {
-      console.error('Error calculating cost:', error)
-      // Fallback calculation if contract call fails
-      const tokens = parseFloat(tokenAmount)
-      const pricePerTokenUSD = isGenesisHolder ? 0.007 : 0.01
-      const totalCostUSD = tokens * pricePerTokenUSD
-      const ethPrice = 4533 // Current ETH price
-      return (totalCostUSD / ethPrice).toFixed(6)
-    }
+    // Add 10% buffer for price fluctuations and gas
+    return (estimatedETH * 1.1).toFixed(6)
   }
 
   // Purchase tokens
@@ -269,10 +258,10 @@ const HVNATokenPurchase = () => {
       setPurchaseStatus('🔄 Network verified, purchasing tokens...')
 
       const tokenAmountWei = `0x${Math.floor(parseFloat(tokenAmount) * Math.pow(10, 18)).toString(16)}`
-      const costETH = await calculateCost() // Get ACTUAL cost from contract
+      const costETH = calculateCost() // Estimate - contract will verify exact amount
       const costWei = `0x${Math.floor(parseFloat(costETH) * Math.pow(10, 18)).toString(16)}`
 
-      console.log('CONTRACT COST: Sending', costETH, 'ETH for', tokenAmount, 'tokens')
+      console.log('ESTIMATED COST: Sending', costETH, 'ETH for', tokenAmount, 'tokens (with 10% buffer)')
 
       // Call buyTokens(uint256) function
       const buyTokensSignature = "0x3610724e" // buyTokens(uint256)
