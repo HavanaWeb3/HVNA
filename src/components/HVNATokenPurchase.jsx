@@ -202,18 +202,26 @@ const HVNATokenPurchase = () => {
     }
   }
 
-  // Check purchased token amount from presale contract
+  // Check purchased token amount from token contract
   const checkPurchasedTokens = async (address) => {
     try {
-      const balance = await tokenContract.balanceOf(address)
-      const formattedBalance = ethers.formatUnits(balance, 18)
-      const balanceNumber = parseFloat(formattedBalance)
+      // Call balanceOf(address) on token contract
+      const balanceOfSignature = "0x70a08231" // balanceOf(address)
+      const addressParam = address.slice(2).padStart(64, '0')
+      const data = balanceOfSignature + addressParam
 
-      if (balanceNumber > 0) {
-        setPurchasedTokens(balanceNumber.toLocaleString('en-US', { maximumFractionDigits: 0 }))
-      } else {
-        setPurchasedTokens("0")
-      }
+      const result = await window.ethereum.request({
+        method: 'eth_call',
+        params: [{
+          to: TOKEN_CONTRACT,
+          data: data
+        }, 'latest']
+      })
+
+      const balance = parseInt(result, 16)
+      const formattedBalance = (balance / Math.pow(10, 18)).toFixed(0)
+
+      setPurchasedTokens(formattedBalance === '0' ? '0' : parseInt(formattedBalance).toLocaleString('en-US'))
       console.log('DEBUG: Token balance checked:', formattedBalance)
     } catch (error) {
       console.error('Error checking token balance:', error)
