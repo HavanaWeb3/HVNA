@@ -26,7 +26,7 @@ const HVNATokenPurchaseWorking = () => {
   const [isGenesisHolder, setIsGenesisHolder] = useState(false)
 
   // Contract addresses
-  const TOKEN_CONTRACT = "0x9B2c154C8B6B1826Df60c81033861891680EBFab"
+  const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
   const OWNER_ADDRESS = "0x0099B85B9a5f117AfB7877A36D4BBe0388DD0F66" // Contract owner for direct transfers
   const GENESIS_NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
 
