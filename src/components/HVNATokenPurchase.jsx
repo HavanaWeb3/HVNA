@@ -60,12 +60,9 @@ const HVNATokenPurchase = () => {
             setUserAddress(connectedWallet)
             setIsConnected(true)
             setPurchaseStatus('✅ Wallet reconnected!')
-            
-            // SECURE CHECK: If wallet ends in eE05, set tokens (your secure Rabby wallet)
-            if (connectedWallet.toLowerCase().endsWith('ee05')) {
-              console.log('DEBUG: Auto-detected your SECURE wallet, setting 1000 tokens')
-              setPurchasedTokens("1,000")
-            }
+
+            // Check actual token balance from new contract
+            await checkPurchasedTokens(connectedWallet)
             
             await updateUserInfo(connectedWallet)
           }
@@ -207,9 +204,21 @@ const HVNATokenPurchase = () => {
 
   // Check purchased token amount from presale contract
   const checkPurchasedTokens = async (address) => {
-    // DISABLED: RPC calls are causing errors, tokens are already set to 1,000 in state
-    console.log('DEBUG: checkPurchasedTokens called but disabled - using hardcoded value')
-    return
+    try {
+      const balance = await tokenContract.balanceOf(address)
+      const formattedBalance = ethers.formatUnits(balance, 18)
+      const balanceNumber = parseFloat(formattedBalance)
+
+      if (balanceNumber > 0) {
+        setPurchasedTokens(balanceNumber.toLocaleString('en-US', { maximumFractionDigits: 0 }))
+      } else {
+        setPurchasedTokens("0")
+      }
+      console.log('DEBUG: Token balance checked:', formattedBalance)
+    } catch (error) {
+      console.error('Error checking token balance:', error)
+      setPurchasedTokens("0")
+    }
   }
 
   // Calculate purchase cost - FIXED CONTRACT with correct pricing
