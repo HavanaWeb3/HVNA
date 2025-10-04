@@ -36,6 +36,15 @@ const HVNATokenPurchase = () => {
   const PRESALE_CONTRACT = "0x746c20b76d5B0E3CBA8C317599BEd1D71b318d5B" // VESTING V2: 40% launch, 40% +3mo, 20% +6mo
   const GENESIS_NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
 
+  // Tiered pricing structure
+  const PRICING_TIERS = [
+    { tokens: "0 - 5M", price: 0.01, status: "LIVE NOW" },
+    { tokens: "5M - 10M", price: 0.05, status: "Next Tier" },
+    { tokens: "10M - 15M", price: 0.10, status: "Next Tier" },
+    { tokens: "15M - 20M", price: 0.15, status: "Next Tier" },
+    { tokens: "20M - 25M", price: 0.30, status: "Final Tier" }
+  ]
+
   // Connect wallet
   // Check for existing wallet connection on load
   useEffect(() => {
@@ -392,6 +401,62 @@ const HVNATokenPurchase = () => {
                 <Shield className="h-4 w-4" />
                 <span>Contract: {TOKEN_CONTRACT.slice(0, 6)}...{TOKEN_CONTRACT.slice(-4)}</span>
               </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tiered Pricing Structure */}
+      <Card className="bg-gradient-to-br from-slate-900/50 to-purple-900/30 border-yellow-500/30 backdrop-blur-md">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-yellow-400" />
+            Tiered Pricing Structure
+          </CardTitle>
+          <CardDescription className="text-gray-300">
+            Price increases as tokens sell - Early buyers get best value!
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {PRICING_TIERS.map((tier, index) => (
+              <div
+                key={index}
+                className={`p-3 rounded-lg border ${
+                  tier.status === "LIVE NOW"
+                    ? "bg-yellow-900/30 border-yellow-500/50"
+                    : "bg-slate-800/30 border-slate-700/50"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-bold text-white">{tier.tokens} tokens</div>
+                    <div className="text-sm text-gray-400">
+                      {tier.status === "LIVE NOW" && (
+                        <span className="inline-flex items-center gap-1 text-yellow-400">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                          </span>
+                          {tier.status}
+                        </span>
+                      )}
+                      {tier.status !== "LIVE NOW" && (
+                        <span className="text-gray-500">{tier.status}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-yellow-400">${tier.price.toFixed(2)}</div>
+                    <div className="text-xs text-gray-400">per token</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+            <div className="text-sm text-blue-300">
+              💡 <strong>Smart Investment:</strong> Buy now at $0.01 before the price increases to $0.05!
             </div>
           </div>
         </CardContent>
