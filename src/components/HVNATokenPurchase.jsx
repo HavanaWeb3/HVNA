@@ -29,7 +29,7 @@ const HVNATokenPurchase = () => {
   const [userBalance, setUserBalance] = useState('0')
   const [tokenAmount, setTokenAmount] = useState('1000')
   const [isGenesisHolder, setIsGenesisHolder] = useState(false)
-  const [purchasedTokens, setPurchasedTokens] = useState('1,000') // Set to 1000 since we confirmed you have tokens
+  const [purchasedTokens, setPurchasedTokens] = useState('0')
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
@@ -103,13 +103,7 @@ const HVNATokenPurchase = () => {
         setUserAddress(connectedWallet)
         setIsConnected(true)
         setPurchaseStatus('✅ Wallet connected successfully!')
-        
-        // SECURE CHECK: If wallet ends in eE05, set tokens (your secure Rabby wallet)  
-        if (connectedWallet.toLowerCase().endsWith('ee05')) {
-          console.log('DEBUG: Connected to your SECURE wallet')
-          setPurchasedTokens("1,000")
-        }
-        
+
         await updateUserInfo(connectedWallet)
       } else {
         setPurchaseStatus('❌ No accounts found')
@@ -167,15 +161,9 @@ const HVNATokenPurchase = () => {
 
       // Check Genesis NFT holder status
       await checkGenesisHolder(address)
-      
-      // DIRECT TOKEN CHECK: If this is your wallet, set tokens directly
-      if (address.toLowerCase().endsWith('a0a5')) {
-        console.log('DEBUG: Detected wallet ending in a0a5, setting 1000 tokens')
-        setPurchasedTokens("1,000")
-      } else {
-        // Check purchased token amount for other addresses
-        await checkPurchasedTokens(address)
-      }
+
+      // Check purchased token amount from vesting presale contract
+      await checkPurchasedTokens(address)
       
     } catch (error) {
       console.error('Failed to update user info:', error)
