@@ -218,9 +218,7 @@ function App() {
               <button onClick={() => scrollToSection('legal')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Legal</button>
             </div>
             <div className="flex items-center space-x-2 ml-4 lg:ml-6 xl:ml-8">
-              <Button variant="outline" className="border-purple-500 text-purple-300 hover:bg-purple-500/20 text-sm lg:text-base px-3 lg:px-4">
-                Connect Wallet
-              </Button>
+              {/* Wallet button removed - connection handled in purchase component */}
             </div>
           </div>
         </div>
@@ -298,32 +296,6 @@ function App() {
                   </div>
                 </div>
 
-                {/* Phase Timeline */}
-                <div className="mb-6">
-                  <h4 className="text-white font-semibold mb-3">Presale Timeline</h4>
-                  <div className="space-y-2">
-                    {presalePhases.map((phase, index) => (
-                      <div key={index} className={`p-3 rounded-lg ${
-                        phase.phase === currentPhase.name 
-                          ? 'bg-blue-500/20 border border-blue-500/30' 
-                          : 'bg-gray-800/30'
-                      }`}>
-                        <div className="flex justify-between items-start mb-2">
-                          <div className="flex items-center gap-3">
-                            <Badge className={`bg-${phase.color}-500 text-white text-xs`}>
-                              {phase.phase}
-                            </Badge>
-                            <span className="text-gray-300 text-sm">{phase.months}</span>
-                          </div>
-                          <div className="text-white font-bold">${phase.price}</div>
-                        </div>
-                        <div className="text-xs text-blue-300 mt-1">
-                          {phase.benefits}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
 
                 {/* FOMO Message */}
                 <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-center">
