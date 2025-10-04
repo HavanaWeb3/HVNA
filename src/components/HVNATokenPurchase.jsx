@@ -30,6 +30,8 @@ const HVNATokenPurchase = () => {
   const [tokenAmount, setTokenAmount] = useState('1000')
   const [isGenesisHolder, setIsGenesisHolder] = useState(false)
   const [purchasedTokens, setPurchasedTokens] = useState('0')
+  const [tokensSold, setTokensSold] = useState('0')
+  const [saleProgress, setSaleProgress] = useState(0)
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
@@ -45,27 +47,34 @@ const HVNATokenPurchase = () => {
     { tokens: "20M - 25M", price: 0.30, status: "Final Tier" }
   ]
 
+  // Load sale progress on page load
+  useEffect(() => {
+    if (window.ethereum) {
+      checkTokensSold()
+    }
+  }, [])
+
   // Connect wallet
   // Check for existing wallet connection on load
   useEffect(() => {
     const checkExistingConnection = async () => {
       if (window.ethereum) {
         try {
-          const accounts = await window.ethereum.request({ 
-            method: 'eth_accounts' 
+          const accounts = await window.ethereum.request({
+            method: 'eth_accounts'
           })
-          
+
           if (accounts && accounts.length > 0) {
             const connectedWallet = accounts[0]
             console.log('DEBUG: Auto-connecting to wallet:', connectedWallet)
-            
+
             // SECURITY: Block compromised wallet
             if (connectedWallet.toLowerCase().endsWith('a0a5')) {
               console.warn('SECURITY: Blocked compromised wallet connection')
               setPurchaseStatus('⚠️ Compromised wallet detected - please switch to secure wallet')
               return
             }
-            
+
             setUserAddress(connectedWallet)
             setIsConnected(true)
             setPurchaseStatus('✅ Wallet reconnected!')
@@ -196,6 +205,35 @@ const HVNATokenPurchase = () => {
       setIsGenesisHolder(balance > 0)
     } catch (error) {
       console.error('Failed to check Genesis holder status:', error)
+    }
+  }
+
+  // Check total tokens sold from presale contract
+  const checkTokensSold = async () => {
+    try {
+      // Call tokensSold() - function signature 0xd96a094a
+      const tokensSoldSignature = "0xd96a094a"
+
+      const result = await window.ethereum.request({
+        method: 'eth_call',
+        params: [{
+          to: PRESALE_CONTRACT,
+          data: tokensSoldSignature
+        }, 'latest']
+      })
+
+      const sold = parseInt(result, 16)
+      const formattedSold = (sold / Math.pow(10, 18)).toFixed(0)
+
+      setTokensSold(formattedSold)
+
+      // Calculate progress (out of 25M tokens)
+      const progressPercent = (parseFloat(formattedSold) / 25000000) * 100
+      setSaleProgress(Math.min(progressPercent, 100))
+
+      console.log('DEBUG: Tokens sold:', formattedSold, '(' + progressPercent.toFixed(2) + '%)')
+    } catch (error) {
+      console.error('Error checking tokens sold:', error)
     }
   }
 
@@ -454,6 +492,27 @@ const HVNATokenPurchase = () => {
               </div>
             ))}
           </div>
+
+          {/* Sale Progress */}
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-300 font-semibold">Presale Progress</span>
+              <span className="text-yellow-400 font-bold">{saleProgress.toFixed(2)}% Complete</span>
+            </div>
+            <div className="h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+              <div
+                className="h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 transition-all duration-1000 ease-out relative"
+                style={{ width: `${saleProgress}%` }}
+              >
+                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-gray-400">{parseInt(tokensSold).toLocaleString()} sold</span>
+              <span className="text-gray-400">25,000,000 target</span>
+            </div>
+          </div>
+
           <div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
             <div className="text-sm text-blue-300">
               💡 <strong>Smart Investment:</strong> Buy now at $0.01 before the price increases to $0.05!
