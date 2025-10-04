@@ -33,7 +33,7 @@ const HVNATokenPurchase = () => {
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
-  const PRESALE_CONTRACT = "0x00e59916fEb5995E5657c68c71929B2E28E100d0" // SECURE: New contract with secure wallet ownership
+  const PRESALE_CONTRACT = "0x90EB45B474Cf6f6449F553796464262ecCAC1023" // FIXED: Correct Genesis NFT address
   const GENESIS_NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
 
   // Connect wallet
