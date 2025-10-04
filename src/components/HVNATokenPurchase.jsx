@@ -33,7 +33,7 @@ const HVNATokenPurchase = () => {
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
-  const PRESALE_CONTRACT = "0x90EB45B474Cf6f6449F553796464262ecCAC1023" // FIXED: Correct Genesis NFT address
+  const PRESALE_CONTRACT = "0x1dAC6bb7d74DF22C00aba1Fbe90997702e0699b8" // VESTING: 40% launch, 40% +3mo, 20% +6mo
   const GENESIS_NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
 
   // Connect wallet
@@ -202,29 +202,29 @@ const HVNATokenPurchase = () => {
     }
   }
 
-  // Check purchased token amount from token contract
+  // Check purchased token amount from PRESALE contract (vesting)
   const checkPurchasedTokens = async (address) => {
     try {
-      // Call balanceOf(address) on token contract
-      const balanceOfSignature = "0x70a08231" // balanceOf(address)
+      // Call getPurchasedTokens(address) on presale contract
+      const getPurchasedSignature = "0x74be0a3f" // getPurchasedTokens(address)
       const addressParam = address.slice(2).padStart(64, '0')
-      const data = balanceOfSignature + addressParam
+      const data = getPurchasedSignature + addressParam
 
       const result = await window.ethereum.request({
         method: 'eth_call',
         params: [{
-          to: TOKEN_CONTRACT,
+          to: PRESALE_CONTRACT,
           data: data
         }, 'latest']
       })
 
-      const balance = parseInt(result, 16)
-      const formattedBalance = (balance / Math.pow(10, 18)).toFixed(0)
+      const purchased = parseInt(result, 16)
+      const formattedPurchased = (purchased / Math.pow(10, 18)).toFixed(0)
 
-      setPurchasedTokens(formattedBalance === '0' ? '0' : parseInt(formattedBalance).toLocaleString('en-US'))
-      console.log('DEBUG: Token balance checked:', formattedBalance)
+      setPurchasedTokens(formattedPurchased === '0' ? '0' : parseInt(formattedPurchased).toLocaleString('en-US'))
+      console.log('DEBUG: Purchased tokens (vesting):', formattedPurchased)
     } catch (error) {
-      console.error('Error checking token balance:', error)
+      console.error('Error checking purchased tokens:', error)
       setPurchasedTokens("0")
     }
   }
