@@ -446,11 +446,16 @@ const HVNATokenPurchase = () => {
                   <div className="flex items-center gap-2">
                     <Coins className="h-5 w-5 text-yellow-400" />
                     <span className="text-yellow-400 font-bold text-lg">
-                      Your $HVNA Tokens: {purchasedTokens}
+                      Purchased (Vesting): {purchasedTokens} $HVNA
                     </span>
                   </div>
                   <div className="text-gray-300 text-sm mt-1">
                     Total Value: ${(parseFloat(purchasedTokens.replace(/,/g, '')) * 0.01).toFixed(2)} USD
+                  </div>
+                  <div className="text-yellow-300 text-xs mt-2 bg-yellow-900/20 rounded p-2">
+                    🔒 Tokens locked until trading launch
+                    <br />
+                    📅 Vesting: 40% at launch, 40% at +3mo, 20% at +6mo
                   </div>
                 </div>
               )}

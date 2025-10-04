@@ -1,0 +1,10 @@
+{
+  "network": "base",
+  "timestamp": "2025-10-04T00:55:45.998Z",
+  "hvnaToken": "0xb5561D071b39221239a56F0379a6bb96C85fb94f",
+  "genesisNFT": "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642",
+  "oldPresale": "0x00e59916fEb5995E5657c68c71929B2E28E100d0",
+  "newPresale": "0x90EB45B474Cf6f6449F553796464262ecCAC1023",
+  "priceFeed": "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
+  "deployer": "0x12EDd8CA5D79e4f1269E4Ce9e941bD05c4ceeE05"
+}
