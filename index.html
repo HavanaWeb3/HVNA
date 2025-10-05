@@ -47,7 +47,14 @@
         <option value="general">General Updates</option>
       </select>
     </form>
-    
+
+    <form name="email-capture" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input type="text" name="wallet" />
+      <input type="text" name="purchase-type" />
+      <input type="text" name="timestamp" />
+    </form>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

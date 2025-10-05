@@ -2,17 +2,18 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { 
-  Crown, 
-  Wallet, 
-  CheckCircle, 
-  AlertCircle, 
+import {
+  Crown,
+  Wallet,
+  CheckCircle,
+  AlertCircle,
   Loader2,
   ExternalLink,
   Shield,
   Star,
   Flame
 } from 'lucide-react'
+import EmailCaptureDialog from './EmailCaptureDialog.jsx'
 
 const BoldlyElephunkyPurchase = () => {
   const [isConnected, setIsConnected] = useState(false)
@@ -22,6 +23,7 @@ const BoldlyElephunkyPurchase = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [userBalance, setUserBalance] = useState('0')
   const [ownedNFTs, setOwnedNFTs] = useState([])
+  const [showEmailCapture, setShowEmailCapture] = useState(false)
 
   // Contract details - NEW SECURE COLLECTION
   const NFT_CONTRACT = "0x815D1bfaF945aCa39049FF243D6E406e2aEc3ff5" // Boldly Elephunky Genesis
@@ -169,6 +171,11 @@ const BoldlyElephunkyPurchase = () => {
         }
       }
       setOwnedNFTs(owned)
+
+      // If user owns NFTs, show email capture to build community
+      if (owned.length > 0) {
+        setShowEmailCapture(true)
+      }
     } catch (error) {
       console.error('Failed to check owned NFTs:', error)
     }
@@ -532,6 +539,14 @@ const BoldlyElephunkyPurchase = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Email Capture Dialog */}
+      <EmailCaptureDialog
+        isOpen={showEmailCapture}
+        onClose={() => setShowEmailCapture(false)}
+        purchaseType="Boldly Elephunky NFT"
+        walletAddress={userAddress}
+      />
     </div>
   )
 }

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { 
-  Coins, 
-  Wallet, 
-  CheckCircle, 
-  AlertCircle, 
+import {
+  Coins,
+  Wallet,
+  CheckCircle,
+  AlertCircle,
   Loader2,
   ExternalLink,
   Shield,
@@ -15,6 +15,7 @@ import {
   Calculator,
   TrendingUp
 } from 'lucide-react'
+import EmailCaptureDialog from './EmailCaptureDialog.jsx'
 
 const HVNATokenPurchase = () => {
   console.log('DEBUG: HVNATokenPurchase component loaded')
@@ -32,6 +33,7 @@ const HVNATokenPurchase = () => {
   const [purchasedTokens, setPurchasedTokens] = useState('0')
   const [tokensSold, setTokensSold] = useState('0')
   const [saleProgress, setSaleProgress] = useState(0)
+  const [showEmailCapture, setShowEmailCapture] = useState(false)
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
@@ -329,6 +331,7 @@ const HVNATokenPurchase = () => {
       if (receipt && receipt.status === '0x1') {
         setPurchaseStatus('🎉 $HVNA tokens purchased successfully!')
         await updateUserInfo(userAddress) // Refresh user info including purchased tokens
+        setShowEmailCapture(true) // Show email capture dialog after successful purchase
       } else {
         setPurchaseStatus('❌ Transaction failed')
       }
@@ -737,6 +740,14 @@ const HVNATokenPurchase = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Email Capture Dialog */}
+      <EmailCaptureDialog
+        isOpen={showEmailCapture}
+        onClose={() => setShowEmailCapture(false)}
+        purchaseType="HVNA Token"
+        walletAddress={userAddress}
+      />
     </div>
   )
 }
