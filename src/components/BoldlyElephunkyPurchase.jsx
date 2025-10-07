@@ -79,7 +79,7 @@ const BoldlyElephunkyPurchase = () => {
   // Connect wallet
   const connectWallet = async () => {
     if (!window.ethereum) {
-      setPurchaseStatus('❌ MetaMask not installed. Please install MetaMask extension.')
+      setPurchaseStatus('❌ Web3 wallet not detected. Please install MetaMask, Rabby, Coinbase Wallet, or another Web3 wallet.')
       return
     }
 
@@ -365,7 +365,7 @@ const BoldlyElephunkyPurchase = () => {
                   fontSize: '16px'
                 }}
               >
-                {isLoading ? 'Connecting...' : '🔗 Connect MetaMask'}
+                {isLoading ? 'Connecting...' : '🔗 Connect Wallet'}
               </button>
             </div>
           ) : (

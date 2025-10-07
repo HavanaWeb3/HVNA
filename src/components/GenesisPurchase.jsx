@@ -75,9 +75,9 @@ const GenesisPurchase = () => {
 
   // Connect wallet - simplified approach
   const connectWallet = async () => {
-    // Check if MetaMask is installed
+    // Check if Web3 wallet is installed
     if (!window.ethereum) {
-      setPurchaseStatus('❌ MetaMask not installed. Please install MetaMask extension.')
+      setPurchaseStatus('❌ Web3 wallet not detected. Please install MetaMask, Rabby, Coinbase Wallet, or another Web3 wallet.')
       return
     }
 
@@ -562,7 +562,7 @@ const GenesisPurchase = () => {
                   fontSize: '16px'
                 }}
               >
-                {isLoading ? 'Connecting...' : '🔗 Connect MetaMask'}
+                {isLoading ? 'Connecting...' : '🔗 Connect Wallet'}
               </button>
             </div>
           ) : (
