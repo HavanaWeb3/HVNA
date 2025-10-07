@@ -61,10 +61,10 @@ contract TokenPreSaleVesting {
     mapping(address => uint256) public claimedAmount;
     mapping(address => bool) public hasClaimedGenesisBenefit;
 
-    // Purchase limits
-    uint256 public minPurchase = 1000 * 10**18;
-    uint256 public maxPurchaseGenesis = 50000 * 10**18;
-    uint256 public maxPurchasePublic = 25000 * 10**18;
+    // Purchase limits (owner can update for flexibility)
+    uint256 public minPurchase = 1000 * 10**18;  // $10 minimum
+    uint256 public maxPurchaseGenesis = 1000000 * 10**18;  // $10,000 maximum for Genesis
+    uint256 public maxPurchasePublic = 1000000 * 10**18;  // $10,000 maximum for Public
 
     bool public saleActive = false;
 
@@ -294,6 +294,28 @@ contract TokenPreSaleVesting {
         require(_genesisDiscountPercent <= 100, "Invalid discount");
         tokenPriceUSDCents = _tokenPriceUSDCents;
         genesisDiscountPercent = _genesisDiscountPercent;
+    }
+
+    // New function: Update purchase limits for flexibility
+    function setPurchaseLimits(
+        uint256 _minPurchase,
+        uint256 _maxPurchaseGenesis,
+        uint256 _maxPurchasePublic
+    ) public onlyOwner {
+        require(_minPurchase > 0, "Min purchase must be > 0");
+        require(_maxPurchaseGenesis >= _minPurchase, "Max Genesis must be >= min");
+        require(_maxPurchasePublic >= _minPurchase, "Max Public must be >= min");
+
+        minPurchase = _minPurchase;
+        maxPurchaseGenesis = _maxPurchaseGenesis;
+        maxPurchasePublic = _maxPurchasePublic;
+    }
+
+    // Admin function to migrate purchases from old presale
+    function migratePurchase(address buyer, uint256 amount) public onlyOwner {
+        require(amount > 0, "Amount must be greater than 0");
+        purchasedAmount[buyer] += amount;
+        tokensSold += amount;
     }
 
     function withdrawETH() public onlyOwner {
