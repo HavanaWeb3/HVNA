@@ -37,7 +37,7 @@ const HVNATokenPurchase = () => {
 
   // Contract addresses - deployed on Base mainnet
   const TOKEN_CONTRACT = "0xb5561D071b39221239a56F0379a6bb96C85fb94f"
-  const PRESALE_CONTRACT = "0x746c20b76d5B0E3CBA8C317599BEd1D71b318d5B" // VESTING V2: 40% launch, 40% +3mo, 20% +6mo
+  const PRESALE_CONTRACT = "0x2cCE8fA9C5A369145319EB4906a47B319c639928" // VESTING V3: $10-$10,000 limits, 40% launch, 40% +3mo, 20% +6mo
   const GENESIS_NFT_CONTRACT = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"
 
   // Tiered pricing structure
