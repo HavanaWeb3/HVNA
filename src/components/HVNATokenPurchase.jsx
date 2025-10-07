@@ -531,6 +531,9 @@ const HVNATokenPurchase = () => {
             <Wallet className="h-5 w-5" />
             Wallet Connection
           </CardTitle>
+          <CardDescription className="text-yellow-400 text-sm">
+            ⚠️ You need ETH on Base network for gas fees. If you only have mainnet ETH, bridge it at <a href="https://bridge.base.org" target="_blank" className="underline">bridge.base.org</a>
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {!isConnected ? (
