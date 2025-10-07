@@ -494,7 +494,7 @@ const GenesisPurchase = () => {
                   <div className="mt-3 flex flex-wrap items-center gap-2">
                     <span className="text-gray-300">Need Base ETH?</span>
                     <a
-                      href="https://bridge.base.org"
+                      href="https://superbridge.app/base"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm transition-colors"
