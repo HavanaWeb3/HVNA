@@ -417,9 +417,42 @@ const HVNATokenPurchase = () => {
           $HVNA Token Presale
         </h2>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-          Join the HVNA ecosystem with utility tokens that provide real-world benefits. 
+          Join the HVNA ecosystem with utility tokens that provide real-world benefits.
           Genesis NFT holders get exclusive 30% discount!
         </p>
+
+        {/* Base Network Notice - Prominent */}
+        <div className="mt-6 max-w-4xl mx-auto">
+          <Card className="bg-gradient-to-r from-blue-900/40 to-green-900/40 border-green-500/50 backdrop-blur-md">
+            <CardContent className="pt-6 pb-6">
+              <div className="flex items-start gap-3">
+                <div className="bg-green-500/20 rounded-full p-2">
+                  <CheckCircle className="h-6 w-6 text-green-400" />
+                </div>
+                <div className="text-left flex-1">
+                  <h3 className="text-white font-bold text-lg mb-2">💡 Pay with Regular ETH - Save on Gas Fees!</h3>
+                  <p className="text-gray-200 leading-relaxed">
+                    You can purchase $HVNA tokens using your regular ETH. We use the <strong className="text-green-400">Base blockchain</strong> for
+                    significantly lower gas fees (typically $0.50-$2 instead of $20-$100 on Ethereum mainnet).
+                    You'll need a small amount of <strong className="text-green-400">Base ETH</strong> to pay the minimal gas fees.
+                  </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <span className="text-gray-300">Need Base ETH?</span>
+                    <a
+                      href="https://bridge.base.org"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm transition-colors"
+                    >
+                      Bridge ETH to Base <ExternalLink className="h-3 w-3" />
+                    </a>
+                    <span className="text-gray-400 text-sm">(Takes 2-3 minutes)</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Trust & Credibility */}
@@ -531,9 +564,6 @@ const HVNATokenPurchase = () => {
             <Wallet className="h-5 w-5" />
             Wallet Connection
           </CardTitle>
-          <CardDescription className="text-yellow-400 text-sm">
-            ⚠️ You need ETH on Base network for gas fees. If you only have mainnet ETH, bridge it at <a href="https://bridge.base.org" target="_blank" className="underline">bridge.base.org</a>
-          </CardDescription>
         </CardHeader>
         <CardContent>
           {!isConnected ? (
