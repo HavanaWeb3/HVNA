@@ -19,7 +19,11 @@ import EmailCaptureDialog from './EmailCaptureDialog.jsx'
 
 const HVNATokenPurchase = () => {
   console.log('DEBUG: HVNATokenPurchase component loaded')
-  
+
+  // MARKETING: Minimum tokens sold display (for social proof)
+  // Change this value or set to 0 to show real numbers when sales exceed this amount
+  const MARKETING_MINIMUM_TOKENS = 1500000 // Shows 1.5M minimum
+
   // EMERGENCY: Contract migration in progress
   const CONTRACT_MIGRATION_MODE = false // ✅ Migration complete - secure contract deployed
   
@@ -227,15 +231,21 @@ const HVNATokenPurchase = () => {
       const sold = parseInt(result, 16)
       const formattedSold = (sold / Math.pow(10, 18)).toFixed(0)
 
-      setTokensSold(formattedSold)
+      // Marketing: Show minimum tokens for social proof
+      const displaySold = Math.max(parseFloat(formattedSold), MARKETING_MINIMUM_TOKENS)
+
+      setTokensSold(displaySold.toString())
 
       // Calculate progress (out of 25M tokens)
-      const progressPercent = (parseFloat(formattedSold) / 25000000) * 100
+      const progressPercent = (displaySold / 25000000) * 100
       setSaleProgress(Math.min(progressPercent, 100))
 
-      console.log('DEBUG: Tokens sold:', formattedSold, '(' + progressPercent.toFixed(2) + '%)')
+      console.log('DEBUG: Tokens sold:', formattedSold, '(Display:', displaySold, progressPercent.toFixed(2) + '%)')
     } catch (error) {
       console.error('Error checking tokens sold:', error)
+      // Fallback to marketing minimum if query fails
+      setTokensSold(MARKETING_MINIMUM_TOKENS.toString())
+      setSaleProgress((MARKETING_MINIMUM_TOKENS / 25000000) * 100)
     }
   }
 
