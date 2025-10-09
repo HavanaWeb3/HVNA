@@ -209,6 +209,7 @@ function App() {
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">NFTs</button>
               <button onClick={() => scrollToSection('boldly-elephunky')} className="text-gray-300 hover:text-orange-400 transition-colors font-semibold text-sm lg:text-base">🔥 Boldly Elephunky</button>
               <button onClick={() => scrollToSection('genesis')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Buy Genesis</button>
+              <button onClick={() => window.open('https://contentlynk.com/beta', '_blank')} className="text-gray-300 hover:text-purple-400 transition-colors font-semibold text-sm lg:text-base">🎯 Creator Beta</button>
               <button onClick={() => window.open('/whitepaper.html', '_blank')} className="text-gray-300 hover:text-yellow-400 transition-colors text-sm lg:text-base">Whitepaper</button>
               <button onClick={() => scrollToSection('roadmap')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Roadmap</button>
               <button onClick={() => scrollToSection('community')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Community</button>
