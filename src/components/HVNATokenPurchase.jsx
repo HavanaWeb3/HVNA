@@ -22,7 +22,7 @@ const HVNATokenPurchase = () => {
 
   // MARKETING: Minimum tokens sold display (for social proof)
   // Change this value or set to 0 to show real numbers when sales exceed this amount
-  const MARKETING_MINIMUM_TOKENS = 1500000 // Shows 1.5M minimum
+  const MARKETING_MINIMUM_TOKENS = 1650000 // Shows 1.65M minimum
 
   // EMERGENCY: Contract migration in progress
   const CONTRACT_MIGRATION_MODE = false // ✅ Migration complete - secure contract deployed

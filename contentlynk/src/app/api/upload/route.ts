@@ -40,34 +40,20 @@ export async function POST(request: NextRequest) {
     const timestamp = Date.now()
     const randomId = Math.random().toString(36).substring(7)
     const extension = file.name.split('.').pop() || 'jpg'
-    const filename = `posts/${session.user.id}/${timestamp}-${randomId}.${extension}`
+    const blobFilename = `posts/${session.user.id}/${timestamp}-${randomId}.${extension}`
 
     try {
-      // For development, we'll simulate the upload and return a placeholder URL
-      // In production with real Vercel Blob token, this would upload to Vercel Blob Storage
-      if (process.env.BLOB_READ_WRITE_TOKEN === 'demo-token-replace-with-real-vercel-blob-token') {
-        // Development mode - convert file to base64 data URL to show actual uploaded image
-        const bytes = await file.arrayBuffer()
-        const buffer = Buffer.from(bytes)
-        const base64 = buffer.toString('base64')
-        const dataUrl = `data:${file.type};base64,${base64}`
-
-        console.log('🖼️ Image upload debug:')
-        console.log('- File name:', file.name)
-        console.log('- File size:', file.size)
-        console.log('- File type:', file.type)
-        console.log('- Data URL length:', dataUrl.length)
-
-        return NextResponse.json({
-          url: dataUrl,
-          filename: file.name
-        })
-      }
-
-      // Production mode - upload to Vercel Blob
-      const blob = await put(filename, file, {
+      // Upload to Vercel Blob Storage
+      // Note: Vercel automatically provides BLOB_READ_WRITE_TOKEN when blob store is linked
+      const blob = await put(blobFilename, file, {
         access: 'public',
       })
+
+      console.log('🖼️ Image upload success:')
+      console.log('- File name:', file.name)
+      console.log('- File size:', file.size)
+      console.log('- File type:', file.type)
+      console.log('- Blob URL:', blob.url)
 
       return NextResponse.json({
         url: blob.url,
@@ -75,8 +61,13 @@ export async function POST(request: NextRequest) {
       })
     } catch (uploadError) {
       console.error('Upload error:', uploadError)
+      console.error('Blob token present:', !!process.env.BLOB_READ_WRITE_TOKEN)
+
       return NextResponse.json(
-        { error: 'Failed to upload image' },
+        {
+          error: 'Failed to upload image. Please ensure Vercel Blob storage is configured.',
+          details: uploadError instanceof Error ? uploadError.message : 'Unknown error'
+        },
         { status: 500 }
       )
     }

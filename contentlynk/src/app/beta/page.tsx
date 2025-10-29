@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { useState } from 'react'
 
@@ -23,21 +24,32 @@ export default function BetaPage() {
     setMessage('')
 
     try {
-      // TODO: Implement actual form submission to your backend
-      // For now, we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      setMessage('Thank you for applying! We\'ll review your application and get back to you within 48 hours.')
-      setFormData({
-        name: '',
-        email: '',
-        platform: '',
-        niche: '',
-        posts: '',
-        engagement: '',
-        reason: ''
+      const response = await fetch('/api/beta-applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setMessage(result.message || 'Thank you for applying! We\'ll review your application and get back to you within 48 hours.')
+        setFormData({
+          name: '',
+          email: '',
+          platform: '',
+          niche: '',
+          posts: '',
+          engagement: '',
+          reason: ''
+        })
+      } else {
+        setMessage(result.error || 'Failed to submit application. Please try again.')
+      }
     } catch (error) {
+      console.error('Submission error:', error)
       setMessage('Oops! Something went wrong. Please try again.')
     } finally {
       setIsSubmitting(false)
@@ -54,8 +66,17 @@ export default function BetaPage() {
       <nav className="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <Link href="/" className="text-2xl font-bold text-indigo-600">
-              🐘 Contentlynk
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-12 h-12 transition-transform group-hover:rotate-6">
+                <Image
+                  src="/images/contentlynk-logo.png"
+                  alt="Contentlynk"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <span className="text-2xl font-bold text-indigo-600">Contentlynk</span>
             </Link>
             <div className="flex items-center space-x-4">
               <Link href="/">
@@ -72,11 +93,24 @@ export default function BetaPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
+          {/* Hero Logo */}
+          <div className="flex justify-center mb-8 animate-fadeInDown">
+            <div className="relative w-32 h-32 md:w-48 md:h-48 transition-transform hover:scale-105 filter drop-shadow-2xl">
+              <Image
+                src="/images/contentlynk-logo.png"
+                alt="Contentlynk - Fair Creator Compensation Platform"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+
           <div className="inline-block bg-white/20 backdrop-blur-md px-6 py-2 rounded-full text-sm font-semibold mb-6">
-            🎯 LIMITED: 100 Beta Creator Spots
+            🎯 LIMITED: 1,000 Beta Creator Spots
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            🐘 Get Paid For Your Content<br />From Day One
+            Get Paid For Your Content<br />From Day One
           </h1>
           <p className="text-xl md:text-2xl mb-8 opacity-95">
             55-75% revenue share • Zero follower minimums • Instant earnings
@@ -101,7 +135,7 @@ export default function BetaPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-2xl shadow-md text-center">
-              <div className="text-4xl md:text-5xl font-bold text-indigo-600 mb-2">100</div>
+              <div className="text-4xl md:text-5xl font-bold text-indigo-600 mb-2">1,000</div>
               <div className="text-gray-600 text-lg">Beta Creator Spots</div>
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-md text-center">
@@ -179,6 +213,31 @@ export default function BetaPage() {
         </div>
       </section>
 
+      {/* Why 1,000 Creators Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12">🎯 Why 1,000 Creators?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold mb-3">Natural Gaming Protection</h3>
+              <p className="text-gray-600 leading-relaxed">Scale provides natural gaming protection through economic dilution</p>
+            </div>
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold mb-3">Real Network Effects</h3>
+              <p className="text-gray-600 leading-relaxed">1,000 diverse creators generate real network effects and authentic social dynamics</p>
+            </div>
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold mb-3">Complete Testing Coverage</h3>
+              <p className="text-gray-600 leading-relaxed">Larger pool ensures we test with every creator type and content niche</p>
+            </div>
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold mb-3">Coordination Resistance</h3>
+              <p className="text-gray-600 leading-relaxed">Coordination becomes mathematically impossible with this many participants</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Earnings Calculator CTA */}
       <section className="py-16 px-4 text-center bg-gradient-to-r from-orange-500 to-orange-600 text-white">
         <h2 className="text-4xl font-bold mb-4">See What You Could Earn</h2>
@@ -197,7 +256,7 @@ export default function BetaPage() {
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-4">Apply for Beta Access</h2>
           <p className="text-xl text-center mb-8 opacity-95">
-            Be among the first 100 creators to shape the future of fair creator compensation
+            Be among the first 1,000 creators to shape the future of fair creator compensation
           </p>
 
           <form onSubmit={handleSubmit} className="bg-white text-gray-900 p-8 rounded-2xl shadow-xl">
@@ -322,7 +381,7 @@ export default function BetaPage() {
             {[
               {
                 q: 'When does beta launch?',
-                a: 'We\'re planning beta launch for Q2 2026. The first 100 approved creators will get early access and founding member benefits.'
+                a: 'We\'re planning beta launch for Q2 2026. The first 1,000 approved creators will get early access and founding member benefits.'
               },
               {
                 q: 'Do I need followers to apply?',
@@ -343,6 +402,10 @@ export default function BetaPage() {
               {
                 q: 'What happens after beta?',
                 a: 'Beta creators become founding members with permanent benefits, including enhanced revenue share, platform governance rights, and exclusive features for life.'
+              },
+              {
+                q: 'Why 1,000 creators instead of a smaller beta?',
+                a: 'Larger beta groups prevent coordination and gaming of the reward system through dilution. With 1,000 diverse creators, the platform generates real social dynamics and network effects while making it economically unviable for anyone to game the system. This gives us better data and a more realistic test environment.'
               }
             ].map((faq, index) => (
               <div key={index} className="bg-gray-50 p-6 rounded-xl">

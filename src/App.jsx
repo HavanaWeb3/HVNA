@@ -28,7 +28,8 @@ import {
   HelpCircle
 } from 'lucide-react'
 import heroImage from './assets/hero_mockup.png'
-import HVNATokenPurchase from './components/HVNATokenPurchase.jsx'
+import HVNATokenPurchaseMultiChain from './components/HVNATokenPurchaseMultiChain.jsx'
+// import HVNATokenPurchase from './components/HVNATokenPurchase.jsx' // Old single-chain version
 import BoldlyElephunkyPurchase from './components/BoldlyElephunkyPurchase.jsx'
 import './App.css'
 
@@ -539,7 +540,7 @@ function App() {
       {/* $HVNA Token Purchase Section */}
       <section id="tokens" className="py-20 bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <HVNATokenPurchase />
+          <HVNATokenPurchaseMultiChain />
         </div>
       </section>
 

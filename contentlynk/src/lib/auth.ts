@@ -19,7 +19,9 @@ const registerSchema = z.object({
 })
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // Note: Cannot use adapter with CredentialsProvider
+  // adapter: PrismaAdapter(prisma),
+  debug: true, // Enable debug mode
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -73,26 +75,27 @@ export const authOptions: NextAuthOptions = {
             // Hash password
             const hashedPassword = await bcrypt.hash(validatedData.password, 12)
 
-            // Create new user
+            // Create new user with hashed password
             const user = await prisma.user.create({
               data: {
                 email: validatedData.email,
                 username: validatedData.username,
                 displayName: validatedData.displayName || validatedData.username,
-                // Note: We'll store password in a separate table for security
+                password: hashedPassword,
               },
             })
 
-            // For now, return the user without storing password
-            // In production, implement proper password storage
             return {
               id: user.id,
               email: user.email!,
               username: user.username,
               displayName: user.displayName || undefined,
+              isAdmin: user.isAdmin,
             }
           } else {
             // Login attempt
+            console.log('Login attempt for:', credentials.email)
+
             const validatedData = loginSchema.parse({
               email: credentials.email,
               password: credentials.password,
@@ -102,17 +105,34 @@ export const authOptions: NextAuthOptions = {
               where: { email: validatedData.email },
             })
 
-            if (!user) {
+            console.log('User found:', !!user)
+            console.log('User has password:', !!user?.password)
+
+            if (!user || !user.password) {
+              console.log('Login failed: No user or no password')
               return null
             }
 
-            // For MVP, we'll implement simple auth
-            // In production, verify password hash
+            // Verify password hash
+            const isPasswordValid = await bcrypt.compare(
+              validatedData.password,
+              user.password
+            )
+
+            console.log('Password valid:', isPasswordValid)
+
+            if (!isPasswordValid) {
+              console.log('Login failed: Invalid password')
+              return null
+            }
+
+            console.log('Login successful for:', user.email)
             return {
               id: user.id,
               email: user.email!,
               username: user.username,
               displayName: user.displayName || undefined,
+              isAdmin: user.isAdmin,
             }
           }
         } catch (error) {
@@ -130,6 +150,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.username = user.username
         token.displayName = user.displayName
+        token.isAdmin = user.isAdmin
       }
       return token
     },
@@ -138,12 +159,24 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub!
         session.user.username = token.username
         session.user.displayName = token.displayName
+        session.user.isAdmin = token.isAdmin
       }
       return session
     },
   },
   pages: {
     signIn: '/auth/signin',
+  },
+  logger: {
+    error(code, metadata) {
+      console.error('NextAuth Error:', code, metadata)
+    },
+    warn(code) {
+      console.warn('NextAuth Warning:', code)
+    },
+    debug(code, metadata) {
+      console.log('NextAuth Debug:', code, metadata)
+    }
   },
 }
 
@@ -152,6 +185,7 @@ declare module 'next-auth' {
   interface User {
     username?: string
     displayName?: string
+    isAdmin?: boolean
   }
 
   interface Session {
@@ -160,6 +194,7 @@ declare module 'next-auth' {
       email: string
       username?: string
       displayName?: string
+      isAdmin?: boolean
     }
   }
 }
@@ -168,5 +203,6 @@ declare module 'next-auth/jwt' {
   interface JWT {
     username?: string
     displayName?: string
+    isAdmin?: boolean
   }
 }
