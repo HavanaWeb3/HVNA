@@ -1,0 +1,18 @@
+{
+  "network": "ethereum",
+  "chainId": 1,
+  "chainName": "Ethereum",
+  "presaleContract": "0x770008bd750c230000D7f581a454c8eE437ab7F8",
+  "hvnaToken": "0x0000000000000000000000000000000000000000",
+  "genesisNFT": "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642",
+  "ethUsdPriceFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+  "usdtToken": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+  "deployer": "0x12EDd8CA5D79e4f1269E4Ce9e941bD05c4ceeE05",
+  "deployedAt": "2025-10-29T11:20:25.112Z",
+  "genesisPhaseStart": 1761736794,
+  "genesisPhaseEnd": 1762341594,
+  "publicPhaseStart": 1762341594,
+  "publicPhaseEnd": 1764933594,
+  "saleActive": true,
+  "usdtPaymentsEnabled": true
+}

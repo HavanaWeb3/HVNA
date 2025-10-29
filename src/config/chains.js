@@ -31,15 +31,15 @@ export const USDT_ADDRESSES = {
 };
 
 // Presale Contract Addresses
-// NOTE: Currently using Base contract for all chains (for UI testing)
-// Deploy actual multi-chain contracts later and update these addresses
 export const PRESALE_ADDRESSES = {
-  [CHAIN_IDS.ETHEREUM]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Using Base contract temporarily
-  [CHAIN_IDS.BSC]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Using Base contract temporarily
-  [CHAIN_IDS.BASE]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Current Base presale (V3) - LIVE
-  // Testnets
-  [CHAIN_IDS.SEPOLIA]: "0x0000000000000000000000000000000000000000",
-  [CHAIN_IDS.BSC_TESTNET]: "0x0000000000000000000000000000000000000000",
+  // Mainnets
+  [CHAIN_IDS.ETHEREUM]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Using Base contract temporarily - deploy later
+  [CHAIN_IDS.BSC]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Using Base contract temporarily - deploy later
+  [CHAIN_IDS.BASE]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Current Base presale (V3) - LIVE ✅
+
+  // Testnets (for testing with free tokens!)
+  [CHAIN_IDS.SEPOLIA]: "0x770008bd750c230000D7f581a454c8eE437ab7F8", // LIVE - Test ETH purchases! ✅
+  [CHAIN_IDS.BSC_TESTNET]: "0x0000000000000000000000000000000000000000", // Deploy next
   [CHAIN_IDS.BASE_SEPOLIA]: "0x0000000000000000000000000000000000000000"
 };
 
@@ -257,6 +257,26 @@ export function getChainName(chainId) {
 export function toHexChainId(chainId) {
   return `0x${chainId.toString(16)}`;
 }
+
+// Add Sepolia to supported chains for testing
+CHAIN_CONFIG[CHAIN_IDS.SEPOLIA] = {
+  id: CHAIN_IDS.SEPOLIA,
+  name: "Sepolia Testnet",
+  shortName: "Sepolia",
+  nativeCurrency: {
+    name: "Sepolia Ether",
+    symbol: "ETH",
+    decimals: 18
+  },
+  rpcUrls: ["https://ethereum-sepolia-rpc.publicnode.com"],
+  blockExplorerUrls: ["https://sepolia.etherscan.io"],
+  icon: "🔷",
+  color: "#627EEA",
+  paymentTokens: ["ETH"],
+  avgGasFee: "FREE (Testnet)",
+  gasFeeTier: "free",
+  bestFor: "Testing with free tokens"
+};
 
 export default {
   CHAIN_IDS,

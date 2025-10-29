@@ -17,9 +17,10 @@ module.exports = {
       url: "http://127.0.0.1:8545"
     },
     sepolia: {
-      url: process.env.INFURA_PROJECT_ID ? `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}` : 'https://eth-sepolia.g.alchemy.com/v2/demo',
+      url: process.env.INFURA_PROJECT_ID ? `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}` : 'https://ethereum-sepolia-rpc.publicnode.com',
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
-      timeout: 60000
+      timeout: 120000,
+      gasPrice: 20000000000 // 20 gwei
     },
     mainnet: {
       url: process.env.INFURA_PROJECT_ID ? `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}` : 'https://cloudflare-eth.com',
