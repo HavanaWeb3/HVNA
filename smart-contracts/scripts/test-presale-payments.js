@@ -8,8 +8,14 @@
  *   # Test Ethereum deployment
  *   npx hardhat run scripts/test-presale-payments.js --network mainnet
  *
+ *   # Test Sepolia testnet deployment
+ *   npx hardhat run scripts/test-presale-payments.js --network sepolia
+ *
  *   # Test BSC deployment
  *   npx hardhat run scripts/test-presale-payments.js --network bsc
+ *
+ *   # Test BSC testnet deployment
+ *   npx hardhat run scripts/test-presale-payments.js --network bscTestnet
  *
  *   # Test Base deployment
  *   npx hardhat run scripts/test-presale-payments.js --network base
@@ -28,14 +34,14 @@ async function main() {
 
   // Load deployment info
   let deploymentFile;
-  if (network === "mainnet") {
+  if (network === "mainnet" || network === "sepolia") {
     deploymentFile = "deployment-ethereum-presale.json";
-  } else if (network === "bsc") {
+  } else if (network === "bsc" || network === "bscTestnet") {
     deploymentFile = "deployment-bsc-presale.json";
   } else if (network === "base") {
     deploymentFile = "deployment-base-final-fixed.json";
   } else {
-    console.error("❌ Unknown network. Please specify --network mainnet, bsc, or base");
+    console.error("❌ Unknown network. Please specify --network mainnet, sepolia, bsc, bscTestnet, or base");
     process.exit(1);
   }
 
@@ -123,7 +129,7 @@ async function main() {
     const [costPublic, usdCostPublic] = await presale.calculatePurchaseCost(tokenAmount, false, true);
 
     // BSC USDT uses 18 decimals, Ethereum/Base use 6
-    const decimals = network === "bsc" ? 18 : 6;
+    const decimals = (network === "bsc" || network === "bscTestnet") ? 18 : 6;
 
     console.log("  Genesis Holder:");
     console.log(`    ✅ USDT Cost: ${Number(costGenesis) / (10 ** decimals)} USDT`);
@@ -212,8 +218,12 @@ async function main() {
   console.log("🔗 View Contract:");
   if (network === "mainnet") {
     console.log(`   https://etherscan.io/address/${presaleAddress}`);
+  } else if (network === "sepolia") {
+    console.log(`   https://sepolia.etherscan.io/address/${presaleAddress}`);
   } else if (network === "bsc") {
     console.log(`   https://bscscan.com/address/${presaleAddress}`);
+  } else if (network === "bscTestnet") {
+    console.log(`   https://testnet.bscscan.com/address/${presaleAddress}`);
   } else if (network === "base") {
     console.log(`   https://basescan.org/address/${presaleAddress}`);
   }

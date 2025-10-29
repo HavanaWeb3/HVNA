@@ -1,11 +1,15 @@
 /**
- * Deploy Multi-Chain Presale Contract to Ethereum Mainnet
+ * Deploy Multi-Chain Presale Contract to Ethereum Mainnet or Sepolia Testnet
  *
  * This script deploys the TokenPreSaleMultiChain contract to Ethereum mainnet
- * with ETH and USDT payment support.
+ * or Sepolia testnet with ETH and USDT payment support.
  *
  * Usage:
+ *   # Deploy to mainnet
  *   npx hardhat run scripts/deploy-presale-ethereum.js --network mainnet
+ *
+ *   # Deploy to Sepolia testnet (FREE testing!)
+ *   npx hardhat run scripts/deploy-presale-ethereum.js --network sepolia
  */
 
 const hre = require("hardhat");
@@ -13,7 +17,10 @@ const fs = require("fs");
 const path = require("path");
 
 async function main() {
-  console.log("🚀 Deploying TokenPreSaleMultiChain to Ethereum Mainnet...\n");
+  const network = hre.network.name;
+  const isTestnet = network === "sepolia";
+
+  console.log(`🚀 Deploying TokenPreSaleMultiChain to ${isTestnet ? "Sepolia Testnet" : "Ethereum Mainnet"}...\n`);
 
   // Get deployer account
   const [deployer] = await hre.ethers.getSigners();
@@ -22,12 +29,16 @@ async function main() {
   const balance = await hre.ethers.provider.getBalance(deployer.address);
   console.log("Account balance:", hre.ethers.formatEther(balance), "ETH\n");
 
-  // Contract addresses on Ethereum Mainnet
+  // Contract addresses - different for testnet vs mainnet
   const HVNA_TOKEN_ADDRESS = "0x0000000000000000000000000000000000000000"; // Not on Ethereum - tokens claimed on Base
   const GENESIS_NFT_ADDRESS = "0x84bb6c7Bf82EE8c455643A7D613F9B160aeC0642"; // Assuming cross-chain NFT verification
-  const ETH_USD_PRICE_FEED = "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"; // Chainlink ETH/USD on Ethereum
-  const USDT_TOKEN_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7"; // USDT on Ethereum (6 decimals)
-  const CHAIN_NAME = "Ethereum";
+  const ETH_USD_PRICE_FEED = isTestnet
+    ? "0x694AA1769357215DE4FAC081bf1f309aDC325306" // Chainlink ETH/USD on Sepolia
+    : "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"; // Chainlink ETH/USD on Ethereum Mainnet
+  const USDT_TOKEN_ADDRESS = isTestnet
+    ? "0x0000000000000000000000000000000000000000" // No USDT on Sepolia (use mock or skip)
+    : "0xdAC17F958D2ee523a2206206994597C13D831ec7"; // USDT on Ethereum (6 decimals)
+  const CHAIN_NAME = isTestnet ? "Sepolia" : "Ethereum";
 
   // Phase timing (Unix timestamps)
   const now = Math.floor(Date.now() / 1000);
@@ -95,8 +106,8 @@ async function main() {
 
   // Save deployment info
   const deploymentInfo = {
-    network: "ethereum",
-    chainId: 1,
+    network: isTestnet ? "sepolia" : "ethereum",
+    chainId: isTestnet ? 11155111 : 1,
     chainName: CHAIN_NAME,
     presaleContract: presaleAddress,
     hvnaToken: HVNA_TOKEN_ADDRESS,
@@ -122,10 +133,10 @@ async function main() {
   console.log();
   console.log("📝 Next Steps:");
   console.log("1. Verify contract on Etherscan:");
-  console.log(`   npx hardhat verify --network mainnet ${presaleAddress} "${HVNA_TOKEN_ADDRESS}" "${GENESIS_NFT_ADDRESS}" "${ETH_USD_PRICE_FEED}" "${USDT_TOKEN_ADDRESS}" "${CHAIN_NAME}" ${GENESIS_PHASE_START} ${GENESIS_PHASE_END} ${PUBLIC_PHASE_START} ${PUBLIC_PHASE_END}`);
+  console.log(`   npx hardhat verify --network ${network} ${presaleAddress} "${HVNA_TOKEN_ADDRESS}" "${GENESIS_NFT_ADDRESS}" "${ETH_USD_PRICE_FEED}" "${USDT_TOKEN_ADDRESS}" "${CHAIN_NAME}" ${GENESIS_PHASE_START} ${GENESIS_PHASE_END} ${PUBLIC_PHASE_START} ${PUBLIC_PHASE_END}`);
   console.log("2. Update frontend with new contract address");
   console.log("3. Test purchases with small amounts first");
-  console.log("4. Monitor contract at:", `https://etherscan.io/address/${presaleAddress}`);
+  console.log("4. Monitor contract at:", isTestnet ? `https://sepolia.etherscan.io/address/${presaleAddress}` : `https://etherscan.io/address/${presaleAddress}`);
 }
 
 main()
