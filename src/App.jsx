@@ -205,6 +205,7 @@ function App() {
             </div>
             <div className="hidden md:flex items-center space-x-3 lg:space-x-4 xl:space-x-6">
               <button onClick={() => scrollToSection('about')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">About</button>
+              <button onClick={() => scrollToSection('founder')} className="text-gray-300 hover:text-yellow-400 transition-colors text-sm lg:text-base font-semibold">Founder</button>
               <button onClick={() => scrollToSection('tokenomics')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">Tokenomics</button>
               <button onClick={() => scrollToSection('tokens')} className="text-gray-300 hover:text-yellow-400 transition-colors font-semibold text-sm lg:text-base">Buy $HVNA</button>
               <button onClick={() => scrollToSection('nfts')} className="text-gray-300 hover:text-white transition-colors text-sm lg:text-base">NFTs</button>
@@ -533,6 +534,92 @@ function App() {
                 </ul>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Founder Section */}
+      <section id="founder" className="py-20 bg-gradient-to-br from-purple-900/30 to-slate-800/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-6">Meet David Sime</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Building the Positive Side of Blockchain
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Founder Info */}
+            <div>
+              <Card className="bg-slate-900/50 border-purple-500/20 backdrop-blur-md">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl">🎯 Live Life Big in Style Celebrate</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 text-gray-300">
+                  <p>
+                    That's not just a tagline—it's a life philosophy born from personal experience. My father died at 48 from a heart attack. My uncle at 42 from cancer. Those losses taught me life's most important lesson: <span className="text-yellow-400 font-semibold">you never know when your time is up</span>, so make every moment count.
+                  </p>
+                  <p>
+                    After reading yet another crypto-negative book focusing on scams, I got frustrated. I'd written three books myself on blockchain—including <em>"Digital Ownership Revolution"</em>—and I kept thinking: Where are the projects actually using this technology to help people?
+                  </p>
+                  <p className="text-lg font-semibold text-purple-400">
+                    So I decided to build one.
+                  </p>
+                  <p>
+                    Instead of just writing about what blockchain could do, I built what it should do: empower creators, support sustainability, and give everyone—regardless of location or wealth—a fair shot at success.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right: Credentials */}
+            <div>
+              <Card className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-orange-500/30 backdrop-blur-md">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl">Who I Am</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-gray-300">
+                  <div className="flex items-start space-x-3">
+                    <span className="text-yellow-400">📊</span>
+                    <span><strong>Chartered Financial Planner</strong></span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-yellow-400">💼</span>
+                    <span><strong>35+ Years</strong> Business Experience</span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-yellow-400">📚</span>
+                    <span>Author: <a href="https://www.amazon.com/dp/B0FRG3F4WY" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 underline font-semibold">"Digital Ownership Revolution"</a></span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-yellow-400">🌍</span>
+                    <span>Based in <strong>Dubrovnik, Croatia</strong></span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-yellow-400">🔗</span>
+                    <span><a href="https://www.linkedin.com/in/davidjsime" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 underline font-semibold">Connect on LinkedIn</a></span>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t border-purple-500/20">
+                    <p className="text-sm text-gray-400 mb-4">Learn more about the founder:</p>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => window.open('https://contentlynk.com/founder', '_blank')}
+                        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-semibold"
+                      >
+                        Full Founder Story
+                      </button>
+                      <button
+                        onClick={() => window.open('https://havanaelephantbrand.com', '_blank')}
+                        className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors text-sm font-semibold"
+                      >
+                        Visit Fashion Store
+                      </button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
