@@ -1,0 +1,430 @@
+<!--
+  SHOPIFY FOUNDER PAGE - "Meet David Sime"
+
+  INSTALLATION INSTRUCTIONS:
+  1. Log in to your Shopify admin
+  2. Go to: Online Store > Pages
+  3. Click "Add page"
+  4. Title: "Meet the Founder" or "About David Sime"
+  5. Click "Show HTML" button (</> icon)
+  6. Paste this entire HTML code
+  7. Click "Save"
+  8. Set Template to "page" or your custom template
+  9. Make page visible
+
+  IMAGES REQUIRED:
+  Before publishing, upload these images to Shopify:
+  - Settings > Files > Upload files
+  - Upload: david-founder-large.jpg, david-founder-medium.jpg, david-founder-thumbnail.jpg
+  - Copy the CDN URLs and replace IMAGE_URL_HERE placeholders below
+-->
+
+<style>
+  /* Havana Elephant Brand Founder Page Styles */
+  .founder-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0a1628 0%, #1a2332 50%, #0a1628 100%);
+    margin: 0;
+    padding: 0;
+  }
+
+  .founder-page * {
+    box-sizing: border-box;
+  }
+
+  .founder-hero {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+    border-bottom: 3px solid rgba(0, 217, 255, 0.3);
+  }
+
+  .founder-hero h1 {
+    font-size: 3em;
+    margin: 0 0 20px 0;
+    background: linear-gradient(135deg, #00d9ff, #ff9800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+
+  .founder-hero .tagline {
+    font-size: 1.5em;
+    color: #4dd0e1;
+    margin: 0 0 40px 0;
+    font-weight: 300;
+  }
+
+  .founder-image-container {
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 217, 255, 0.3);
+    border: 4px solid rgba(255, 152, 0, 0.5);
+    transition: transform 0.3s ease;
+  }
+
+  .founder-image-container:hover {
+    transform: scale(1.02);
+  }
+
+  .founder-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .founder-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  .founder-section {
+    background: rgba(26, 35, 50, 0.6);
+    border: 2px solid rgba(0, 217, 255, 0.2);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+  }
+
+  .founder-section h2 {
+    color: #00d9ff;
+    font-size: 2.2em;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 152, 0, 0.3);
+  }
+
+  .founder-section h3 {
+    color: #ff9800;
+    font-size: 1.6em;
+    margin: 30px 0 15px 0;
+  }
+
+  .founder-section p {
+    font-size: 1.15em;
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+  }
+
+  .founder-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .founder-section li {
+    padding: 12px 0 12px 30px;
+    position: relative;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #e0e0e0;
+  }
+
+  .founder-section li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #00d9ff;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+
+  .credibility-box {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(0, 217, 255, 0.15) 100%);
+    border: 2px solid #ff9800;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 30px 0;
+  }
+
+  .credibility-box h3 {
+    color: #ff9800;
+    margin-top: 0;
+    font-size: 1.8em;
+  }
+
+  .credibility-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .credibility-item {
+    background: rgba(10, 22, 40, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #00d9ff;
+    font-size: 1.1em;
+    color: #ffffff;
+  }
+
+  .ecosystem-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+  }
+
+  .ecosystem-card {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+    border: 2px solid rgba(0, 217, 255, 0.3);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+  }
+
+  .ecosystem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+    border-color: #00d9ff;
+  }
+
+  .ecosystem-card h3 {
+    color: #00d9ff;
+    margin: 0 0 15px 0;
+    font-size: 1.8em;
+  }
+
+  .ecosystem-card p {
+    color: #e0e0e0;
+    margin: 0;
+    font-size: 1.1em;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2em;
+    margin: 10px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255, 152, 0, 0.5);
+  }
+
+  .cta-button.secondary {
+    background: transparent;
+    border: 2px solid #00d9ff;
+    color: #00d9ff;
+  }
+
+  .cta-button.secondary:hover {
+    background: rgba(0, 217, 255, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
+  }
+
+  .highlight-box {
+    background: rgba(255, 152, 0, 0.1);
+    border-left: 5px solid #ff9800;
+    padding: 25px;
+    margin: 25px 0;
+    border-radius: 8px;
+  }
+
+  .highlight-box strong {
+    color: #ff9800;
+    font-size: 1.2em;
+  }
+
+  @media (max-width: 768px) {
+    .founder-hero h1 {
+      font-size: 2em;
+    }
+
+    .founder-hero .tagline {
+      font-size: 1.2em;
+    }
+
+    .founder-section {
+      padding: 25px;
+    }
+
+    .founder-section h2 {
+      font-size: 1.8em;
+    }
+
+    .credibility-list {
+      grid-template-columns: 1fr;
+    }
+
+    .ecosystem-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="founder-page">
+  <!-- Hero Section -->
+  <section class="founder-hero">
+    <h1>Meet David Sime</h1>
+    <p class="tagline">Building the Positive Side of Blockchain</p>
+
+    <div class="founder-image-container">
+      <!-- REPLACE IMAGE_URL_HERE with your Shopify CDN URL -->
+      <img src="IMAGE_URL_HERE/david-founder-large.jpg"
+           alt="David Sime, Founder of Havana Elephant Brand"
+           width="800"
+           height="533" />
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="founder-content">
+
+    <!-- Credibility Section -->
+    <div class="credibility-box">
+      <h3>Who I Am</h3>
+      <div class="credibility-list">
+        <div class="credibility-item">
+          📊 <strong>Chartered Financial Planner</strong>
+        </div>
+        <div class="credibility-item">
+          💼 <strong>35+ Years</strong> Business Experience
+        </div>
+        <div class="credibility-item">
+          📚 Author: <a href="https://www.amazon.com/dp/B0FRG3F4WY" target="_blank" rel="noopener" style="color: #ff9800; text-decoration: underline;"><strong>"Digital Ownership Revolution"</strong></a>
+        </div>
+        <div class="credibility-item">
+          🌍 Based in <strong>Dubrovnik, Croatia</strong>
+        </div>
+        <div class="credibility-item">
+          🔗 <a href="https://www.linkedin.com/in/davidjsime" target="_blank" rel="noopener" style="color: #00d9ff; text-decoration: underline;"><strong>Connect on LinkedIn</strong></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story Section 1 -->
+    <section class="founder-section">
+      <h2>🎯 Live Life Big in Style Celebrate</h2>
+      <p>
+        That's not just a tagline—it's a life philosophy born from personal experience. My father died at 48 from a heart attack. My uncle at 42 from cancer. Those losses taught me life's most important lesson: <strong style="color: #ff9800;">you never know when your time is up</strong>, so make every moment count.
+      </p>
+      <p>
+        This philosophy drives everything I do. Life is too short for broken systems that don't serve people. That's why I'm building an ecosystem where everyone can thrive—not just those at the top.
+      </p>
+    </section>
+
+    <!-- Story Section 2 -->
+    <section class="founder-section">
+      <h2>💡 Why I Built This</h2>
+      <p>
+        After reading yet another crypto-negative book focusing on scams and crashes, I got frustrated. I'd written three books myself on blockchain and NFTs—including <em>"Digital Ownership Revolution"</em>—and I kept thinking: <strong style="color: #00d9ff;">Where are the projects actually using this technology to help people?</strong>
+      </p>
+      <div class="highlight-box">
+        <p><strong>So I decided to build one.</strong></p>
+      </div>
+      <p>
+        Instead of just writing about what blockchain <em>could</em> do, I built what it <em>should</em> do: empower creators, support sustainability, and give everyone—regardless of location or wealth—a fair shot at success.
+      </p>
+    </section>
+
+    <!-- Story Section 3 -->
+    <section class="founder-section">
+      <h2>🌟 What Makes This Different</h2>
+      <p>
+        I've spent four years posting content across platforms—hundreds of hours, some viral posts. Earnings? <strong style="color: #ff9800;">Nothing.</strong> Content ownership? Lost to the platforms.
+      </p>
+      <p>
+        That's broken. So I built:
+      </p>
+      <ul>
+        <li><strong>A fashion brand</strong> with real sustainable products you can buy today (this store!)</li>
+        <li><strong>An NFT community</strong> with immediate utility: 10-30% discounts, governance, exclusive access</li>
+        <li><strong>ContentLynk</strong> - a social platform paying creators 55-75% revenue share from day one, zero follower minimums</li>
+      </ul>
+      <p>
+        Unlike most crypto projects asking for millions to <em>develop</em> something that might work someday, we already have:
+      </p>
+      <ul>
+        <li>Working e-commerce generating revenue (you're on it now!)</li>
+        <li>Proven track record: Elmswood Private Finance reached £1.2M fees in year 2</li>
+        <li>Real products supporting elephant conservation</li>
+        <li>Platform infrastructure built and in testing (Q2 2026 launch)</li>
+      </ul>
+    </section>
+
+    <!-- Story Section 4 -->
+    <section class="founder-section">
+      <h2>🤝 The "Fair Day's Pay" Principle</h2>
+      <p>
+        I heard this expression when I was young and it stuck: <strong>"A fair day's pay for a fair day's work."</strong> Simple, but powerful.
+      </p>
+      <ul>
+        <li>If you create content → you should earn fairly from it</li>
+        <li>If you join our community → you get immediate benefits</li>
+        <li>If you support sustainability → your impact should be real and visible</li>
+      </ul>
+      <p>
+        No follower minimums. No geographic restrictions. No "maybe someday" promises. Just fair compensation for real contribution.
+      </p>
+    </section>
+
+    <!-- Story Section 5 -->
+    <section class="founder-section">
+      <h2>🌍 A Global Perspective</h2>
+      <p>
+        Living across the UK, Russia, and now Croatia showed me we're all the same people with vastly different opportunities. A talented creator in Nigeria shouldn't earn less than one in New York just because of geography.
+      </p>
+      <p>
+        <strong style="color: #00d9ff;">That's why everything we build is borderless.</strong>
+      </p>
+      <p>
+        Payments go directly to crypto wallets—no bank account requirements, no Western Union fees, no arbitrary minimums that only rich countries can meet. Your talent and effort matter, not your passport.
+      </p>
+    </section>
+
+    <!-- Ecosystem Links -->
+    <section class="founder-section">
+      <h2>🚀 The Complete Ecosystem</h2>
+      <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">
+        Havana Elephant Brand is just one part of a larger Web3 ecosystem designed to empower creators and celebrate life:
+      </p>
+
+      <div class="ecosystem-links">
+        <a href="https://havanaelephant.com" target="_blank" rel="noopener" class="ecosystem-card">
+          <h3>🌐 Web3 Ecosystem</h3>
+          <p>$HVNA tokens, NFTs, and the complete blockchain experience. Join the token presale and NFT community.</p>
+        </a>
+
+        <a href="https://contentlynk.com/beta" target="_blank" rel="noopener" class="ecosystem-card">
+          <h3>📱 ContentLynk Platform</h3>
+          <p>Social media that pays creators 55-75% revenue share from day one. Join the beta waitlist.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="founder-section" style="text-align: center; background: linear-gradient(135deg, rgba(255, 152, 0, 0.2) 0%, rgba(0, 217, 255, 0.2) 100%);">
+      <h2>Ready to Join the Movement?</h2>
+      <p style="font-size: 1.3em; margin: 30px 0;">
+        Whether you're here for sustainable fashion, NFT utility, or fair creator compensation—you're in the right place.
+      </p>
+      <div>
+        <a href="/" class="cta-button">Shop Sustainable Fashion</a>
+        <a href="https://havanaelephant.com" target="_blank" rel="noopener" class="cta-button secondary">Explore Web3 Ecosystem</a>
+        <a href="https://contentlynk.com/beta" target="_blank" rel="noopener" class="cta-button secondary">Join ContentLynk Beta</a>
+      </div>
+    </section>
+
+  </div>
+</div>
