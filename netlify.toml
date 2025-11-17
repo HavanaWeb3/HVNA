@@ -1,5 +1,8 @@
 [build]
   publish = "dist"
-  command = "npm install --legacy-peer-deps && npm run build"
+  command = "pnpm install && pnpm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
 
 # Force rebuild for presale structure update - Jan 20 2025
