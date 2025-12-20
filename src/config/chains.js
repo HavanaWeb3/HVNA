@@ -33,9 +33,9 @@ export const USDT_ADDRESSES = {
 // Presale Contract Addresses
 export const PRESALE_ADDRESSES = {
   // Mainnets
-  [CHAIN_IDS.ETHEREUM]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Using Base contract temporarily - deploy later
-  [CHAIN_IDS.BSC]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Using Base contract temporarily - deploy later
-  [CHAIN_IDS.BASE]: "0x2cCE8fA9C5A369145319EB4906a47B319c639928", // Current Base presale (V3) - LIVE ✅
+  [CHAIN_IDS.ETHEREUM]: "0x390Bdc27F8488915AC5De3fCd43c695b41f452FA", // Using Base contract temporarily - deploy later
+  [CHAIN_IDS.BSC]: "0x390Bdc27F8488915AC5De3fCd43c695b41f452FA", // Using Base contract temporarily - deploy later
+  [CHAIN_IDS.BASE]: "0x390Bdc27F8488915AC5De3fCd43c695b41f452FA", // Current Base presale (V5) - LIVE ✅ - ACTUAL DEPLOYED CONTRACT
 
   // Testnets (for testing with free tokens!)
   [CHAIN_IDS.SEPOLIA]: "0x770008bd750c230000D7f581a454c8eE437ab7F8", // LIVE - Test ETH purchases! ✅

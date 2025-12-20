@@ -17,6 +17,7 @@ import {
   Info
 } from 'lucide-react'
 import EmailCaptureDialog from './EmailCaptureDialog.jsx'
+import TokenHoldingsDashboard from './TokenHoldingsDashboard.jsx'
 import ChainSelector from './ChainSelector.jsx'
 import PaymentTokenSelector from './PaymentTokenSelector.jsx'
 import {
@@ -58,6 +59,7 @@ const HVNATokenPurchaseMultiChain = () => {
 
   // UI state
   const [showEmailCapture, setShowEmailCapture] = useState(false)
+  const [showHoldings, setShowHoldings] = useState(false)
 
   // Marketing minimum
   const MARKETING_MINIMUM_TOKENS = 1650000
@@ -312,27 +314,94 @@ const HVNATokenPurchaseMultiChain = () => {
   }
 
   const checkPurchasedTokens = async (address) => {
+    console.log('=== FETCHING PURCHASED TOKENS (Event Logs) ===')
+    console.log('User address:', address)
+    console.log('Chain ID:', selectedChainId)
+
     try {
       const presaleAddress = getPresaleAddress(selectedChainId)
-      const getPurchasedSignature = "0x74be0a3f"
-      const addressParam = address.slice(2).padStart(64, '0')
-      const data = getPurchasedSignature + addressParam
+      console.log('Presale contract:', presaleAddress)
 
-      const result = await window.ethereum.request({
-        method: 'eth_call',
-        params: [{
-          to: presaleAddress,
-          data: data
-        }, 'latest']
+      if (!presaleAddress || presaleAddress === "0x0000000000000000000000000000000000000000") {
+        console.log('❌ No presale contract for this chain')
+        setPurchasedTokens("0")
+        return
+      }
+
+      // Use Alchemy Base RPC - more reliable than public RPC
+      const rpcUrl = 'https://base-mainnet.g.alchemy.com/v2/kQ_AMlblmucAHHwcH5o-b'
+
+      // TokensPurchased event signature
+      // event TokensPurchased(address indexed buyer, uint256 amount, uint256 costETH, uint256 costUSD, Phase phase, bool isGenesis)
+      const tokensPurchasedTopic = '0xf176dd17ecd7370c4b9ac72d398444b0d6dae41877e8a3587f104b4f1bfc5007'
+
+      // Encode user address as topic (indexed parameter)
+      const userTopic = '0x' + address.slice(2).padStart(64, '0')
+
+      console.log('Fetching event logs...')
+
+      // Fetch event logs for this user from this contract
+      const response = await fetch(rpcUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'eth_getLogs',
+          params: [{
+            address: presaleAddress,
+            topics: [
+              tokensPurchasedTopic, // Event signature
+              userTopic             // Buyer address (indexed)
+            ],
+            fromBlock: '0x0',      // From genesis
+            toBlock: 'latest'       // To current block
+          }],
+          id: 1,
+        }),
       })
 
-      const purchased = parseInt(result, 16)
-      const formattedPurchased = (purchased / Math.pow(10, 18)).toFixed(0)
+      const result = await response.json()
 
+      if (result.error) {
+        console.error('❌ Error fetching logs:', result.error.message)
+        setPurchasedTokens("0")
+        return
+      }
+
+      const logs = result.result
+      console.log(`Found ${logs.length} purchase event(s)`)
+
+      if (logs.length === 0) {
+        console.log('No purchases found')
+        setPurchasedTokens("0")
+        return
+      }
+
+      // Parse each log and sum up tokens
+      let totalTokens = 0
+      for (const log of logs) {
+        try {
+          // Data contains: amount, costETH, costUSD, phase, isGenesis
+          // First 32 bytes (64 hex chars) after 0x is the token amount
+          const tokenAmountHex = '0x' + log.data.slice(2, 66)
+          const tokens = Number(BigInt(tokenAmountHex)) / 1e18
+
+          console.log(`📦 Purchase: ${tokens} tokens (tx: ${log.transactionHash})`)
+          totalTokens += tokens
+        } catch (parseError) {
+          console.error('⚠️ Could not parse log:', parseError.message)
+        }
+      }
+
+      const formattedPurchased = totalTokens.toFixed(0)
       setPurchasedTokens(formattedPurchased === '0' ? '0' : parseInt(formattedPurchased).toLocaleString('en-US'))
-      console.log('DEBUG: Purchased tokens:', formattedPurchased)
+      console.log('✅ Total purchased tokens:', formattedPurchased)
+      console.log('=== FETCH COMPLETE ===')
+
     } catch (error) {
-      console.error('Error checking purchased tokens:', error)
+      console.error('❌ Error checking purchased tokens:', error)
       setPurchasedTokens("0")
     }
   }
@@ -828,6 +897,12 @@ const HVNATokenPurchaseMultiChain = () => {
                     <br />
                     📅 Vesting: 40% at launch, 40% at +3mo, 20% at +6mo
                   </div>
+                  <button
+                    onClick={() => setShowHoldings(true)}
+                    className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:scale-105 transition mt-3"
+                  >
+                    📊 View My $HVNA Holdings
+                  </button>
                 </div>
               )}
               {isGenesisHolder && (
@@ -1077,6 +1152,14 @@ const HVNATokenPurchaseMultiChain = () => {
         onClose={() => setShowEmailCapture(false)}
         purchaseType="HVNA Token"
         walletAddress={userAddress}
+      />
+
+      {/* Holdings Dashboard Modal */}
+      <TokenHoldingsDashboard
+        isOpen={showHoldings}
+        onClose={() => setShowHoldings(false)}
+        userAddress={userAddress}
+        selectedChainId={selectedChainId}
       />
     </div>
   )
