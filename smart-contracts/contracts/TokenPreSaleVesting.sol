@@ -31,8 +31,8 @@ contract TokenPreSaleVesting {
     enum Phase { GENESIS, PUBLIC, ENDED }
     Phase public currentPhase = Phase.GENESIS;
 
-    // USD Pricing (in cents)
-    uint256 public tokenPriceUSDCents = 1; // $0.01 = 1 cent
+    // USD Pricing (in mills - 1/10th of a cent to avoid rounding issues)
+    uint256 public tokenPriceUSDMills = 10; // $0.01 = 10 mills (1 mill = $0.001)
     uint256 public genesisDiscountPercent = 30; // 30% discount
 
     // Sale limits
@@ -138,11 +138,12 @@ contract TokenPreSaleVesting {
 
     function getTokenPriceInETH(bool isGenesis) public view returns (uint256) {
         uint256 ethUsdPrice = getETHUSDPrice();
-        uint256 effectivePriceUSDCents = isGenesis ?
-            (tokenPriceUSDCents * (100 - genesisDiscountPercent)) / 100 :
-            tokenPriceUSDCents;
+        uint256 effectivePriceUSDMills = isGenesis ?
+            (tokenPriceUSDMills * (100 - genesisDiscountPercent)) / 100 :
+            tokenPriceUSDMills;
 
-        uint256 priceUSDWith8Decimals = effectivePriceUSDCents * 10**6;
+        // Convert mills to USD with 8 decimals: mills * 10^5 (since 1 mill = 0.001 USD = 10^5 in 8 decimals)
+        uint256 priceUSDWith8Decimals = effectivePriceUSDMills * 10**5;
         return (priceUSDWith8Decimals * 10**18) / ethUsdPrice;
     }
 
@@ -150,10 +151,11 @@ contract TokenPreSaleVesting {
         uint256 tokenPriceETH = getTokenPriceInETH(isGenesis);
         ethCost = (tokenAmount * tokenPriceETH) / 10**18;
 
-        uint256 effectivePriceUSDCents = isGenesis ?
-            (tokenPriceUSDCents * (100 - genesisDiscountPercent)) / 100 :
-            tokenPriceUSDCents;
-        usdCost = (tokenAmount * effectivePriceUSDCents) / (10**18 * 100);
+        uint256 effectivePriceUSDMills = isGenesis ?
+            (tokenPriceUSDMills * (100 - genesisDiscountPercent)) / 100 :
+            tokenPriceUSDMills;
+        // Convert mills to USD: mills / 1000, then adjust for token decimals
+        usdCost = (tokenAmount * effectivePriceUSDMills) / (10**18 * 1000);
     }
 
     function isGenesisHolder(address user) public view returns (bool) {
@@ -290,9 +292,9 @@ contract TokenPreSaleVesting {
         vestingStartDate = _vestingStartDate;
     }
 
-    function setPricing(uint256 _tokenPriceUSDCents, uint256 _genesisDiscountPercent) public onlyOwner {
+    function setPricing(uint256 _tokenPriceUSDMills, uint256 _genesisDiscountPercent) public onlyOwner {
         require(_genesisDiscountPercent <= 100, "Invalid discount");
-        tokenPriceUSDCents = _tokenPriceUSDCents;
+        tokenPriceUSDMills = _tokenPriceUSDMills;
         genesisDiscountPercent = _genesisDiscountPercent;
     }
 
@@ -309,6 +311,25 @@ contract TokenPreSaleVesting {
         minPurchase = _minPurchase;
         maxPurchaseGenesis = _maxPurchaseGenesis;
         maxPurchasePublic = _maxPurchasePublic;
+    }
+
+    // Owner function: Update phase timings
+    function setPhaseTiming(
+        uint256 _genesisStart,
+        uint256 _genesisEnd,
+        uint256 _publicStart,
+        uint256 _publicEnd
+    ) public onlyOwner {
+        genesisPhaseStart = _genesisStart;
+        genesisPhaseEnd = _genesisEnd;
+        publicPhaseStart = _publicStart;
+        publicPhaseEnd = _publicEnd;
+    }
+
+    // Owner function: Force change to specific phase
+    function forcePhaseChange(Phase newPhase) public onlyOwner {
+        currentPhase = newPhase;
+        emit PhaseChanged(newPhase);
     }
 
     // Admin function to migrate purchases from old presale

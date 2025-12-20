@@ -59,20 +59,57 @@ model User {
 // PLATINUM  - 70% revenue share - Platinum tier NFTs
 // GENESIS   - 75% revenue share - Genesis NFTs
 
-// Content Posts
+// Content Posts - Enhanced for long-form content
 model Post {
   id          String   @id @default(cuid())
+
+  // Basic fields
   title       String?
-  content     String
-  imageUrl    String?
+  content     String   @db.Text // For short posts and article content
+  slug        String?  @unique // SEO-friendly URL slug
+  excerpt     String?  @db.Text // Short description/preview
+
+  // Content type and status
+  contentType String   @default("TEXT") @map("content_type") // TEXT, ARTICLE, VIDEO, SHORT_VIDEO
+  status      String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+
+  // Media fields
+  imageUrl    String? // Featured image (keeping original column name for backward compatibility)
+  videoUrl    String?  @map("video_url") // AWS S3 URL for videos
+  videoThumbnail String? @map("video_thumbnail") // Video thumbnail URL
+  videoDuration Int?    @map("video_duration") // Duration in seconds
+  videoProcessed Boolean @default(false) @map("video_processed") // Processing status
+
+  // SEO fields
+  metaTitle       String? @map("meta_title")
+  metaDescription String? @map("meta_description") @db.Text
+  tags            String[] @default([]) // Array of tags
+  category        String? // Content category
+
+  // Article-specific fields
+  readingTime     Int?    @map("reading_time") // Estimated reading time in minutes
+  articleContent  Json?   @map("article_content") // Rich text JSON from Lexical editor
+
+  // Author and relations
   authorId    String
   author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Engagement metrics
   views       Int      @default(0)
   likes       Int      @default(0)
   comments    Int      @default(0)
   shares      Int      @default(0)
   earnings    Decimal  @default(0)
-  isPublished Boolean  @default(true)
+
+  // Quality Score tracking fields
+  averageScrollDepth      Float?   @default(0) @map("average_scroll_depth") // Average % of content consumed (0-1)
+  averageWatchPercentage  Float?   @default(0) @map("average_watch_percentage") // Average % of video watched (0-1)
+  totalCompletions        Int      @default(0) @map("total_completions") // Count of users who completed >80% of content
+  contentLength           Int?     @default(0) @map("content_length") // Character count for TEXT posts
+
+  // Timestamps
+  isPublished Boolean  @default(true) // Legacy field, use status instead
+  publishedAt DateTime? @map("published_at") // When content was published
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -85,8 +122,51 @@ model Post {
   // Relations
   postLikes   Like[]
   postComments Comment[]
+  videoClips  VideoClip[] // Related video clips/snippets
+  consumptions PostConsumption[] // Track user consumption metrics
 
+  @@index([authorId])
+  @@index([contentType])
+  @@index([status])
+  @@index([slug])
+  @@index([publishedAt])
   @@map("posts")
+}
+
+// Video Clips - For TikTok/social media snippets
+model VideoClip {
+  id              String   @id @default(cuid())
+  parentPostId    String   @map("parent_post_id")
+  parentPost      Post     @relation(fields: [parentPostId], references: [id], onDelete: Cascade)
+
+  title           String
+  description     String?  @db.Text
+
+  // Clip timing (for reference-only clips)
+  startTime       Int      @map("start_time") // Start time in seconds
+  endTime         Int      @map("end_time") // End time in seconds
+
+  // Processed clip (if server-side export is done)
+  clipUrl         String?  @map("clip_url") // AWS S3 URL for exported clip
+  thumbnailUrl    String?  @map("thumbnail_url")
+  processed       Boolean  @default(false) // Whether clip has been exported
+  processingStatus String? @map("processing_status") // PENDING, PROCESSING, COMPLETED, FAILED
+
+  // Clip metadata
+  aspectRatio     String   @default("9:16") @map("aspect_ratio") // 9:16 for TikTok, 16:9 for YouTube
+  duration        Int // Duration in seconds
+  fileSize        Int?     @map("file_size") // File size in bytes if processed
+
+  // Engagement
+  views           Int      @default(0)
+  shares          Int      @default(0)
+
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([parentPostId])
+  @@map("video_clips")
 }
 
 // Earnings Tracking
@@ -138,16 +218,45 @@ model Like {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
-  content   String
-  userId    String
-  postId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  content        String
+  characterCount Int?     @map("character_count") // Character count for weighted scoring
+  userId         String
+  postId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@map("comments")
+}
+
+// Post Consumption Tracking - For Quality Score calculation
+model PostConsumption {
+  id                String   @id @default(cuid())
+  postId            String   @map("post_id")
+  userId            String?  @map("user_id") // Nullable to allow anonymous tracking
+
+  // Consumption metrics
+  scrollDepth       Float?   @map("scroll_depth") // 0-1, how far user scrolled (for articles/text)
+  watchPercentage   Float?   @map("watch_percentage") // 0-1, how much video was watched
+  listenPercentage  Float?   @map("listen_percentage") // 0-1, for audio content (future)
+  timeSpent         Int?     @map("time_spent") // Time spent in seconds
+  completed         Boolean  @default(false) // True if >80% consumed
+
+  // Metadata
+  sessionId         String?  @map("session_id") // To deduplicate multiple views in same session
+  ipAddress         String?  @map("ip_address") // For fraud detection
+  userAgent         String?  @map("user_agent") // Device info
+
+  post              Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+
+  @@index([postId])
+  @@index([userId])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("post_consumptions")
 }
 
 // NextAuth.js required models

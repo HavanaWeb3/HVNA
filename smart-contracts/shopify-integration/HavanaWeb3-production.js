@@ -39,78 +39,94 @@ class ShopifyHVNAWidget {
     }
     
     createWidget() {
-        // Create main widget container
+        // Create main widget container - VERTICAL RIGHT-SIDE BANNER
         const widget = document.createElement('div');
         widget.id = 'hvna-widget';
-        widget.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+
+        // Vertical banner styling with on-brand colors
+        widget.style.background = 'linear-gradient(135deg, #FF6B4A, #E91E8C)'; // Vibrant orange to hot pink
         widget.style.color = 'white';
-        widget.style.padding = '20px';
-        widget.style.margin = '20px 0';
-        widget.style.borderRadius = '15px';
+        widget.style.padding = '20px 15px';
+        widget.style.borderRadius = '12px 0 0 12px'; // Rounded on left side only
         widget.style.textAlign = 'center';
         widget.style.fontWeight = 'bold';
-        widget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
-        
+        widget.style.boxShadow = '-4px 0 15px rgba(255, 107, 74, 0.4)';
+
+        // Fixed positioning on right edge
+        widget.style.position = 'fixed';
+        widget.style.right = '0';
+        widget.style.top = '50%';
+        widget.style.transform = 'translateY(-50%)';
+        widget.style.zIndex = '9998'; // Below typical modals but above content
+        widget.style.maxWidth = '200px'; // Narrower for vertical display
+        widget.style.minWidth = '180px';
+
+        // Responsive behavior
+        widget.style.transition = 'all 0.3s ease';
+
         // Create widget content
         const content = document.createElement('div');
-        
+
         // Title
         const title = document.createElement('div');
-        title.textContent = '🐘 Exclusive Web3 Discounts';
-        title.style.fontSize = '1.3rem';
-        title.style.marginBottom = '10px';
-        
-        // Benefits text with updated discount structure
+        title.textContent = '🐘 Web3 Holder Discounts';
+        title.style.fontSize = '1.1rem';
+        title.style.marginBottom = '12px';
+        title.style.lineHeight = '1.3';
+
+        // Benefits text with updated discount structure - COMPACT VERSION
         const benefits = document.createElement('div');
         benefits.innerHTML = `
-            <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 15px;">
-                <div><strong>🔥 Boldly Elephunky Genesis:</strong> 30% off (0.25+ ETH tier)</div>
-                <div><strong>📈 NFT Holders:</strong> Silver 10% | Gold 20% | Platinum 30%</div>
-                <div><strong>💰 Token Holders:</strong> €150+ 10% | €250+ 20% | €500+ 30%</div>
+            <div style="font-size: 0.75rem; opacity: 0.95; margin-bottom: 12px; line-height: 1.4;">
+                <div style="margin-bottom: 6px;"><strong>NFT holders up to 50% off!</strong></div>
+                <div style="margin-bottom: 4px;">Token holders: $150+=10%, $300+=20%, $500+=30%</div>
             </div>
         `;
-        
-        // Connect button
+
+        // Connect button - COMPACT
         const connectBtn = document.createElement('button');
-        connectBtn.textContent = 'Connect Wallet for Discount';
+        connectBtn.textContent = 'Connect Wallet';
         connectBtn.style.background = 'white';
-        connectBtn.style.color = '#667eea';
+        connectBtn.style.color = '#E91E8C'; // Hot pink text
         connectBtn.style.border = 'none';
-        connectBtn.style.padding = '12px 24px';
-        connectBtn.style.borderRadius = '8px';
-        connectBtn.style.fontSize = '1rem';
+        connectBtn.style.padding = '10px 16px';
+        connectBtn.style.borderRadius = '6px';
+        connectBtn.style.fontSize = '0.9rem';
         connectBtn.style.fontWeight = '600';
         connectBtn.style.cursor = 'pointer';
         connectBtn.style.transition = 'all 0.3s ease';
-        
+        connectBtn.style.width = '100%';
+        connectBtn.style.marginTop = '8px';
+
         // Button hover effects
         connectBtn.onmouseover = function() {
-            this.style.transform = 'translateY(-2px)';
-            this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            this.style.background = '#FFE5E0'; // Light pink on hover
+            this.style.transform = 'scale(1.05)';
         };
         connectBtn.onmouseout = function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = 'none';
+            this.style.background = 'white';
+            this.style.transform = 'scale(1)';
         };
-        
+
         // Button click handler
         connectBtn.onclick = () => this.connectWallet();
-        
-        // Status message area
+
+        // Status message area - COMPACT
         const statusArea = document.createElement('div');
         statusArea.id = 'hvna-status';
-        statusArea.style.marginTop = '15px';
-        statusArea.style.fontSize = '0.9rem';
-        statusArea.style.minHeight = '20px';
-        
-        // Network indicator
+        statusArea.style.marginTop = '12px';
+        statusArea.style.fontSize = '0.75rem';
+        statusArea.style.minHeight = '16px';
+        statusArea.style.lineHeight = '1.3';
+
+        // Network indicator - COMPACT
         const networkIndicator = document.createElement('div');
         networkIndicator.id = 'hvna-network';
-        networkIndicator.style.marginTop = '10px';
-        networkIndicator.style.fontSize = '0.8rem';
+        networkIndicator.style.marginTop = '8px';
+        networkIndicator.style.fontSize = '0.7rem';
         networkIndicator.style.opacity = '0.7';
-        networkIndicator.textContent = `Network: ${this.selectedNetwork.charAt(0).toUpperCase() + this.selectedNetwork.slice(1)}`;
-        
+        networkIndicator.textContent = `${this.selectedNetwork.charAt(0).toUpperCase() + this.selectedNetwork.slice(1)}`;
+
         // Assemble widget
         content.appendChild(title);
         content.appendChild(benefits);
@@ -118,12 +134,52 @@ class ShopifyHVNAWidget {
         content.appendChild(statusArea);
         content.appendChild(networkIndicator);
         widget.appendChild(content);
-        
-        // Insert widget
-        const target = document.querySelector('#hvna-discount-widget-container') || document.body;
-        target.appendChild(widget);
-        
-        console.log('HVNA Production Widget created and inserted');
+
+        // Add responsive media query via style element
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Hide banner on mobile/tablet to avoid covering content */
+            @media (max-width: 768px) {
+                #hvna-widget {
+                    display: none !important;
+                }
+            }
+
+            /* Smaller version for medium screens */
+            @media (min-width: 769px) and (max-width: 1024px) {
+                #hvna-widget {
+                    max-width: 160px !important;
+                    font-size: 0.9em;
+                }
+            }
+
+            /* Optional: Add a small tab when collapsed on mobile */
+            @media (max-width: 768px) {
+                #hvna-widget-mobile-tab {
+                    display: block !important;
+                    position: fixed;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: linear-gradient(135deg, #FF6B4A, #E91E8C);
+                    color: white;
+                    padding: 8px 4px;
+                    border-radius: 6px 0 0 6px;
+                    font-size: 0.7rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    z-index: 9997;
+                    writing-mode: vertical-rl;
+                    text-orientation: mixed;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Insert widget at body level (for fixed positioning)
+        document.body.appendChild(widget);
+
+        console.log('HVNA Production Widget created and inserted (Vertical Right-Side Banner)');
     }
     
     async connectWallet() {

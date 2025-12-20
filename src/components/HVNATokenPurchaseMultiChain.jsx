@@ -528,11 +528,11 @@ const HVNATokenPurchaseMultiChain = () => {
     }
 
     // For ETH/BNB, estimate based on current price (contract will use Chainlink)
-    const nativePrice = selectedChainId === CHAIN_IDS.BSC ? 600 : 4533 // BNB vs ETH price
+    const nativePrice = selectedChainId === CHAIN_IDS.BSC ? 600 : 3500 // Conservative estimate
     const estimatedNative = totalCostUSD / nativePrice
 
-    // Add 10% buffer for price fluctuations
-    return (estimatedNative * 1.1).toFixed(6)
+    // Add 50% buffer to account for price volatility and ensure transaction success
+    return (estimatedNative * 1.5).toFixed(6)
   }
 
   const purchaseTokens = async () => {
@@ -946,9 +946,19 @@ const HVNATokenPurchaseMultiChain = () => {
               <input
                 type="number"
                 value={tokenAmount}
-                onChange={(e) => setTokenAmount(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Only allow values >= 1000 or empty
+                  if (value === '' || parseFloat(value) >= 1000) {
+                    setTokenAmount(value);
+                  } else if (parseFloat(value) > 0) {
+                    // If user enters less than 1000, set to 1000
+                    setTokenAmount('1000');
+                    setPurchaseStatus('⚠️ Minimum purchase is 1,000 tokens - adjusted automatically');
+                  }
+                }}
                 min="1000"
-                step="100"
+                step="1000"
                 className="w-full px-4 py-3 bg-slate-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-lg"
                 placeholder="1000"
               />
