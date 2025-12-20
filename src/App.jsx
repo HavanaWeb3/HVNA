@@ -31,6 +31,9 @@ import heroImage from './assets/hero_mockup.png'
 import HVNATokenPurchaseMultiChain from './components/HVNATokenPurchaseMultiChain.jsx'
 // import HVNATokenPurchase from './components/HVNATokenPurchase.jsx' // Old single-chain version
 import BoldlyElephunkyPurchase from './components/BoldlyElephunkyPurchase.jsx'
+import LiveTokenActivity from './components/LiveTokenActivity.jsx'
+import PriceCountdownTimer from './components/PriceCountdownTimer.jsx'
+import ROICalculator from './components/ROICalculator.jsx'
 import './App.css'
 
 function App() {
@@ -195,6 +198,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Live Token Activity Feed - Fixed Right Sidebar */}
+      <LiveTokenActivity />
+
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-purple-500/20 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -236,6 +242,11 @@ function App() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+          {/* Price Countdown Timer - Top of Hero */}
+          <div className="mb-8">
+            <PriceCountdownTimer />
+          </div>
+
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Content */}
             <div className="text-center lg:text-left">
@@ -535,6 +546,13 @@ function App() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* ROI Calculator Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-900 to-purple-900/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ROICalculator />
         </div>
       </section>
 
