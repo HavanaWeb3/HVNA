@@ -27,7 +27,6 @@ import {
   Gift,
   HelpCircle
 } from 'lucide-react'
-import heroImage from './assets/hero_mockup.png'
 import HVNATokenPurchaseMultiChain from './components/HVNATokenPurchaseMultiChain.jsx'
 // import HVNATokenPurchase from './components/HVNATokenPurchase.jsx' // Old single-chain version
 import BoldlyElephunkyPurchase from './components/BoldlyElephunkyPurchase.jsx'
@@ -453,14 +452,20 @@ function App() {
               </div>
             </div>
 
-            {/* Right Column - Hero Image */}
-            <div className="relative">
-              <div className="relative z-10">
-                <img 
-                  src={heroImage} 
-                  alt="Havana Elephant Web3 Ecosystem" 
-                  className="w-full h-auto rounded-2xl shadow-2xl"
-                />
+            {/* Right Column - Bold Statement Text */}
+            <div className="relative flex items-center justify-center min-h-[400px]">
+              <div className="relative z-10 text-center">
+                <h2 className="text-5xl lg:text-7xl font-extrabold text-white leading-tight space-y-4">
+                  <div className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent mb-4">
+                    Three Live Platforms.
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent mb-4">
+                    Real Utility.
+                  </div>
+                  <div className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+                    Zero Vaporware.
+                  </div>
+                </h2>
               </div>
               {/* Floating particles effect */}
               <div className="absolute inset-0 -z-10">
