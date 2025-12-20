@@ -13,6 +13,25 @@ export default function EarningsCalculator() {
     GENESIS: { share: 0.75, name: 'Genesis', percentage: '75%' }
   };
 
+  // Content type options
+  const CONTENT_TYPES = [
+    { label: 'Long-form article (1000+ words)', multiplier: 1.5 },
+    { label: 'Medium article (500-999 words)', multiplier: 1.25 },
+    { label: 'Short-form text (under 500 words)', multiplier: 1.0 },
+    { label: 'Long-form video (10+ minutes)', multiplier: 1.5 },
+    { label: 'Medium video (3-10 minutes)', multiplier: 1.25 },
+    { label: 'Short-form video (under 3 minutes)', multiplier: 1.0 },
+    { label: 'Podcast/audio (5+ minutes)', multiplier: 1.4 }
+  ];
+
+  // Completion rate options
+  const COMPLETION_RATES = [
+    { label: '75-100% (Highly engaging)', multiplier: 1.3 },
+    { label: '50-74% (Good engagement)', multiplier: 1.15 },
+    { label: '25-49% (Average)', multiplier: 1.0 },
+    { label: 'Under 25% (Low completion)', multiplier: 0.85 }
+  ];
+
   // State
   const [tier, setTier] = useState<keyof typeof TIERS>('GOLD');
   const [likes, setLikes] = useState(100);
@@ -20,6 +39,8 @@ export default function EarningsCalculator() {
   const [shares, setShares] = useState(10);
   const [hasNFT, setHasNFT] = useState(false);
   const [postsPerMonth, setPostsPerMonth] = useState(20);
+  const [contentTypeIndex, setContentTypeIndex] = useState(2); // Default to short-form text
+  const [completionRateIndex, setCompletionRateIndex] = useState(2); // Default to average
   const tokenPrice = 0.75;
 
   // Calculate earnings
@@ -33,9 +54,11 @@ export default function EarningsCalculator() {
     // Apply multipliers
     const nftMultiplier = hasNFT ? 1.5 : 1;
     const tierMultiplier = TIERS[tier].share / TIERS.STANDARD.share;
+    const contentTypeMultiplier = CONTENT_TYPES[contentTypeIndex].multiplier;
+    const completionRateMultiplier = COMPLETION_RATES[completionRateIndex].multiplier;
 
     // Calculate totals
-    const totalUSD = baseEarnings * nftMultiplier * tierMultiplier;
+    const totalUSD = baseEarnings * nftMultiplier * tierMultiplier * contentTypeMultiplier * completionRateMultiplier;
     const tokens = totalUSD / tokenPrice;
     const monthly = totalUSD * postsPerMonth;
 
@@ -182,6 +205,44 @@ export default function EarningsCalculator() {
           cursor: pointer;
           border: none;
           box-shadow: 0 2px 8px rgba(255,107,53,0.4);
+        }
+
+        .dropdown-group {
+          margin-bottom: 25px;
+        }
+
+        .dropdown-label {
+          display: block;
+          margin-bottom: 10px;
+          font-size: 1.1em;
+          font-weight: 500;
+          color: #333;
+        }
+
+        select {
+          width: 100%;
+          padding: 12px 15px;
+          font-size: 1em;
+          border: 2px solid #e0e0e0;
+          border-radius: 10px;
+          background: white;
+          cursor: pointer;
+          transition: all 0.3s;
+          appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23FF6B35' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 15px center;
+          padding-right: 40px;
+        }
+
+        select:hover {
+          border-color: #FF6B35;
+        }
+
+        select:focus {
+          outline: none;
+          border-color: #FF6B35;
+          box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
         }
 
         .toggle-group {
@@ -353,6 +414,48 @@ export default function EarningsCalculator() {
                   <div className="tier-share">{TIERS[tierKey].percentage}</div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Content Type & Length */}
+          <div className="section">
+            <h2 className="section-title">📝 Content Type & Length</h2>
+            <div className="dropdown-group">
+              <label className="dropdown-label" htmlFor="content-type">
+                Select your content type:
+              </label>
+              <select
+                id="content-type"
+                value={contentTypeIndex}
+                onChange={(e) => setContentTypeIndex(parseInt(e.target.value))}
+              >
+                {CONTENT_TYPES.map((type, index) => (
+                  <option key={index} value={index}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Completion Rate */}
+          <div className="section">
+            <h2 className="section-title">✅ Completion Rate</h2>
+            <div className="dropdown-group">
+              <label className="dropdown-label" htmlFor="completion-rate">
+                How engaging is your content?
+              </label>
+              <select
+                id="completion-rate"
+                value={completionRateIndex}
+                onChange={(e) => setCompletionRateIndex(parseInt(e.target.value))}
+              >
+                {COMPLETION_RATES.map((rate, index) => (
+                  <option key={index} value={index}>
+                    {rate.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
