@@ -21,32 +21,59 @@ const EmailCaptureDialog = ({ isOpen, onClose, purchaseType, walletAddress }) =>
     setSubmitStatus('')
 
     try {
-      // Encode form data for Netlify
-      const formData = new URLSearchParams()
-      formData.append('form-name', 'email-capture')
-      formData.append('email', email)
-      formData.append('wallet', walletAddress)
-      formData.append('purchase-type', purchaseType)
-      formData.append('timestamp', new Date().toISOString())
-
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString()
-      })
-
-      if (response.ok) {
-        setIsSuccess(true)
-        setSubmitStatus('✅ Thank you! You\'re on the list!')
-        setTimeout(() => {
-          onClose()
-          setEmail('')
-          setIsSuccess(false)
-          setSubmitStatus('')
-        }, 2000)
-      } else {
-        setSubmitStatus('❌ Something went wrong. Please try again.')
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+        setSubmitStatus('❌ Please enter a valid email address')
+        setIsSubmitting(false)
+        return
       }
+
+      // Create email capture record
+      const emailData = {
+        email: email,
+        wallet: walletAddress,
+        purchaseType: purchaseType,
+        timestamp: new Date().toISOString(),
+        timestampReadable: new Date().toLocaleString()
+      }
+
+      // Save to localStorage
+      const existingEmails = JSON.parse(localStorage.getItem('hvna-email-captures') || '[]')
+
+      // Check if email already exists
+      const emailExists = existingEmails.some(entry => entry.email === email)
+
+      if (!emailExists) {
+        existingEmails.push(emailData)
+        localStorage.setItem('hvna-email-captures', JSON.stringify(existingEmails))
+        console.log('📧 Email captured:', emailData)
+      } else {
+        console.log('📧 Email already exists:', email)
+      }
+
+      // Also send to Google Sheets webhook (if available in future)
+      // This allows you to collect emails in a spreadsheet
+      try {
+        // You can add a Google Sheets webhook URL here later
+        // await fetch('YOUR_WEBHOOK_URL', { method: 'POST', body: JSON.stringify(emailData) })
+      } catch (webhookError) {
+        // Silently fail if webhook doesn't exist
+        console.log('Webhook not configured (this is OK)')
+      }
+
+      // Show success
+      setIsSuccess(true)
+      setSubmitStatus('✅ Thank you! You\'re on the list!')
+
+      // Close dialog after 2 seconds
+      setTimeout(() => {
+        onClose()
+        setEmail('')
+        setIsSuccess(false)
+        setSubmitStatus('')
+      }, 2000)
+
     } catch (error) {
       console.error('Email capture error:', error)
       setSubmitStatus('❌ Failed to save email. Please try again.')
