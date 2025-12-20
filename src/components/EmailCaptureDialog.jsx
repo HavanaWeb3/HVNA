@@ -52,14 +52,25 @@ const EmailCaptureDialog = ({ isOpen, onClose, purchaseType, walletAddress }) =>
         console.log('📧 Email already exists:', email)
       }
 
-      // Also send to Google Sheets webhook (if available in future)
-      // This allows you to collect emails in a spreadsheet
+      // Send to Google Sheets webhook
       try {
-        // You can add a Google Sheets webhook URL here later
-        // await fetch('YOUR_WEBHOOK_URL', { method: 'POST', body: JSON.stringify(emailData) })
+        const webhookResponse = await fetch('https://script.google.com/macros/s/AKfycbxrNQcgK-ZyJNgqo0y_ewf5e7ccCq3PrAGsq9bDTf_Tx9bG9I5YSlL2OXfcfdBvBD6v/exec', {
+          method: 'POST',
+          mode: 'no-cors', // Google Apps Script requires no-cors
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            timestamp: emailData.timestampReadable,
+            email: emailData.email,
+            wallet: emailData.wallet,
+            purchaseType: emailData.purchaseType
+          })
+        })
+        console.log('✅ Email sent to Google Sheets')
       } catch (webhookError) {
-        // Silently fail if webhook doesn't exist
-        console.log('Webhook not configured (this is OK)')
+        // Don't block success if webhook fails - localStorage is backup
+        console.log('⚠️ Webhook error (email saved to localStorage):', webhookError.message)
       }
 
       // Show success
