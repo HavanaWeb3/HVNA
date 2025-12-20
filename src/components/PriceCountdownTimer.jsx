@@ -9,10 +9,10 @@ const PriceCountdownTimer = () => {
   });
 
   useEffect(() => {
-    // Set end date for Seed Round (example: 30 days from now)
+    // Set end date for Seed Round (39 days from now)
     // In production, this should come from the smart contract
     const endDate = new Date();
-    endDate.setDate(endDate.getDate() + 30); // 30 days from now
+    endDate.setDate(endDate.getDate() + 39); // 39 days from now
 
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
