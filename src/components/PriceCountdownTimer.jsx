@@ -9,15 +9,15 @@ const PriceCountdownTimer = () => {
   });
 
   useEffect(() => {
-    // Set end date for Seed Round (39 days from now)
-    // In production, this should come from the smart contract
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + 39); // 39 days from now
+    // FIXED: Phase 1 ends on February 28, 2026 at 11:59:59 PM UTC
+    // This date NEVER changes - countdown will accurately show time remaining until this exact moment
+    const endDate = new Date('2026-02-28T23:59:59Z'); // Z = UTC timezone
 
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
       const distance = endDate.getTime() - now;
 
+      // If countdown has ended, show zeros
       if (distance < 0) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       }
@@ -30,12 +30,15 @@ const PriceCountdownTimer = () => {
       };
     };
 
+    // Set initial time
     setTimeLeft(calculateTimeLeft());
 
+    // Update every second
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
+    // Cleanup interval on unmount
     return () => clearInterval(timer);
   }, []);
 
@@ -44,11 +47,14 @@ const PriceCountdownTimer = () => {
   return (
     <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-6 rounded-lg text-white text-center shadow-xl">
       <div className="text-sm font-semibold mb-2 uppercase tracking-wide">
-        ⏰ SEED ROUND ENDS IN:
+        {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0
+          ? '✅ PHASE 1 COMPLETE'
+          : '⏰ PHASE 1 ENDS IN:'}
       </div>
       <div className="text-4xl md:text-5xl font-bold mb-4 font-mono" id="countdown">
-        {formatTime(timeLeft.days)}d {formatTime(timeLeft.hours)}h{' '}
-        {formatTime(timeLeft.minutes)}m {formatTime(timeLeft.seconds)}s
+        {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0
+          ? 'PHASE 2 ACTIVE'
+          : `${formatTime(timeLeft.days)}d ${formatTime(timeLeft.hours)}h ${formatTime(timeLeft.minutes)}m ${formatTime(timeLeft.seconds)}s`}
       </div>
       <div className="flex justify-center gap-8 text-sm md:text-base">
         <div className="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
