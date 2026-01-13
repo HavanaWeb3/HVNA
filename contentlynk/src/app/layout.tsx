@@ -91,6 +91,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="related" href="https://havanaelephant.com" title="Havana Elephant Web3 Ecosystem" />
         <Script
           id="microsoft-clarity"
           strategy="beforeInteractive"
