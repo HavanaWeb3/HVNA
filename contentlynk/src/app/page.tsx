@@ -25,6 +25,9 @@ export default function Home() {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-havana-cyan to-havana-orange bg-clip-text text-transparent">Contentlynk</h1>
             </Link>
             <div className="flex items-center space-x-4">
+              <a href="https://havanaelephant.com" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost">🐘 Ecosystem</Button>
+              </a>
               <Link href="/earnings-calculator">
                 <Button variant="ghost">📊 Earnings Calculator</Button>
               </Link>
@@ -311,7 +314,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-havana-cyan/20 mt-8 pt-8 text-center text-havana-cyan-light">
-            <p>&copy; 2024 Contentlynk. Built for the Havana Elephant Web3 ecosystem.</p>
+            <p>&copy; 2024 Contentlynk. Built for the <a href="https://havanaelephant.com" target="_blank" rel="noopener noreferrer" className="text-havana-orange hover:text-havana-orange-light underline transition-colors">Havana Elephant Web3 ecosystem</a>.</p>
           </div>
         </div>
       </footer>

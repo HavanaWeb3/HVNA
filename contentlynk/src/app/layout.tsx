@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Contentlynk - Creator Economy Reimagined',
   description: 'The first social platform that pays creators from day one. Zero follower minimums, transparent earnings, powered by $HVNA.',
+  themeColor: '#FF6B35',
   icons: {
     icon: [
       { url: '/images/contentlynk-logo.png', sizes: '32x32', type: 'image/png' },
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     description: 'The first social platform that pays creators from day one. 55-75% revenue share, zero follower minimums, powered by Web3 and $HVNA tokens.',
     images: [
       {
-        url: '/images/contentlynk-logo.png',
+        url: '/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Contentlynk - Fair Creator Compensation Platform',
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contentlynk - Creator Economy Reimagined',
     description: 'The first social platform that pays creators from day one. 55-75% revenue share, zero follower minimums.',
-    images: ['/images/contentlynk-logo.png'],
+    images: ['/images/og-image.png'],
     creator: '@havanaelephant',
   },
   robots: {
@@ -67,6 +68,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const schemaOrgData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Contentlynk",
+    "applicationCategory": "SocialNetworkingApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Revolutionary social media platform where creators earn 55-75% revenue share with zero follower minimums",
+    "url": "https://contentlynk.com",
+    "isPartOf": {
+      "@type": "Organization",
+      "name": "Havana Elephant Brand",
+      "url": "https://havanaelephant.com"
+    }
+  };
+
   return (
     <html lang="en">
       <head>
@@ -82,6 +103,10 @@ export default function RootLayout({
               })(window, document, "clarity", "script", "u2wk6vqgio");
             `,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgData) }}
         />
       </head>
       <body className={inter.className}>

@@ -1705,7 +1705,7 @@ function App() {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white">$HVNA Token</a></li>
                 <li><a href="#" className="hover:text-white">NFT Collection</a></li>
-                <li><a href="#" className="hover:text-white">ContentLynk</a></li>
+                <li><a href="https://contentlynk.com" target="_blank" rel="noopener noreferrer" className="hover:text-white">ContentLynk</a></li>
                 <li><a href="#" className="hover:text-white">Governance</a></li>
               </ul>
             </div>
