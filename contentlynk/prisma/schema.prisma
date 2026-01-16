@@ -37,12 +37,6 @@ model User {
   probationUntil  DateTime?      @map("probation_until")
   suspendedAt     DateTime?      @map("suspended_at")
 
-  // Welcome/onboarding fields
-  welcomeEmailSent   Boolean?     @map("welcome_email_sent")
-  welcomeEmailSentAt DateTime?    @map("welcome_email_sent_at")
-  betaTesterNumber   Int?         @map("beta_tester_number")
-  legalName          String?      @map("legal_name")
-
   // Relations
   posts           Post[]
   earnings        Earning[]
@@ -106,11 +100,6 @@ model Post {
   comments    Int      @default(0)
   shares      Int      @default(0)
   earnings    Decimal  @default(0)
-
-  // Detailed view tracking
-  totalViews         Int?     @default(0) @map("total_views")
-  authenticatedViews Int?     @default(0) @map("authenticated_views")
-  publicViews        Int?     @default(0) @map("public_views")
 
   // Quality Score tracking fields
   averageScrollDepth      Float?   @default(0) @map("average_scroll_depth") // Average % of content consumed (0-1)
@@ -321,11 +310,8 @@ model BetaApplication {
   engagement  String   // Average post engagement description
   reason      String   // Why they want to join
   status      String   @default("PENDING") // PENDING, APPROVED, REJECTED, WAITLIST
-  reviewedAt  DateTime? @map("reviewed_at")
-  reviewedBy  String?   @map("reviewed_by")
-  reviewNotes String?   @map("review_notes")
-  confirmationEmailSent   Boolean?  @map("confirmation_email_sent")
-  confirmationEmailSentAt DateTime? @map("confirmation_email_sent_at")
+  reviewedAt  DateTime?
+  reviewNotes String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -450,60 +436,4 @@ model FlaggedContent {
   @@index([resolved])
   @@index([createdAt])
   @@map("flagged_content")
-}
-
-// View Logs - Track individual article views
-model ViewLog {
-  id              String   @id @default(cuid())
-  postId          String   @map("post_id")
-  userId          String?  @map("user_id")
-  isAuthenticated Boolean  @default(false) @map("is_authenticated")
-  viewedAt        DateTime @default(now()) @map("viewed_at")
-
-  @@index([postId])
-  @@index([userId])
-  @@index([viewedAt])
-  @@map("view_logs")
-}
-
-// Messages - Direct messages between users
-model Message {
-  id          String    @id @default(cuid())
-  fromUserId  String    @map("from_user_id")
-  toUserId    String    @map("to_user_id")
-  content     String
-  read        Boolean   @default(false)
-  readAt      DateTime? @map("read_at")
-  threadId    String?   @map("thread_id")
-  status      String?   @default("sent")
-  respondedAt DateTime? @map("responded_at")
-  createdAt   DateTime  @default(now()) @map("created_at")
-
-  @@index([fromUserId])
-  @@index([toUserId])
-  @@index([threadId])
-  @@index([createdAt])
-  @@map("messages")
-}
-
-// User Deletion Audit Log - Tracks all user deletions for compliance and audit
-model UserDeletionLog {
-  id               String   @id @default(cuid())
-  deletedUserId    String   @map("deleted_user_id")
-  deletedEmail     String?  @map("deleted_email")
-  deletedUsername  String   @map("deleted_username")
-  wasVerified      Boolean  @map("was_verified")
-  hadActivity      Boolean  @map("had_activity")
-  postsCount       Int      @map("posts_count")
-  followersCount   Int      @map("followers_count")
-  wasMarkedAsBot   Boolean  @map("was_marked_as_bot")
-  deletedBy        String   @map("deleted_by") // Admin user ID who performed deletion
-  deletedAt        DateTime @default(now()) @map("deleted_at")
-  reason           String?  // Required for verified users
-  deletionType     String   @map("deletion_type") // 'bulk_bot' | 'individual' | 'verified'
-
-  @@index([deletedBy])
-  @@index([deletedAt])
-  @@index([wasVerified])
-  @@map("user_deletion_logs")
 }
