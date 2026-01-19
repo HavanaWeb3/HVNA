@@ -70,11 +70,13 @@ const HVNATokenPurchaseMultiChain = () => {
 
   // Pricing tiers
   const PRICING_TIERS = [
-    { tokens: "0 - 5M", price: 0.01, status: "LIVE NOW" },
-    { tokens: "5M - 10M", price: 0.05, status: "Next Tier" },
-    { tokens: "10M - 15M", price: 0.10, status: "Next Tier" },
-    { tokens: "15M - 20M", price: 0.15, status: "Next Tier" },
-    { tokens: "20M - 25M", price: 0.30, status: "Final Tier" }
+    { name: "Genesis Founders", tokens: "0 - 30M", price: 0.001, status: "LIVE NOW" },
+    { name: "Early Believers", tokens: "30M - 60M", price: 0.002, status: "Next Tier" },
+    { name: "Community Builders", tokens: "60M - 97.5M", price: 0.004, status: "Next Tier" },
+    { name: "Growth Partners", tokens: "97.5M - 128.75M", price: 0.008, status: "Next Tier" },
+    { name: "Momentum Members", tokens: "128.75M - 155.42M", price: 0.015, status: "Next Tier" },
+    { name: "Community Champions", tokens: "155.42M - 179.42M", price: 0.025, status: "Next Tier" },
+    { name: "Final Access", tokens: "179.42M - 200M", price: 0.035, status: "Final Tier" }
   ]
 
   // Load sale progress on mount
@@ -796,8 +798,9 @@ const HVNATokenPurchaseMultiChain = () => {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-bold text-white">{tier.tokens} tokens</div>
-                    <div className="text-sm text-gray-400">
+                    <div className="font-bold text-white">{tier.name}</div>
+                    <div className="text-xs text-gray-400">{tier.tokens} tokens</div>
+                    <div className="text-sm text-gray-400 mt-1">
                       {tier.status === "LIVE NOW" && (
                         <span className="inline-flex items-center gap-1 text-yellow-400">
                           <span className="relative flex h-2 w-2">
@@ -813,7 +816,7 @@ const HVNATokenPurchaseMultiChain = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-yellow-400">${tier.price.toFixed(2)}</div>
+                    <div className="text-2xl font-bold text-yellow-400">${tier.price.toFixed(3)}</div>
                     <div className="text-xs text-gray-400">per token</div>
                   </div>
                 </div>
