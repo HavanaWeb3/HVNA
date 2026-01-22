@@ -478,11 +478,8 @@ const HVNATokenPurchase = () => {
             <p className="text-gray-300 text-sm mb-3">
               Official $HVNA token deployed on Base network. ERC-20 standard with full utility integration.
             </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
-              <div className="flex items-center gap-1">
-                <ExternalLink className="h-4 w-4" />
-                <span>View on BaseScan</span>
-              </div>
+            {/* View on BaseScan temporarily removed during Genesis phase - restore when contract value >$5K */}
+            <div className="flex items-center justify-center text-sm text-gray-400">
               <div className="flex items-center gap-1">
                 <Shield className="h-4 w-4" />
                 <span>Contract: {TOKEN_CONTRACT.slice(0, 6)}...{TOKEN_CONTRACT.slice(-4)}</span>
