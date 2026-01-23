@@ -254,8 +254,8 @@ class HVNAPurchaseWidget {
         
         const footerHtml = this.config.showFooter ? `
             <div class="hvna-widget-footer">
-                Powered by <a href="https://base.org" target="_blank">Base Network</a> • 
-                <a href="https://basescan.org/address/${this.contracts.preSale}" target="_blank">View Contract</a>
+                Powered by <a href="https://base.org" target="_blank">Base Network</a>
+                <!-- BaseScan View Contract link temporarily removed during Genesis phase -->
             </div>
         ` : '';
         
