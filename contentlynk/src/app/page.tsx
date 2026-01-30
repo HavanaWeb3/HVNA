@@ -1,11 +1,36 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 
 export default function Home() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  // Redirect logged-in users to beta dashboard
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/beta/dashboard')
+    }
+  }, [status, router])
+
+  // Show loading state while checking auth
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-havana flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-havana-cyan border-t-transparent mx-auto"></div>
+          <p className="mt-4 text-havana-cyan-light">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen relative bg-gradient-havana">
       {/* Navigation */}
@@ -23,6 +48,9 @@ export default function Home() {
                 />
               </div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-havana-cyan to-havana-orange bg-clip-text text-transparent">Contentlynk</h1>
+              <span className="ml-2 px-2 py-0.5 bg-havana-orange/20 text-havana-orange text-xs font-medium rounded-full">
+                BETA
+              </span>
             </Link>
             <div className="flex items-center space-x-4">
               <a href="https://havanaelephant.com" target="_blank" rel="noopener noreferrer">

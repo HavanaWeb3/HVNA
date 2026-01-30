@@ -37,6 +37,9 @@ model User {
   probationUntil  DateTime?      @map("probation_until")
   suspendedAt     DateTime?      @map("suspended_at")
 
+  // Beta onboarding
+  hasSeenWelcome  Boolean        @default(false) @map("has_seen_welcome")
+
   // Relations
   posts           Post[]
   earnings        Earning[]
