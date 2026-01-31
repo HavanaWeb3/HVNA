@@ -29,7 +29,7 @@ export default function SignIn() {
       } else {
         // Refresh session and redirect
         await getSession()
-        router.push('/dashboard')
+        router.push('/beta/dashboard')
       }
     } catch (error) {
       setError('Something went wrong')

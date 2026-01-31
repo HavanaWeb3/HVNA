@@ -61,8 +61,8 @@ export default function SignUp() {
           setError('User already exists with this email or username')
         }
       } else {
-        // Registration successful, redirect to dashboard
-        router.push('/dashboard')
+        // Registration successful, redirect to beta dashboard
+        router.push('/beta/dashboard')
       }
     } catch (error) {
       setError('Something went wrong during registration')
