@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "swpvnt76nc");
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Havana Elephant Whitepaper | $HVNA Token & Web3 Ecosystem</title>
+    <!-- Force deployment: Nov 17, 2025 -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+        color: #e2e8f0;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        min-height: 100vh;
+      }
+      
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        padding: 1rem 0;
+      }
+      
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #f1f5f9;
+        text-decoration: none;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+      
+      .nav-links a {
+        color: #cbd5e1;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: #fbbf24;
+      }
+      
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 24px;
+        margin-top: 6rem;
+        margin-bottom: 2rem;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      
+      .header {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+        color: #0f172a;
+        padding: 4rem 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/><circle cx="20" cy="20" r="1" fill="white" opacity="0.15"/><circle cx="80" cy="30" r="1.5" fill="white" opacity="0.1"/></svg>');
+        animation: float 20s linear infinite;
+      }
+      
+      @keyframes float {
+        0% { transform: translateX(-100px) translateY(-100px); }
+        100% { transform: translateX(100px) translateY(100px); }
+      }
+      
+      .elephant-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .header h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .header .subtitle {
+        font-size: 1.5rem;
+        font-weight: 500;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .version-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(15, 23, 42, 0.8);
+        color: #fbbf24;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        z-index: 2;
+      }
+      
+      .executive-note {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: rgba(15, 23, 42, 0.3);
+        border-radius: 12px;
+        font-size: 0.9rem;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .content {
+        padding: 3rem;
+      }
+      
+      .section {
+        margin-bottom: 3rem;
+      }
+      
+      .section h2 {
+        font-size: 2.2rem;
+        color: #fbbf24;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 3px solid #fbbf24;
+        position: relative;
+      }
+      
+      .section h2::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+      }
+      
+      .section h3 {
+        font-size: 1.4rem;
+        color: #f59e0b;
+        margin: 1.5rem 0 1rem 0;
+      }
+      
+      .highlight-box {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+        border-left: 5px solid #fbbf24;
+        padding: 2rem;
+        margin: 2rem 0;
+        border-radius: 0 12px 12px 0;
+        backdrop-filter: blur(8px);
+      }
+      
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      
+      .stat-card {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(251, 191, 36, 0.3);
+        box-shadow: 0 10px 25px rgba(251, 191, 36, 0.1);
+      }
+      
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #fbbf24;
+        margin-bottom: 0.5rem;
+      }
+      
+      .stat-label {
+        font-size: 0.9rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      
+      .tokenomics-table {
+        background: rgba(30, 41, 59, 0.4);
+        border-radius: 16px;
+        overflow: hidden;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        margin: 2rem 0;
+      }
+      
+      .tokenomics-table table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      
+      .tokenomics-table th {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #0f172a;
+        padding: 1.5rem;
+        text-align: left;
+        font-weight: 600;
+      }
+      
+      .tokenomics-table td {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      
+      .tokenomics-table tr:hover {
+        background: rgba(251, 191, 36, 0.05);
+      }
+      
+      .percentage-bar {
+        height: 8px;
+        background: rgba(148, 163, 184, 0.2);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      
+      .percentage-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+        border-radius: 4px;
+        transition: width 1s ease;
+      }
+      
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      
+      .team-card {
+        background: rgba(30, 41, 59, 0.6);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .team-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(251, 191, 36, 0.3);
+      }
+      
+      .team-avatar {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0f172a;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      
+      .roadmap {
+        position: relative;
+        padding-left: 2rem;
+        margin: 2rem 0;
+      }
+      
+      .roadmap::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+      }
+      
+      .roadmap-item {
+        position: relative;
+        margin-bottom: 2rem;
+        background: rgba(30, 41, 59, 0.6);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-left: 1.5rem;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      
+      .roadmap-item::before {
+        content: '';
+        position: absolute;
+        left: -2.25rem;
+        top: 1.5rem;
+        width: 12px;
+        height: 12px;
+        background: #fbbf24;
+        border-radius: 50%;
+        border: 3px solid #0f172a;
+        box-shadow: 0 0 0 2px #fbbf24;
+      }
+      
+      .phase-title {
+        color: #fbbf24;
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .cta-section {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #0f172a;
+        padding: 3rem;
+        text-align: center;
+        margin-top: 3rem;
+      }
+      
+      .cta-button {
+        display: inline-block;
+        background: #0f172a;
+        color: #fbbf24;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 1rem 0.5rem;
+        transition: all 0.3s ease;
+      }
+      
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        background: #1e293b;
+      }
+      
+      ul {
+        list-style: none;
+        padding-left: 0;
+      }
+      
+      li {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #fbbf24;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+      
+      .back-to-main {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: #fbbf24;
+        color: #0f172a;
+        padding: 1rem;
+        border-radius: 50%;
+        text-decoration: none;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+      
+      .back-to-main:hover {
+        transform: scale(1.1);
+        background: #f59e0b;
+      }
+      
+      @media (max-width: 768px) {
+        .content {
+          padding: 1.5rem;
+        }
+        
+        .header {
+          padding: 2rem 1.5rem;
+        }
+        
+        .header h1 {
+          font-size: 2.5rem;
+        }
+        
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .team-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .nav-container {
+          padding: 0 1rem;
+        }
+        
+        .nav-links {
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo">
+          🐘 Havana Elephant
+        </a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="#tokenomics">Tokenomics</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#team">Team</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">
+        <div class="version-badge">Version 4.1 - Executive Summary</div>
+        <div class="elephant-icon">🐘</div>
+        <h1>Havana Elephant</h1>
+        <div class="subtitle">Web3 Ecosystem Whitepaper</div>
+        <div class="executive-note">
+          This is an executive summary. Comprehensive technical white paper (26 pages) with detailed tokenomics, risk analysis, and implementation roadmap available upon request.
+        </div>
+      </div>
+      
+      <div class="content">
+        <div class="section">
+          <div class="highlight-box">
+            <h3>Live Life Big in Style Celebrate</h3>
+            <p>Transforming fashion engagement through blockchain-powered community membership and exclusive lifestyle experiences. Our platform bridges physical print-on-demand commerce with innovative digital community features.</p>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>Key Metrics</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">100M</div>
+              <div class="stat-label">Total Token Supply</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">$2.29M</div>
+              <div class="stat-label">Funding Target</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">10,000</div>
+              <div class="stat-label">NFT Collection</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">Q2 2026</div>
+              <div class="stat-label">Contentlynk Beta</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section" id="tokenomics">
+          <h2>Token Distribution</h2>
+          <div class="tokenomics-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Allocation</th>
+                  <th>Percentage</th>
+                  <th>Tokens</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Pre-sale Program</strong></td>
+                  <td>25%</td>
+                  <td>25,000,000</td>
+                  <td>Community funding
+                    <div class="percentage-bar">
+                      <div class="percentage-fill" style="width: 25%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Community Treasury</td>
+                  <td>25%</td>
+                  <td>25,000,000</td>
+                  <td>Platform development
+                    <div class="percentage-bar">
+                      <div class="percentage-fill" style="width: 25%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Contentlynk Development</td>
+                  <td>20%</td>
+                  <td>20,000,000</td>
+                  <td>Creator platform
+                    <div class="percentage-bar">
+                      <div class="percentage-fill" style="width: 20%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Platform Liquidity</td>
+                  <td>10%</td>
+                  <td>10,000,000</td>
+                  <td>Trading and utility
+                    <div class="percentage-bar">
+                      <div class="percentage-fill" style="width: 10%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Team & Advisors</td>
+                  <td>10%</td>
+                  <td>10,000,000</td>
+                  <td>Long-term commitment
+                    <div class="percentage-bar">
+                      <div class="percentage-fill" style="width: 10%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Other Allocations</td>
+                  <td>10%</td>
+                  <td>10,000,000</td>
+                  <td>Marketing & reserves
+                    <div class="percentage-bar">
+                      <div class="percentage-fill" style="width: 10%"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>Pre-sale Schedule</h2>
+          <div class="highlight-box">
+            <h3>7-Phase Progressive Pricing - 18 Month Program</h3>
+            <ul>
+              <li><strong>Phase 1: Genesis Founders (Month 1-2):</strong> 0 - 30M tokens @ $0.001 per token - Revenue: $30K</li>
+              <li><strong>Phase 2: Early Believers (Month 3-4):</strong> 30M - 60M tokens @ $0.002 per token - Revenue: $60K</li>
+              <li><strong>Phase 3: Community Builders (Month 5-7):</strong> 60M - 97.5M tokens @ $0.004 per token - Revenue: $150K</li>
+              <li><strong>Phase 4: Growth Partners (Month 8-10):</strong> 97.5M - 128.75M tokens @ $0.008 per token - Revenue: $250K</li>
+              <li><strong>Phase 5: Momentum Members (Month 11-13):</strong> 128.75M - 155.42M tokens @ $0.015 per token - Revenue: $400K</li>
+              <li><strong>Phase 6: Community Champions (Month 14-16):</strong> 155.42M - 179.42M tokens @ $0.025 per token - Revenue: $600K</li>
+              <li><strong>Phase 7: Final Access (Month 17-18):</strong> 179.42M - 200M tokens @ $0.035 per token - Revenue: $800K</li>
+            </ul>
+            <p><strong>Total Presale:</strong> 200,000,000 tokens = $2.29M</p>
+          </div>
+        </div>
+        
+        <div class="section" id="team">
+          <h2>Leadership Team</h2>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar">DS</div>
+              <h3>David Sime</h3>
+              <p><strong>Founder & CEO</strong></p>
+              <p>35+ years business leadership, Web3 expertise, Author of 3 educational books including "Crypto Made Simple"</p>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar">MD</div>
+              <h3>Marketing Director</h3>
+              <p><strong>Global Marketing</strong></p>
+              <p>10+ years integrated marketing, Oxford Saïd Business School education, B2B solutions expertise</p>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar">CTO</div>
+              <h3>Chief Technology Officer</h3>
+              <p><strong>Blockchain Development</strong></p>
+              <p>12+ years blockchain development, DeFi protocols, smart contract security specialist</p>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar">CM</div>
+              <h3>Community Manager</h3>
+              <p><strong>Community Building</strong></p>
+              <p>Full-time community engagement, Web3 expertise, creator economy development specialist</p>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 1.5rem; padding: 1rem; background: rgba(30, 41, 59, 0.4); border-radius: 12px;">
+            <p style="font-style: italic; color: #94a3b8; margin: 0;">
+              Complete team profiles, advisory board details, and contractor network information available in the comprehensive white paper upon request.
+            </p>
+          </div>
+        </div>
+        
+        <div class="section" id="roadmap">
+          <h2>Development Roadmap</h2>
+          <div class="roadmap">
+            <div class="roadmap-item">
+              <div class="phase-title">Phase 1: Foundation (Q4 2025)</div>
+              <p>Smart contract development, Genesis NFT completion, community building infrastructure</p>
+            </div>
+            <div class="roadmap-item">
+              <div class="phase-title">Phase 2: Genesis Launch (Q1 2026)</div>
+              <p>Genesis NFT collection launch, pre-sale token program begins, Web3 integration go-live</p>
+            </div>
+            <div class="roadmap-item">
+              <div class="phase-title">Phase 3: Community Expansion (Q2 2026)</div>
+              <p>Main NFT collection development, Contentlynk beta development, community governance implementation</p>
+            </div>
+            <div class="roadmap-item">
+              <div class="phase-title">Phase 4: Platform Launch (Q3 2026)</div>
+              <p>Main collection rollout, Contentlynk public beta, creator onboarding program</p>
+            </div>
+            <div class="roadmap-item">
+              <div class="phase-title">Phase 5: Global Expansion (Q4 2026+)</div>
+              <p>Platform scaling, international expansion, major brand partnerships</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>Creator Economy Revolution</h2>
+          <div class="highlight-box">
+            <h3>Contentlynk Platform Benefits</h3>
+            <ul>
+              <li><strong>Fair Creator Compensation:</strong> 60-75% revenue share vs industry standard ~0%</li>
+              <li><strong>Tier-Based Benefits:</strong> Enhanced revenue for community members</li>
+              <li><strong>Direct Monetization:</strong> Earn $HVNA tokens for quality content</li>
+              <li><strong>NFT Integration:</strong> Mint and sell content as NFTs</li>
+              <li><strong>Community Governance:</strong> Vote on platform features and policies</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>NFT Collections & Membership</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">100</div>
+              <div class="stat-label">Genesis Elephants</div>
+              <p style="margin-top: 0.75rem; font-size: 0.9rem;">Ultra-exclusive founding member NFTs (1-2.5 ETH each)</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">9,900</div>
+              <div class="stat-label">Main Collection</div>
+              <p style="margin-top: 0.75rem; font-size: 0.9rem;">Generative community membership ($150-500 each)</p>
+            </div>
+          </div>
+          
+          <div class="highlight-box">
+            <h3>Membership Tier Benefits</h3>
+            <ul>
+              <li><strong>Genesis Members:</strong> 30% discounts, exclusive products, VIP events</li>
+              <li><strong>Platinum Members:</strong> 30% discounts, custom NFT printing, governance rights</li>
+              <li><strong>Gold Members:</strong> 20% discounts, monthly exclusives, enhanced creator revenue</li>
+              <li><strong>Silver Members:</strong> 10% discounts, quarterly access, community participation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Financial Projections</h2>
+          <div class="tokenomics-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Revenue Stream</th>
+                  <th>Year 1</th>
+                  <th>Year 2</th>
+                  <th>Year 3</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Pre-sale Tokens</td>
+                  <td>$2.29M</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td>NFT Sales</td>
+                  <td>$3.17M</td>
+                  <td>$500K</td>
+                  <td>$250K</td>
+                </tr>
+                <tr>
+                  <td>Product Sales</td>
+                  <td>$1.0M</td>
+                  <td>$2.5M</td>
+                  <td>$5.0M</td>
+                </tr>
+                <tr>
+                  <td>Contentlynk Platform</td>
+                  <td>$400K</td>
+                  <td>$15M</td>
+                  <td>$75M</td>
+                </tr>
+                <tr style="background: rgba(251, 191, 36, 0.1); font-weight: bold;">
+                  <td><strong>Total Revenue</strong></td>
+                  <td><strong>$6.86M</strong></td>
+                  <td><strong>$18M</strong></td>
+                  <td><strong>$80.25M</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Competitive Advantages</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">60-75%</div>
+              <div class="stat-label">Creator Revenue Share</div>
+              <p style="margin-top: 0.75rem; font-size: 0.9rem;">vs ~0% on traditional platforms</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">2-Phase</div>
+              <div class="stat-label">Community Building</div>
+              <p style="margin-top: 0.75rem; font-size: 0.9rem;">Proven validation before expansion</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">Physical</div>
+              <div class="stat-label">Digital Integration</div>
+              <p style="margin-top: 0.75rem; font-size: 0.9rem;">Real-world utility from day one</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">Sustainable</div>
+              <div class="stat-label">Tokenomics</div>
+              <p style="margin-top: 0.75rem; font-size: 0.9rem;">Dynamic supply management</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Investment Thesis Summary</h2>
+          <div class="highlight-box">
+            <h3>Why Havana Elephant Brand</h3>
+            <p>This project offers community members a unique opportunity to participate in three major trends simultaneously:</p>
+            <ul>
+              <li><strong>Web3 Utility Revolution:</strong> Moving beyond speculation to genuine utility-driven ecosystems</li>
+              <li><strong>Creator Economy Transformation:</strong> Fair compensation addressing the $104B creator economy</li>
+              <li><strong>Sustainable E-commerce Evolution:</strong> Blockchain integration with environmental responsibility</li>
+            </ul>
+            <p style="margin-top: 1.5rem;"><em>The structured approach provides multiple participation entry points while maintaining exclusivity and utility focus. Early participants gain maximum exposure to all community benefits through immediate utility and transformative potential.</em></p>
+          </div>
+        </div>
+
+        <div class="section" style="text-align: center; padding: 2.5rem 0;">
+          <h2>Building a Sustainable Community-Driven Future</h2>
+          <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+            Havana Elephant Brand's Web3 integration represents a revolutionary approach to community building and creator empowerment. 
+            By emphasizing membership benefits, creator empowerment, and environmental responsibility over speculative returns, 
+            we build genuine long-term value for all community participants.
+          </p>
+          <p style="font-style: italic; color: #fbbf24; font-size: 1.1rem; margin-bottom: 1.5rem;">
+            "Together, we're building more than a Web3 project - we're creating a global community that celebrates authenticity, 
+            supports creators fairly, and demonstrates that sustainable luxury and technological innovation can work hand in hand 
+            to create positive change in the world."
+          </p>
+          <p style="color: #94a3b8; font-size: 0.9rem;">
+            Document Version: 4.1 | Last Updated: August 2025 | Next Review: Q4 2025
+          </p>
+        </div>
+      </div>
+      
+      <div class="cta-section">
+        <h2>Join the Revolution</h2>
+        <p>Be part of the future of creator-focused, utility-driven Web3 ecosystems</p>
+        <a href="/" class="cta-button">Explore Genesis NFTs</a>
+        <a href="/#presale" class="cta-button">Join Presale</a>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;">
+          Live Life Big in Style Celebrate
+        </p>
+      </div>
+    </div>
+
+    <a href="/" class="back-to-main">🏠</a>
+    
+    <script>
+      // Add interactive animations
+      document.addEventListener('DOMContentLoaded', function() {
+        // Animate percentage bars
+        const percentageFills = document.querySelectorAll('.percentage-fill');
+        percentageFills.forEach(fill => {
+          const width = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => {
+            fill.style.width = width;
+          }, 500);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

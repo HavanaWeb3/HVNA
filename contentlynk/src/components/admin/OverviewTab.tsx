@@ -7,12 +7,20 @@ export default function OverviewTab() {
     flaggedPosts: 0,
     betaApplications: 0,
     totalUsers: 0,
+    totalPosts: 0,
     recentActivity: [],
     earnings: {
       total: 0,
       today: 0,
       pending: 0,
       mode: 'BETA' as 'BETA' | 'NATURAL'
+    },
+    ecosystemHealth: {
+      activeUsers7d: 0,
+      newUsersToday: 0,
+      postsToday: 0,
+      engagementRate: 0,
+      healthScore: 85
     }
   });
   const [loading, setLoading] = useState(true);
@@ -24,26 +32,45 @@ export default function OverviewTab() {
   const fetchOverviewStats = async () => {
     try {
       // Fetch stats from multiple endpoints
-      const [flaggedRes, betaRes, earningsRes] = await Promise.all([
+      const [flaggedRes, betaRes, earningsRes, usersRes] = await Promise.all([
         fetch('/api/admin/flagged'),
         fetch('/api/beta-applications'),
-        fetch('/api/admin/earnings-stats')
+        fetch('/api/admin/earnings-stats'),
+        fetch('/api/admin/users')
       ]);
 
       const flaggedData = await flaggedRes.json();
       const betaData = await betaRes.json();
       const earningsData = await earningsRes.json();
+      const usersData = await usersRes.json();
+
+      const users = usersData.users || [];
+      const now = new Date();
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const todayStart = new Date(now.setHours(0, 0, 0, 0));
+
+      // Calculate ecosystem metrics
+      const newUsersToday = users.filter((u: any) => new Date(u.createdAt) >= todayStart).length;
+      const activeUsers7d = users.filter((u: any) => new Date(u.createdAt) >= weekAgo).length;
 
       setStats({
         flaggedPosts: flaggedData.flaggedPosts?.length || 0,
         betaApplications: betaData.applications?.filter((a: any) => a.status === 'PENDING').length || 0,
-        totalUsers: 0, // TODO: Add users endpoint
+        totalUsers: users.length,
+        totalPosts: 0,
         recentActivity: [],
         earnings: {
           total: earningsData.total || 0,
           today: earningsData.today || 0,
           pending: earningsData.pending || 0,
           mode: earningsData.mode || 'BETA'
+        },
+        ecosystemHealth: {
+          activeUsers7d,
+          newUsersToday,
+          postsToday: 0,
+          engagementRate: users.length > 0 ? Math.round((activeUsers7d / users.length) * 100) : 0,
+          healthScore: 85
         }
       });
     } catch (error) {
@@ -73,7 +100,7 @@ export default function OverviewTab() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -146,6 +173,23 @@ export default function OverviewTab() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                Eco Health
+              </p>
+              <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mt-2">
+                {stats.ecosystemHealth.healthScore}%
+              </p>
+            </div>
+            <div className="text-4xl">🌱</div>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-500 mt-4">
+            Platform health score
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
                 System Status
               </p>
               <p className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
@@ -198,6 +242,44 @@ export default function OverviewTab() {
               <p className="text-sm text-gray-600 dark:text-gray-400">Manual scan</p>
             </div>
           </button>
+        </div>
+      </div>
+
+      {/* Ecosystem Health Dashboard */}
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg p-6 text-white">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold">Ecosystem Health Dashboard</h3>
+          <span className="text-4xl">🌱</span>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-white/20 rounded-lg p-4">
+            <div className="text-3xl font-bold">{stats.totalUsers}</div>
+            <div className="text-emerald-100 text-sm">Total Users</div>
+          </div>
+          <div className="bg-white/20 rounded-lg p-4">
+            <div className="text-3xl font-bold">{stats.ecosystemHealth.activeUsers7d}</div>
+            <div className="text-emerald-100 text-sm">Active (7d)</div>
+          </div>
+          <div className="bg-white/20 rounded-lg p-4">
+            <div className="text-3xl font-bold">{stats.ecosystemHealth.newUsersToday}</div>
+            <div className="text-emerald-100 text-sm">New Today</div>
+          </div>
+          <div className="bg-white/20 rounded-lg p-4">
+            <div className="text-3xl font-bold">{stats.ecosystemHealth.engagementRate}%</div>
+            <div className="text-emerald-100 text-sm">Engagement Rate</div>
+          </div>
+        </div>
+        <div className="mt-4 bg-white/10 rounded-lg p-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm">Overall Health Score</span>
+            <span className="font-bold">{stats.ecosystemHealth.healthScore}%</span>
+          </div>
+          <div className="w-full bg-white/20 rounded-full h-3">
+            <div
+              className="bg-white rounded-full h-3 transition-all duration-500"
+              style={{ width: `${stats.ecosystemHealth.healthScore}%` }}
+            />
+          </div>
         </div>
       </div>
 

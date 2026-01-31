@@ -248,6 +248,13 @@ export default function BetaDashboard() {
               </span>
             </Link>
             <div className="flex items-center space-x-2 sm:space-x-4">
+              {session?.user?.isAdmin && (
+                <Link href="/admin">
+                  <Button variant="ghost" className="text-havana-orange hover:text-havana-orange-light text-sm sm:text-base px-2 sm:px-4">
+                    Admin
+                  </Button>
+                </Link>
+              )}
               <Link href="/dashboard">
                 <Button variant="ghost" className="text-havana-cyan-light hover:text-white text-sm sm:text-base px-2 sm:px-4">
                   Dashboard
